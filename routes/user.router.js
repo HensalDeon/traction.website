@@ -16,8 +16,8 @@ const {
   httpPostVerifyOtp,
   httpSignupOtpVerify,
   httpPostSignup,
-//   httpGetAccount,
-//   httpUpdateUserdata,
+  httpGetAccount,
+  httpUpdateUserdata,
   httpGetLogout,
   httpGet404,
 } = require('../controllers/user.controller');
@@ -34,15 +34,18 @@ userRouter.get('/signup', isLoggedOut, httpGetSignup);
 userRouter.post('/signup', isLoggedOut, httpPostSignup);
 userRouter.post('/signup-otp', isLoggedOut, httpSignupOtpVerify);
 
-// userRouter.get('/product/:slug', httpGetProduct);
-// userRouter.get('/shop', httpGetAllProducts);
-// userRouter.get('/shop/:id', httpCategoryProduct);
+userRouter.get('/product/:slug', httpGetProduct);
+userRouter.get('/shop', httpGetAllProducts);
+userRouter.get('/shop/:id', httpCategoryProduct);
 
 // userRouter.get('/cart', isLoggedIn, httpGetCart);
 // userRouter.post('/cart', isLoggedIn, httpPostToCart);
 // userRouter.delete('/cart', isLoggedIn, httpRemoveFromCart);
 // userRouter.patch('/cart', isLoggedIn, httpUpdateQuantity);
 // userRouter.delete('/clear-cart', isLoggedIn, httpClearCart);
+userRouter.get('/search', httpSearchResult);
+userRouter.post('/search-products', httpProductsBySearch);
+
 userRouter.get('/logout', httpGetLogout);
 userRouter.get('/*', httpGet404);
 
