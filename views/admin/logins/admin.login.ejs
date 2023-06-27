@@ -1,0 +1,23 @@
+<section class="content-main mt-80 mb-80">
+    <div class="card mx-auto card-login">
+        <div class="card-body">
+            <h4 class="card-title mb-4">Admin Sign in</h4>
+            <form id="login-form">
+                <div class="mb-3"><span id="error"></span></div>
+                <div class="mb-3">
+                    <input id="email" class="form-control" placeholder="email" type="text">
+                    <div id="email-error" class="invalid-feedback"></div>
+                </div> <!-- form-group// -->
+                <div class="mb-3">
+                    <input id="password" class="form-control" placeholder="Password" type="password">
+                    <div id="password-error" class="invalid-feedback"></div>
+                </div> <!-- form-group// -->
+                <div class="mb-4">
+                    <button type="submit" id="submit-button" class="btn btn-primary w-100"> Login </button>
+                </div> <!-- form-group// -->
+            </form>
+        </div>
+    </div>
+</section>
+
+<%- include('./admin-validation.ejs') %>

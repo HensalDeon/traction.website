@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+  <%- include("../../partials/user-header") %>
+  <%- include("../components/preloading.ejs") %>
+
+</head>
+
+<body>
+  <%- include("../layouts/navbar.ejs") %>
+  
+  <main class="main">
+      <div class="page-header breadcrumb-wrap">
+        <div class="container">
+          <div class="breadcrumb">
+            <a href="/" rel="nofollow">Home</a>
+            <span></span> Pages
+            <span></span> Login / Register
+          </div>
+        </div>
+      </div>
+      <section class="pt-50 pb-50">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-10 m-auto">
+              <div class="row">
+                <div class="col-lg-5 offset-lg-2 mx-auto">
+                  <div
+                    class="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5">
+                    <div class="padding_eight_all bg-white">
+                      <div class="heading_s1">
+                        <h3 class="mb-30">Login</h3>
+                      </div>
+                      <form id="login-form">
+                        
+                        <div class="form-group">
+                          <input id="email" class="form-control" placeholder="Email" type="text" name="email">
+                          <div id="email-error" class="invalid-feedback"></div>
+                          <span id="emailError" ></span>
+                        </div>
+                        <div class="form-group">
+                          <input id="password" class="form-control" placeholder="Password" type="password"
+                            name="password">
+                          <div id="password-error" class="invalid-feedback"></div>
+                          <span id="passwordError"></span>
+                        </div>
+                        <div class="login_footer form-group">
+                          <div class="chek-form">
+                            <div class="custome-checkbox">
+                              <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1"
+                                value="">
+                              <label class="form-check-label" for="exampleCheckbox1"><span>Remember me</span></label>
+                            </div>
+                          </div>
+                          <a class="text-muted" href="#">Forgot password?</a>
+                        </div>
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-fill-out btn-block w-100 hover-up" name="login"
+                            id="login-button">LOG IN</button>
+                        </div>
+                        <div class="form-group">
+                          <a class="btn btn-fill-out btn-block w-100 hover-up" name="otp" id="otp-button"
+                            href="/otp-login">LOG IN WITH OTP</a>
+                        </div>
+                      </form>
+
+                      <div class="text-muted text-center mt-15 mb-15">Don't have an account? <a href="/signup">Sign
+                          up</a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <%- include("../layouts/footer.ejs") %>
+      <%- include("../script/script.ejs") %>
+          <%- include("./validation/login-validation.ejs") %>
+
+</body>
+
+</html>

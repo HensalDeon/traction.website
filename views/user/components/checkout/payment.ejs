@@ -1,0 +1,738 @@
+<style>
+    .no-arrow::-webkit-outer-spin-button,
+    .no-arrow::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .no-arrow {
+        -moz-appearance: textfield;
+    }
+</style>
+
+<div class="col-md-12">
+    <div class="order_review">
+        <div class="mb-20">
+            <h4>Your Orders</h4>
+        </div>
+        <div class="table-responsive order_table text-center">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th colspan="2">Product</th>
+                        <th>price</th>
+                    </tr>
+                </thead>
+                <tbody id="td">
+                    <% (cart?.items || []).forEach(item=> { %>
+
+                        <tr data-item-id="<%= item.product._id %>">
+
+                            <td class="image product-thumbnail"><img alt="<%= item.product.productName %>"
+                                    src="<%= item.product.productImageUrls[0] %>">
+                            </td>
+
+                            <td>
+                                <h5 class="product-name"><a href="/product/<%= item.product.slug %>">
+                                        <%= item.product.productName %>
+                                    </a></h5> <span qty-navbar-<%=item.product._id %>" class="product-qty">x <%=
+                                        item.quantity %> </span>
+                            </td>
+
+                            <td class="price" data-title="Price" id="subtotal"
+                                data-price="<%= item.product.productPrice %>">₹<%= item.price %>
+                            </td>
+
+                            <div style="display:none;" class="shopping-cart-delete">
+                                <a onclick="removeProduct('<%= item.product._id %>')"></a>
+                            </div>
+
+                        </tr>
+                        <% }) %>
+
+                            <tr>
+                                <th>SubTotal</th>
+                                <td class="product-subtotal" colspan="2">₹<%= (cart?.total|| 0) %>
+                                </td>
+                            </tr>
+                            <!-- <%#if ( locals.walletAmount) { %>
+                                <tr style="background-color: rgba(170, 239, 255, 0.187);">
+                                    <th><a onclick="applyWalletAmount('<%#= cart?._id %>')"
+                                            style="color: rgb(0, 90, 60);" id="applyWallet"> Apply wallet amount</a>
+                                    </th>
+                                    <td colspan="2"><em id="walletAmount">₹<%#= locals.walletAmount %></em></td>
+                                </tr>
+                                <%# } %> -->
+
+                            <tr>
+                                <th>Discount</th>
+                                <td class="product-discount" colspan="2">₹<span id="coupon-discount">
+                                        <% if (locals.couponDiscount) { %>
+                                            <%= Math.floor(locals.couponDiscount) %>
+                                                <% } else { %>0
+                                                    <% } %>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Applied Wallet Amount</th>
+                                <td class="product-wallet" colspan="2">₹<span id="wallet-discount">
+                                        <%= locals.appliedWallet?locals.appliedWallet:0 %>
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>Shipping</th>
+                                <td colspan="2"><em>Free Shipping</em></td>
+                            </tr>
+                            <tr>
+                                <th>Total</th>
+                                <td colspan="2" class="product-subtotal">₹<span class="font-xl text-brand fw-900"
+                                        id="totalAmountSpn">
+                                        <% if (locals.appliedWallet && locals.couponDiscount ) { %>
+                                            <%= Math.floor(cart?.total - couponDiscount - appliedWallet) %>
+                                                <% } else if(locals.appliedWallet) { %>
+                                                    <%= Math.floor(cart?.total - appliedWallet) %>
+                                                        <% } else if(locals.couponDiscount) { %>
+                                                            <%= Math.floor(cart?.total - couponDiscount) %>
+                                                                <% } else { %>
+                                                                    <%= Math.floor((cart?.total || 0)) %>
+                                                                        <% } %>
+
+                                    </span></td>
+                            </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+        <div class="row">
+            <!-- apply coupon -->
+            <div class="col-lg-6 mb-2 mt-3">
+                <div class="toggle_info">
+                    <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a
+                            href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here
+                            to enter your
+                            code</a></span>
+                </div>
+                <div class="panel-collapse collapse coupon_form " id="coupon">
+                    <div class="panel-body">
+                        <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
+                        <form method="post">
+                            <span id="error-msg"></span>
+                            <div class="form-group">
+
+                                <input type="text" id="couponName" value="<%= couponcode %>"
+                                    placeholder="Enter Coupon Code..." required>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn  btn-md" id="apply-coupon" name="Apply coupon">Apply Coupon</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-lg-6 mt-3 mb-2">
+                <div class="toggle_info">
+                    <span><i class="fi-rs-home mr-10"></i> <a href="#wallet" data-bs-toggle="collapse" class="collapsed"
+                            aria-expanded="false">Click here to open wallet details</a></span>
+                </div>
+
+                <div class="panel-collapse collapse coupon_form " id="wallet">
+
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-8 ps-0">
+                                <p class="ps-3 textmuted fw-bold h6 mb-0">Wallet balance</p>
+                                <p class="h1 fw-bold d-flex">
+                                    <span>&#8377;</span>
+                                    <span id="walletBalance">
+                                        <% if (appliedWallet) { %>
+                                            <%= locals.walletAmount - appliedWallet %>
+                                                <% } else { %>
+                                                    <%= locals.walletAmount %>
+                                                        <% } %>
+                                    </span>
+                                </p>
+                                <% if (walletAmount> cart.total) { %>
+                                    <div id="maxWallet" class="mt-1 mb-1">
+                                        <p style="color: black;" id="message">you can apply total &#8377;<span
+                                                class="fw-600">
+                                                <%= cart.total %>
+                                            </span> from your wallet!</p>
+                                    </div>
+                                    <% } else { %>
+                                        <div id="maxWallet" class="mt-1 mb-1">
+                                            <p style="color: black;" id="message">you can apply total &#8377;<span
+                                                    class="fw-600">
+                                                    <%= walletAmount %>
+                                                </span> from your wallet!</p>
+                                        </div>
+                                        <% } %>
+
+
+                            </div>
+                            <div class="col-md-4">
+                                <form id="walletForm">
+                                    <span id="error-msg2"></span>
+                                    <div class="form-group">
+                                        <input type="number" value="<%= appliedWallet %>" id="wallet-input" min="0"
+                                            class="no-arrow"
+                                            placeholder="<%= walletAmount>cart.total?cart.total: walletAmount %>">
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-md" type="submit" id="apply-wallet" name="wallet">Apply
+                                            Wallet</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+
+        <div class="payment_method">
+            <div class="mb-25">
+                <h5>Payment</h5>
+            </div>
+            <div class="payment_option">
+                <!-- <div class="custome-radio">
+                    <input class="form-check-input" required="" type="radio" name="payment_option" id="bankTransfer"
+                        checked="">
+                    <label class="form-check-label" for="bankTransfer" data-bs-toggle="collapse"
+                        data-target="#bankTranfer" aria-controls="bankTranfer">Direct Bank Transfer</label>
+                </div> -->
+                <div class="custome-radio">
+                    <input class="form-check-input" required="" type="radio" name="payment_option" id="cashOnDelivery"
+                        checked="">
+                    <label class="form-check-label" for="cashOnDelivery" data-bs-toggle="collapse"
+                        data-target="#checkPayment" aria-controls="checkPayment">Cash on delivery</label>
+                </div>
+                <div class="custome-radio">
+                    <input class="form-check-input" required="" type="radio" name="payment_option" id="razorpay"
+                        checked="">
+                    <label class="form-check-label" for="razorpay" data-bs-toggle="collapse" data-target="#razorpay"
+                        aria-controls="razorpay">Razorpay</label>
+                </div>
+            </div>
+        </div>
+        <button type="submit" id="placeOrder" class="btn btn-fill-out btn-block mt-30">Place Order</button>
+    </div>
+</div>
+
+
+<script src="/user/assets/js/custom/ajaxCart.js"></script>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+
+
+
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        let couponInput = document.getElementById('couponName');
+        let errMsg = document.getElementById('error-msg');
+        let applyButton = document.getElementById('apply-coupon');
+        let totalElement = document.getElementById('totalAmountSpn');
+        let discountElement = document.getElementById('coupon-discount');
+        let walletBalanceElement = document.getElementById('walletBalance');
+        let walletDiscount = document.getElementById('wallet-discount');
+
+        let total = + totalElement.textContent;
+        let discount = + discountElement.textContent;
+
+
+        couponInput.addEventListener('input', () => {
+            errMsg.textContent = '';
+            couponInput.style.border = '';
+            couponInput.style.borderRadius = '';
+            couponInput.style.paddingRight = '';
+
+            if (applyButton.style.display == 'none') {
+                applyButton.style.display = 'block';
+            }
+
+
+            discountElement.textContent = 0;
+            if(discount>0){
+                totalElement.textContent = Math.floor(total + discount);
+            }
+
+            fetch('/remove-coupon', {
+                method: 'put',
+            }).then(async (res) => {
+                res = await res.json()
+                console.log(res.message);
+            }).catch((err) => {
+                console.log(err);
+            })
+
+        });
+
+        applyButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            const couponName = document.getElementById('couponName').value;
+            const url = '/apply-coupon';
+            fetch(url, {
+                method: 'post',
+                body: JSON.stringify({ couponName: couponName }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(async (res) => {
+                res = await res.json();
+                console.log(res);
+
+                if (res.success) {
+                    //apply discount amount
+                    discountElement.textContent = res.discount.toFixed(2);
+                    let totalAmount = + totalElement.textContent;
+                    totalAmount = totalAmount - res.discount;
+                    totalElement.textContent = Math.floor(totalAmount)
+
+                    //show success message
+                    errMsg.style.color = 'green';
+                    errMsg.textContent = res.message;
+                    couponInput.style.border = '1px solid green';
+                    couponInput.style.borderRadius = '50px';
+                    couponInput.style.paddingRight = '30px';
+                    applyButton.style.display = 'none';
+
+                    setTimeout(() => {
+                        errMsg.textContent = '';
+                    }, 5000);
+
+                } else {
+                    errMsg.style.color = 'red';
+                    errMsg.textContent = res.message;
+                    couponInput.style.border = '1px solid red';
+                    couponInput.style.borderRadius = '50px';
+                    couponInput.style.paddingRight = '30px';
+                    applyButton.style.display = 'block';
+
+                    setTimeout(() => {
+                        errMsg.textContent = '';
+                        couponInput.style.border = '';
+                        couponInput.style.borderRadius = '';
+                        couponInput.style.paddingRight = '';
+                    }, 5000);
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+        });
+
+
+
+
+
+        let walletForm = document.getElementById('walletForm');
+
+        walletForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            let cartAmount = '<%= cart.total %>'
+            let walletAmount = '<%= walletAmount %>'
+            let msg = document.getElementById('message')
+
+            let maxAmount;
+
+            if (Math.floor(walletAmount) > cartAmount) {
+                maxAmount = cartAmount;
+            } else {
+                maxAmount = walletAmount;
+            }
+            let walletInput = + document.getElementById('wallet-input').value;
+
+            if (walletInput > maxAmount) {
+                msg.style.color = 'red'
+                msg.style.fontWeight = '700'
+                setTimeout(() => {
+                    msg.style.color = 'black'
+                    msg.style.fontWeight = 'normal'
+
+                }, 3000);
+                return;
+            }
+
+            fetch('/apply-wallet', {
+                method: 'post',
+                body: JSON.stringify({ walletInput }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => {
+                return res.json()
+            }).then(res => {
+                console.log(res);
+                if (res.success) {
+                    totalElement.textContent = Math.floor(res.cartTotal);
+                    walletBalanceElement.textContent = Math.floor(res.walletBalance);
+                    walletDiscount.textContent = Math.floor(walletInput);
+                } else {
+                    setTimeout(() => {
+                        document.getElementById('error-msg2').style.color = 'red'
+                    document.getElementById('error-msg2').textContent = res.message;
+
+                }, 5000);
+          
+                }
+
+            }).catch(error => {
+                console.log(error);
+            })
+
+        })
+
+    });
+
+
+
+
+    let selectedAddress = null
+    function selectAddress(addressId) {
+        const cards = document.querySelectorAll(".card");
+        cards.forEach((card) => {
+            if (card.getAttribute("addressId") === addressId) {
+                card.classList.add("active");
+                selectedAddress = card.getAttribute("addressId");
+            } else {
+                card.classList.remove("active");
+            }
+
+        });
+    }
+
+    const form = document.querySelector('#addNewAddress');
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const fnameError = document.querySelector('#fnameError');
+        const lnameError = document.querySelector('#lnameError');
+        const countryError = document.querySelector('#countryError');
+        const billingAddressError = document.querySelector('#billingAddressError');
+        const cityError = document.querySelector('#cityError');
+        const stateError = document.querySelector('#stateError');
+        const postError = document.querySelector('#postError');
+        const phoneError = document.querySelector('#phoneError');
+        const emailError = document.querySelector('#emailError');
+
+
+        fnameError.innerHTML = ''
+        lnameError.innerHTML = ''
+        countryError.innerHTML = ''
+        billingAddressError.innerHTML = ''
+        cityError.innerHTML = ''
+        stateError.innerHTML = ''
+        postError.innerHTML = ''
+        phoneError.innerHTML = ''
+        emailError.innerHTML = ''
+
+        const formData = new FormData(form);
+
+        let hasError = false;
+
+        if (formData.get('fname').trim() === '') {
+            hasError = true;
+            fnameError.innerHTML += '<p style="color:red">Please enter your first name.</p>';
+            setTimeout(() => {
+                fnameError.innerHTML = ''
+            }, 5000);
+            return;
+        }
+
+        if (formData.get('lname').trim() === '') {
+            hasError = true;
+            lnameError.innerHTML += '<p style="color:red">Please enter your last name.</p>';
+            setTimeout(() => {
+                lnameError.innerHTML = ''
+            }, 5000);
+            return;
+
+        }
+        if (formData.get('country').trim() === '') {
+            hasError = true;
+            countryError.innerHTML += '<p style="color:red">Please select any country.</p>';
+            setTimeout(() => {
+                countryError.innerHTML = ''
+
+            }, 5000);
+            return;
+
+        }
+
+        if (formData.get('street_address').trim() === '') {
+            hasError = true;
+            billingAddressError.innerHTML += '<p style="color:red">Please enter your billing address.</p>';
+            setTimeout(() => {
+                billingAddressError.innerHTML = '';
+            }, 5000);
+            return;
+
+        }
+
+
+        if (formData.get('city').trim() === '') {
+            hasError = true;
+            cityError.innerHTML = '<p style="color:red">Please enter your city/town.</p>';
+            setTimeout(() => {
+                cityError.innerHTML = '';
+            }, 5000);
+            return;
+
+        }
+
+        if (formData.get('state').trim() === '') {
+            hasError = true;
+            stateError.innerHTML += '<p style="color:red">Please enter your state/province.</p>';
+            setTimeout(() => {
+                stateError.innerHTML = '';
+            }, 5000);
+            return;
+
+        }
+
+        if (formData.get('zipcode').trim() === '') {
+            hasError = true;
+            postError.innerHTML += '<p style="color:red">Please enter your postcode/ZIP code.</p>';
+            setTimeout(() => {
+
+                postError.innerHTML = '';
+            }, 5000);
+            return;
+
+        }
+
+        if (formData.get('phone').trim() === '') {
+            hasError = true;
+            phoneError.innerHTML += '<p style="color:red">Please enter your phone number.</p>';
+            setTimeout(() => {
+                phoneError.innerHTML = '';
+            }, 5000);
+            return;
+
+        }
+
+        if (formData.get('email').trim() === '') {
+            hasError = true;
+            emailError.innerHTML += '<p style="color:red">Please enter your email address.</p>';
+            setTimeout(() => {
+                emailError.innerHTML = '';
+            }, 5000);
+            return;
+
+        }
+
+        if (!hasError) {
+
+            const formObject = {};
+            formData.forEach(function (value, key) {
+                formObject[key] = value;
+            });
+
+            const url = '/add-address';
+            fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(formObject),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(async (response) => {
+                    console.log(response);
+                    const msg = await response.json()
+                    console.log(msg);
+                    if (msg.message) {
+                        if (msg.message.includes('fname')) {
+                            msg.error = 'Please enter a first name';
+                            callAlert(msg.error)
+                            return;
+                        }
+                        if (msg.message.includes('lname')) {
+                            msg.error = 'Please enter a last name';
+                            callAlert(msg.error)
+                            return;
+                        }
+                        if (msg.message.includes('street_address')) {
+                            msg.error = 'Please enter a street address';
+                            callAlert(msg.error)
+                            return;
+                        }
+                        if (msg.message.includes('city')) {
+                            msg.error = 'Please enter a city';
+                            callAlert(msg.error)
+                            return;
+                        }
+                        if (msg.message.includes('state')) {
+                            msg.error = 'Please enter  a state';
+                            callAlert(msg.error)
+                            return;
+                        }
+                        if (msg.message.includes('zipcode')) {
+                            msg.error = 'Please enter a valid  zip code';
+                            callAlert(msg.error)
+                            return;
+                        }
+                        if (msg.message.includes('country')) {
+                            msg.error = 'Please select a valid country';
+                            callAlert(msg.error)
+                            return;
+                        }
+                        if (msg.message.includes('phone')) {
+                            msg.error = 'Please enter a valid phone number';
+                            callAlert(msg.error)
+                            return;
+                        }
+                        if (msg.message.includes('email')) {
+                            msg.error = 'Please enter a valid email address';
+                            callAlert(msg.error)
+                            return;
+                        }
+
+                    }
+
+                    function callAlert(errorMessage) {
+                        Swal.fire({
+                            title: 'Oops!',
+                            icon: 'error',
+                            text: 'Something went wrong!' + errorMessage,
+                            showCloseButton: true,
+                        })
+                    }
+
+                    window.location.reload();
+
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+        }
+    });
+
+
+    document.getElementById('placeOrder').addEventListener('click', (event) => {
+        event.preventDefault();
+
+
+        const selectedcard = document.getElementById('cardBodyId');
+
+        if (!selectedcard || !selectedAddress) {
+            Swal.fire({
+                title: 'Oops!',
+                icon: 'error',
+                text: !selectedcard ? 'please add a address' : 'please select address',
+                showCloseButton: true,
+            })
+            return;
+        }
+
+        const paymentOptions = document.getElementsByName("payment_option");
+        // Loop through the radio buttons to find the selected one
+        let selectedPaymentOption;
+        for (let i = 0; i < paymentOptions.length; i++) {
+            if (paymentOptions[i].checked) {
+                selectedPaymentOption = paymentOptions[i].id;
+                break;
+            }
+        }
+
+        const obj = {
+            paymentmethod: selectedPaymentOption, addressId: selectedAddress
+        }
+
+        fetch('/checkout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(obj),
+        }).then(async (response) => {
+            return await response.json()
+        }).then((response) => {
+            console.log(response);
+            if (response.success) {
+                if (response.paymethod === 'COD') {
+                    const id = response.orderId
+                    window.location.href = `/order-successfull/${id}`;
+                } else if (response.paymethod === 'ONLINE') {
+                    razorpayPayment(response.order)
+                }
+            }
+
+        }).catch((error) => {
+            console.log(error);
+        })
+
+    })
+
+
+    function razorpayPayment(order) {
+        console.log(order);
+        var options = {
+            "key": "rzp_test_YNltnS1mdzdtvV", // Enter the Key ID generated from the Dashboard
+            "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "space", //your business name
+            "description": "Test Transaction",
+            "image": "/user/assets/imgs/theme/logo.svg",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                // alert(response.razorpay_payment_id);
+                // alert(response.razorpay_order_id);
+                // alert(response.razorpay_signature)
+                verifyPayment(response, order);
+            },
+            "prefill": {
+                "name": "Gaurav Kumar", //your customer's name
+                "email": "gaurav.kumar@example.com",
+                "contact": "9000090000"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+
+        var rzp1 = new Razorpay(options);
+
+        rzp1.on('payment.failed', function (response) {
+            window.location.href = `/order-failed/${order.receipt}`
+        });
+        rzp1.open();
+    }
+
+    function verifyPayment(payment, order) {
+        $.ajax({
+            type: 'post',
+            url: '/verify-payment',
+            data: {
+                payment, order
+            }, success: (response) => {
+                const id = order.receipt;
+                console.log(order.receipt);
+                if (response.success) {
+                    window.location.href = `/order-successfull/${id}`;
+                } else {
+                    window.location.href = `/order-failed/${id}`;
+                }
+            }
+        })
+    }
+
+
+
+</script>

@@ -1,0 +1,186 @@
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Categories</h2>
+            <p>Add, edit or delete a category</p>
+        </div>
+        <div>
+            <input type="text" placeholder="Search Categories" class="form-control bg-white">
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <form id="create-category-form" novalidate="">
+                        <div class="mb-4">
+                            <label for="category_name" class="form-label">Name</label>
+                            <input type="text" name="name" placeholder="Type here" class="form-control"
+                                id="category_name" required />
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Create category</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-9">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>NO</th>
+                                    <th>Name</th>
+                                    <th>Active</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categories-table">
+                                <% let num = 1 %>
+                                <% category.forEach((category)=> { %>
+                                    <tr>
+                                            <td>
+                                                <%= num++ %>
+                                            </td>
+                                            <td><b>
+                                                    <%= category.name %>
+                                                </b></td>
+                                            <% if (category.active) { %>
+                                                <td><span class="badge rounded-pill alert-success"
+                                                        id="category-status-<%= category._id %>">Active</span></td>
+                                                <% } else { %>
+                                                    <td><span class="badge rounded-pill alert-danger"
+                                                            id="category-status-<%= category._id %>">Disabled</span>
+                                                    </td>
+                                                    <% } %>
+                                                      
+                                                            <td class="text-end">
+                                                                <% if(category.active) { %>
+                                                                    <button
+                                                                        class="btn btn-danger rounded btn-sm font-sm"
+                                                                        id="category-action-<%= category._id %>"
+                                                                        onclick="updateCategory('<%= category._id %>',false)">
+                                                                        Disable
+                                                                    </button>
+                                                                    <% } else { %>
+                                                                        <button
+                                                                            class="btn btn-success rounded btn-sm font-sm"
+                                                                            id="category-action-<%= category._id %>"
+                                                                            onclick="updateCategory('<%= category._id %>',true)">
+                                                                            Enable
+                                                                        </button>
+                                                                        <% } %>
+                                                            </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    const form = document.querySelector('#create-category-form');
+
+    form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const categoryName = document.querySelector('#category_name').value
+        const data = {
+            name: categoryName
+        };
+
+        if (!categoryName) {
+            callAlertify('warning', 'Category name required');
+            return;
+        }
+
+        try {
+            const response = await fetch('/admin/categories', {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+
+            const resultData = await response.json();
+
+            if (!response.ok) {
+                throw new Error(resultData.message);
+            }
+
+            if (resultData.status) {
+                callAlertify('success', resultData.message);
+                window.location.reload();
+            } else {
+                callAlertify('error', resultData.message);
+            }
+
+        } catch (error) {
+            callAlertify('error', error.message);
+        }
+    });
+
+
+    function updateCategory(categoryId, status) {
+
+        swal({
+            title: "Are you sure?",
+            text: status ? 'Hey, Enable me again?' : "There is products under this category!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then(async (willDelete) => {
+            if (willDelete) {
+                try {
+                    const response = await fetch('/admin/category-status', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: categoryId, status: status })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to update category status due to server error');
+                    }
+
+                    const categoryStatusBadge = document.querySelector(`#category-status-${categoryId}`);
+                    const actionButton = document.querySelector(`#category-action-${categoryId}`);
+
+                    if (status) {
+                        categoryStatusBadge.textContent = "Active";
+                        categoryStatusBadge.classList.remove("alert-danger");
+                        categoryStatusBadge.classList.add("alert-success");
+
+                        //....//
+                        actionButton.textContent = "Disable";
+                        actionButton.classList.remove("btn-success");
+                        actionButton.classList.add("btn-danger");
+                        actionButton.onclick = () => updateCategory(categoryId, false);
+                    } else {
+                        categoryStatusBadge.textContent = "Disabled";
+                        categoryStatusBadge.classList.remove("alert-success");
+                        categoryStatusBadge.classList.add("alert-danger");
+
+                        //....//
+                        actionButton.textContent = "Enable";
+                        actionButton.classList.remove("btn-danger");
+                        actionButton.classList.add("btn-success");
+                        actionButton.onclick = () => updateCategory(categoryId, true);
+                    }
+
+                    if (status) {
+                        callAlertify('success', `Category enabled successfully`);
+                    } else {
+                        callAlertify('warning', `Category disabled successfully`);
+                    }
+                } catch (error) {
+                    callAlertify('error', error.message);
+                }
+            }
+        });
+    }
+
+
+</script>

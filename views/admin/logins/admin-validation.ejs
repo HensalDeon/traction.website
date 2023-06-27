@@ -1,0 +1,96 @@
+<script>
+    const form = document.getElementById("login-form");
+    const email = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+    const emailErrorElement = document.getElementById("email-error");
+    const passwordErrorElement = document.getElementById("password-error");
+
+    // Validate email field as user types
+    email.addEventListener("input", () => {
+        let emailError = "";
+
+        if (email.value.trim() === "") {
+            emailError = "<strong>Email is required.</strong>";
+        } else if (!emailRegex.test(email.value)) {
+            emailError = "<strong>Invalid email format.</strong>";
+        }
+
+        document.getElementById('email-error').innerHTML = '';
+        emailErrorElement.innerHTML = emailError;
+        email.classList.toggle("is-invalid", emailError !== "");
+    });
+
+    // Validate password field as user types
+    passwordInput.addEventListener("input", () => {
+        let passwordError = "";
+
+        if (passwordInput.value.trim() === "") {
+            passwordError = "<strong>Password is required.</strong>";
+        } else if (!passwordRegex.test(passwordInput.value.trim())) {
+            passwordError = "<strong>Password must be at least 6 characters long and contain at least one lowercase letter, one uppercase letter, and one number.</strong>";
+        }
+
+        document.getElementById('password-error').innerHTML = '';
+        passwordErrorElement.innerHTML = passwordError;
+        passwordInput.classList.toggle("is-invalid", passwordError !== "");
+    });
+
+    // Validate form on submit
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        let isValid = true;
+        let emailError = "";
+        let passwordError = "";
+
+        if (email.value.trim() === "") {
+            emailError = "<strong>Email is required.</strong>";
+            isValid = false;
+        } else if (!emailRegex.test(email.value)) {
+            emailError = "<strong>Invalid email format.</strong>";
+            isValid = false;
+        }
+
+        if (passwordInput.value.trim() === "") {
+            passwordError = "<strong>Password is required.</strong>";
+            isValid = false;
+        } else if (!passwordRegex.test(passwordInput.value.trim())) {
+            passwordError = "<strong>Password must be at least 6 characters long and contain at least one lowercase letter, one uppercase letter, and one number.</strong>";
+            isValid = false;
+        }
+
+        emailErrorElement.innerHTML = emailError;
+        passwordErrorElement.innerHTML = passwordError;
+        email.classList.toggle("is-invalid", emailError !== "");
+        passwordInput.classList.toggle("is-invalid", passwordError !== "");
+
+        try {
+            $.ajax({
+                type: 'post',
+                url: "/admin/login",
+                data: { email: email.value.trim(), password: passwordInput.value.trim() },
+                success: (response) => {
+                    console.log(response.message);
+                    if (response.status) {
+                        window.location.href ='/admin/';
+                    }
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    if (jqXHR.status === 400) {
+                        const response = JSON.parse(jqXHR.responseText);
+                        document.getElementById("error").style.color = 'red';
+                        document.getElementById("error").innerHTML = "<strong>" + response.error + "</strong>";
+                        setTimeout(() => {
+                            document.getElementById("error").innerHTML = "";
+                        }, 5000);
+                    }
+                }
+
+            })
+        } catch (error) {
+            console.error(error);
+        }
+    });
+</script>

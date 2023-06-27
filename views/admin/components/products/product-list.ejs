@@ -1,0 +1,162 @@
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Products List</h2>
+
+        </div>
+        <div>
+            <a href="#" class="btn btn-light rounded font-md">Export</a>
+            <a href="#" class="btn btn-light rounded  font-md">Import</a>
+            <a href="#" class="btn btn-primary btn-sm rounded">Create new</a>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <header class="card-header">
+            <div class="row align-items-center">
+
+                <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                    <select class="form-select">
+                        <option hidden selected>ALL CATEGORIES</option>
+                        <% categories.forEach(category=> { %>
+                            <% if(category.active) { %>
+                                <option value="<%= category._id %>">
+                                    <%= category.name %>
+                                </option>
+                                <% } %>
+                                    <% }); %>
+                    </select>
+                </div>
+                <!-- <div class="col-md-2 col-6">
+                    <input type="date" value="02.05.2021" class="form-control">
+                </div> -->
+                <div class="col-md-2 col-6">
+                    <select class="form-select">
+                        <option selected="">Status</option>
+                        <option>Active</option>
+                        <option>Disabled</option>
+                        <option>Show all</option>
+                    </select>
+                </div>
+            </div>
+        </header> <!-- card-header end// -->
+        <div class="card-body">
+            <% product.forEach((product,index)=> { %>
+                <% if(product.productStatus && product.productCategory.active) { %>
+                    <article class="itemlist">
+                        <div class="row align-items-center">
+
+                            <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
+                                <a class="itemside" href="#">
+                                    <div class="left">
+                                        <img src="<%= product.productImageUrls[0] %>" class="img-sm img-thumbnail"
+                                            alt="Item">
+                                    </div>
+                                    <div class="info">
+                                        <h6 class="mb-0">
+                                            <%= product.productName %>-<%=product.productNumber%>
+                                        </h6>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-lg-2 col-sm-2 col-4 col-price"> <span> &#8377;<%= product.productPrice %>
+                                </span>
+                            </div>
+
+                            <div class="col-lg-2 col-sm-2 col-4 col-category">
+                                <span>
+                                    <%= product.productCategory.name %>
+                                </span>
+                            </div>
+
+                            <div class="col-lg-2 col-sm-2 col-4 col-stocks">
+                                <span
+                                    class="badge rounded-pill <%= product.stocks > 0 ? 'alert-success' : 'alert-danger' %>">
+                                    <%= product.stocks> 0 ? 'IN STOCK' : 'OUT OF STOCK' %>
+                                </span>
+                            </div>
+
+
+                            <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
+                                <a href="/admin/edit-product/<%- product.slug %>"
+                                    class="btn btn-sm font-sm rounded btn-brand">
+                                    <i class="material-icons md-edit"></i> Edit
+                                </a>
+                                <a id="deletbtn" onclick="deleteProduct('<%= product._id %>')"
+                                    data-product-id="<%= product._id %>"
+                                    class="btn btn-sm font-sm btn-light rounded deleteProductclass">
+                                    <i class="material-icons md-delete_forever"></i> Delete
+                                </a>
+                            </div>
+                        </div> <!-- row .// -->
+                    </article> <!-- itemlist  .// -->
+                    <% } %>
+                        <% }); %>
+        </div>
+    </div> <!-- card end// -->
+    <div class="pagination-area mt-15 mb-50">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-start">
+                <% if(currentPage> 1) { %>
+                    <li class="page-item"><a class="page-link"
+                            href="/admin/products?page=<%=currentPage-1%>&limit=<%=limit%>"><i
+                                class="material-icons md-chevron_left"></i></a></li>
+                    <% } %>
+                        <% for (let i=1; i<=totalPages; i++) { %>
+                            <% if (i===currentPage) { %>
+                                <li class="page-item active"><a class="page-link" href="#">
+                                        <%= i %>
+                                    </a></li>
+                                <% } else { %>
+                                    <li class="page-item"><a class="page-link"
+                                            href="/admin/products?page=<%=i%>&limit=<%=limit%>">
+                                            <%= i %>
+                                        </a></li>
+                                    <% } %>
+                                        <% } %>
+                                            <% if (currentPage < totalPages) { %>
+                                                <li class="page-item"><a class="page-link"
+                                                        href="/admin/products?page=<%=currentPage+1%>&limit=<%=limit%>"><i
+                                                            class="material-icons md-chevron_right"></i></a></li>
+                                                <% } %>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+
+<script>
+    function deleteProduct(productId) {
+
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will able to recover from unlisted page!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+
+                fetch(`/admin/product-status/${productId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                    .then(response => {
+                        if (response.status === 200) {
+                            callAlertify('success', 'Product deleted successfully');
+                            window.location.reload();
+                        } else {
+                            throw new Error('Failed to delete product.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        callAlertify('error', error.message);
+                    });
+            }
+        });
+
+    }
+
+</script>

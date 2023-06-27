@@ -1,0 +1,381 @@
+<style>
+    .remove-arrow::-webkit-inner-spin-button,
+    .remove-arrow::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .remove-arrow {
+        -moz-appearance: textfield;
+    }
+</style>
+
+
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Coupons</h2>
+        </div>
+
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <form id="myForm">
+                        <div class="row">
+
+                            <div class="col-lg-12">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="mb-4">
+                                            <label for="couponName" class="form-label">Coupon Name</label>
+                                            <input type="text" placeholder="Type here" class="form-control"
+                                                id="couponName" name="couponname">
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="mb-4">
+                                                    <label class="form-label">Coupon description</label>
+                                                    <textarea placeholder="Type here" class="form-control" rows="4"
+                                                        id="couponDescription" name="couponDescription"></textarea>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="mb-4">
+                                                    <label class="form-label">Minimum purachase amount</label>
+                                                    <input placeholder="0" type="number"
+                                                        class="remove-arrow form-control" id="minimumPurchase"
+                                                        name="minimumPurchase">
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="mb-4">
+                                                    <label class="form-label">Discount (%)</label>
+                                                    <input placeholder="0" type="number"
+                                                        class="remove-arrow form-control" id="couponDiscount"
+                                                        name="discount">
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-lg-12">
+                                                <div class="mb-4">
+                                                    <label class="form-label">Valid From</label>
+                                                    <input type="date" class="form-control" id="couponValidFrom"
+                                                        name="validFrom">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-lg-12">
+                                                <div class="mb-4">
+                                                    <label class="form-label">Valid Until</label>
+                                                    <input type="date" class="form-control" id="couponValidUntil"
+                                                        name="validUntil">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-header">
+                                <div>
+                                    <button type="submit" class="btn btn-md rounded font-sm hover-up">Add
+                                        Coupon</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="col-md-8">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>NO</th>
+                                    <th>Coupon Name</th>
+                                    <th>Active</th>
+                                    <th>Discount(%)</th>
+                                    <th>Coupon Code</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="coupon-table">
+                                <% let num=1 %>
+
+                                    <% coupons.forEach((coupon)=> { %>
+                                        <% if (coupon.validUntil> new Date()) { %>
+
+                                            <tr>
+                                                <td>
+                                                    <%= num++ %>
+                                                </td>
+                                                <td><b>
+                                                        <%= coupon.couponname %>
+                                                    </b></td>
+                                                <% if (coupon.isActive) { %>
+                                                    <td><span class="badge rounded-pill alert-success"
+                                                            id="coupon-status-<%= coupon._id %>">Active</span></td>
+                                                    <% } else { %>
+                                                        <td><span class="badge rounded-pill alert-danger"
+                                                                id="coupon-status-<%= coupon._id %>">Disabled</span>
+                                                        </td>
+                                                        <% } %>
+
+                                                            <td>
+                                                                <%= coupon.discount %>%
+                                                            </td>
+                                                            <td>
+                                                                <%= coupon.code %>
+                                                            </td>
+
+                                                            <td class="text-end">
+                                                                <% if(coupon.isActive) { %>
+                                                                    <button
+                                                                        class="btn btn-danger rounded btn-sm font-sm"
+                                                                        id="coupon-action-<%= coupon._id %>"
+                                                                        onclick="updateCoupon('<%= coupon._id %>',false)">
+                                                                        Disable
+                                                                    </button>
+                                                                    <% } else { %>
+                                                                        <button
+                                                                            class="btn btn-success rounded btn-sm font-sm"
+                                                                            id="coupon-action-<%= coupon._id %>"
+                                                                            onclick="updateCoupon('<%= coupon._id %>',true)">
+                                                                            Enable
+                                                                        </button>
+                                                                        <% } %>
+                                                            </td>
+                                            </tr>
+                                            <% } %>
+
+                                                <% }) %>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="content-header">
+        <div>
+            <h5 class="content-title card-title">Expired coupons</h5>
+        </div>
+
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>NO</th>
+                                    <th>Coupon Name</th>
+                                    <th>Active</th>
+                                    <th>Discount(%)</th>
+                                    <th>Coupon Code</th>
+                                </tr>
+                            </thead>
+                            <tbody id="coupon-table">
+                                <% let num1=1 %>
+
+                                    <% coupons.forEach((coupon)=> { %>
+                                        <% if (coupon.validUntil < new Date()) { %>
+
+                                            <tr>
+                                                <td>
+                                                    <%= num1++ %>
+                                                </td>
+                                                <td><b>
+                                                        <%= coupon.couponname %>
+                                                    </b></td>
+
+                                                <td><span class="badge rounded-pill alert-secondary"
+                                                        id="coupon-status-<%= coupon._id %>">Expired</span>
+                                                </td>
+
+                                                <td>
+                                                    <%= coupon.discount %>%
+                                                </td>
+                                                <td>
+                                                    <%= coupon.code %>
+                                                </td>
+
+
+                                            </tr>
+                                            <% } %>
+
+                                                <% }) %>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+
+
+
+
+    function updateCoupon(couponId, status) {
+        console.log(couponId);
+        console.log(status);
+        swal({
+            title: "Are you sure?",
+            text: status ? 'Hey, Enable me again?' : 'Deleted coupons can be restored!',
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then(async (willDelete) => {
+            if (willDelete) {
+                try {
+                    const response = await fetch('/admin/coupon-status', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: couponId, status: status })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to update coupon status due to server error');
+                    }
+
+                    const couponStatusBadge = document.querySelector(`#coupon-status-${couponId}`);
+                    const actionButton = document.querySelector(`#coupon-action-${couponId}`);
+
+                    if (status) {
+                        couponStatusBadge.textContent = "Active";
+                        couponStatusBadge.classList.remove("alert-danger");
+                        couponStatusBadge.classList.add("alert-success");
+
+                        actionButton.textContent = "Disable";
+                        actionButton.classList.remove("btn-success");
+                        actionButton.classList.add("btn-danger");
+                        actionButton.onclick = () => updateCoupon(couponId, false);
+                    } else {
+                        couponStatusBadge.textContent = "Disabled";
+                        couponStatusBadge.classList.remove("alert-success");
+                        couponStatusBadge.classList.add("alert-danger");
+
+                        actionButton.textContent = "Enable";
+                        actionButton.classList.remove("btn-danger");
+                        actionButton.classList.add("btn-success");
+                        actionButton.onclick = () => updateCoupon(couponId, true);
+                    }
+
+                    if (status) {
+                        callAlertify('success', `coupon enabled successfully`);
+                    } else {
+                        callAlertify('warning', `coupon disabled successfully`);
+                    }
+                } catch (error) {
+                    callAlertify('error', error.message);
+                }
+            }
+        });
+    }
+
+
+</script>
+
+
+
+<script>
+    const discountInput = document.getElementById('couponDiscount');
+    discountInput.addEventListener('input', function () {
+        const discount = parseInt(discountInput.value);
+        if (!isNaN(discount)) {
+            discountInput.value = Math.min(Math.max(discount, 0), 100);
+        }
+    });
+
+
+    const validFromInput = document.getElementById('couponValidFrom');
+    const validUntilInput = document.getElementById('couponValidUntil');
+    const form = document.getElementById('myForm');
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const validFrom = new Date(validFromInput.value);
+        const validUntil = new Date(validUntilInput.value);
+
+        if (validFrom >= validUntil) {
+            const toastContainer = document.createElement('div');
+            toastContainer.classList.add('position-fixed', 'top-0', 'end-0', 'p-3');
+
+            const toastElement = document.createElement('div');
+            toastElement.classList.add('toast', 'align-items-center', 'text-white', 'bg-danger', 'border-0');
+            toastContainer.style.zIndex = '10000';
+            toastElement.setAttribute('role', 'alert');
+            toastElement.setAttribute('aria-live', 'assertive');
+            toastElement.setAttribute('aria-atomic', 'true');
+
+            const toastBody = document.createElement('div');
+            toastBody.classList.add('toast-body');
+            toastBody.textContent = 'Valid From date must be less than Valid Until date';
+            toastElement.appendChild(toastBody);
+
+            const closeButton = document.createElement('button');
+            closeButton.setAttribute('type', 'button');
+            closeButton.classList.add('btn-close', 'btn-close-white', 'me-2', 'm-auto');
+            closeButton.setAttribute('data-bs-dismiss', 'toast');
+            closeButton.setAttribute('aria-label', 'Close');
+            toastElement.appendChild(closeButton);
+
+            toastContainer.appendChild(toastElement);
+            document.body.appendChild(toastContainer);
+
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+            return;
+        }
+
+        const formData = new FormData(form);
+        const formDataObject = {};
+
+        for (let [key, value] of formData.entries()) {
+            formDataObject[key] = value;
+        }
+
+        fetch('/admin/coupons', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formDataObject)
+        }).then(async (res) => {
+            res = await res.json()
+            callAlertify('success', res.message)
+            location.reload();
+        }).catch((err) => {
+            console.log(err);
+            callAlertify('error', err.message)
+        })
+
+    });
+
+</script>

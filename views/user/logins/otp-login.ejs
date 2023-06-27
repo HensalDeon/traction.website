@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+  <%- include("../../partials/user-header") %>
+    <%- include("../components/preloading.ejs") %>
+</head>
+
+<body>
+  <%- include("../layouts/navbar.ejs") %>
+    <main class="main">
+      <div class="page-header breadcrumb-wrap">
+        <div class="container">
+          <div class="breadcrumb">
+            <a href="/" rel="nofollow">Home</a>
+            <span></span> Pages
+            <span></span> Create an account
+          </div>
+        </div>
+      </div>
+      <section class="pt-50 pb-50">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-10 m-auto">
+              <div class="row">
+
+                <div class="col-lg-1"></div>
+                <div class="col-lg-6 mx-auto">
+                  <div class="login_wrap widget-taber-content p-30 background-white border-radius-5">
+                    <div class="padding_eight_all bg-white">
+                      <div class="heading_s1">
+                        <h3 class="mb-30">OTP LOGIN</h3>
+                      </div>
+                      <form id="formOtp" method="post" class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="tel" name="phone" placeholder="Phone Number" id="phone" class="form-control">
+                              </div>
+                              <span class="error-message" id="errors"></span>
+
+                          </div>
+                        <div class="form-group">
+                            <button type="button" id="send-otp-btn" class="btn btn-fill-out btn-block hover-up w-100" name="submit" onclick="sendOTP()">SEND OTP</button>
+                        </div>
+                    </form>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-1"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+    <%- include("../layouts/footer.ejs") %>
+      <%- include("../script/script.ejs") %>
+        <%- include("./validation/phonenumber-validation.ejs") %>
+
+</body>
+</html>
+
+

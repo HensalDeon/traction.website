@@ -1,0 +1,250 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+
+<style>
+    #profilePhoto {
+        height: 140px;
+    }
+
+    #file {
+        display: none;
+    }
+
+    .img-account-profile {
+        border: 1px solid rgb(0, 0, 0);
+    }
+
+    #imagePreviewContainer {
+        width: 100%;
+        height: 350px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #imagePreviewContainer img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+
+    #profilePhoto {
+        max-width: 100%;
+        max-height: 100%;
+    }
+</style>
+
+<div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
+    <div class="toast-container position-fixed top-0 p-3" style="z-index: 10000; right: 60px;"></div>
+    <div class="card">
+        <div class="card-header">
+            <h5>Account Details</h5>
+        </div>
+        <div class="card-body">
+            <form id="updateUser">
+                <div class="row">
+                    <label>Profile Picture <span class="required">*</span></label>
+                    <div class="card mb-4 mb-xl-0 profile-picture-card">
+                        <div class="card-body text-center">
+                            <img id="profilePhoto" class="img-account-profile rounded-circle mb-2"
+                                src="<%= user?.profileimage %>" alt="">
+                            <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 1 MB</div>
+                            <input name="profileimage" type="file" id="file">
+                            <label for="file" class="btn" id="uploadProfile">Choose photo</label>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group col-md-6">
+                        <label>Name <span class="required">*</span></label>
+                        <input class="form-control square" name="name" value="<%= user?.username %>" type="text">
+                    </div>
+
+
+                    <div class="form-group col-md-12">
+                        <label>Email Address <span class="required">*</span></label>
+                        <input class="form-control square" name="email" value="<%= user?.email %>" type="email">
+                    </div>
+
+
+                    <div class="form-group col-md-12">
+                        <label>Current Password <span class="required">*</span></label>
+                        <input class="form-control square" name="password" type="password">
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label>New Password <span class="required">*</span></label>
+                        <input class="form-control square" name="npassword" type="password">
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label>Confirm Password <span class="required">*</span></label>
+                        <input class="form-control square" name="cpassword" type="password">
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-fill-out submit" id="buttonSub" name="submit"
+                            value="Submit">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" role="dialog" aria-labelledby="imagePreviewModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imagePreviewModalLabel">Crop Image</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="imagePreviewContainer"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="cropImageButton">Crop</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/user/assets/js/custom/cropper.js"></script>
+
+<script>
+    const fileIn = document.getElementById('file');
+    const profilePhoto = document.getElementById('profilePhoto');
+    const imagePreviewModal = document.getElementById('imagePreviewModal');
+    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+    const cropImageButton = document.getElementById('cropImageButton');
+    let croppedImage;
+    // Add event listener to file input
+    fileIn.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.classList.add('img-fluid');
+            img.style.display = 'block';
+            img.style.maxWidth = '80%';
+
+            // Display the image in the modal
+            imagePreviewContainer.innerHTML = '';
+            imagePreviewContainer.appendChild(img);
+
+            // Show the modal
+            $(imagePreviewModal).modal('show');
+
+            const cropper = new Cropper(img, {
+                aspectRatio: 1,
+                viewMode: 1,
+                cropBoxResizable: false,
+                minCropBoxWidth: 200, 
+                minCropBoxHeight: 200,  
+                dragMode: 'move'
+            });
+
+            cropImageButton.addEventListener('click', function () {
+                const croppedCanvas = cropper.getCroppedCanvas({
+                    width: 800, 
+                    height: 800,
+                });
+
+                const croppedImageData = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+
+                profilePhoto.src = croppedImageData;
+
+                 croppedImage = dataURItoBlob(croppedImageData);
+
+                $(imagePreviewModal).modal('hide');
+            });
+        };
+
+        if(reader){
+            reader.readAsDataURL(file);
+        }
+    });
+
+    const form1 = document.getElementById('updateUser');
+    form1.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        document.getElementById('buttonSub').disabled = true;
+        const formData = new FormData(form1);
+        formData.delete('profileimage');
+        formData.append('profileimage', croppedImage, 'cropped_image.jpg');
+
+        console.log(...formData);
+        fetch('/update-userdata', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status) {
+                    console.log('update successfully');
+                    location.reload()
+                } else {
+                    document.getElementById('buttonSub').disabled = false;
+
+                    console.error(data.message);
+                    const errorMessage = data.message || 'Unknown error';
+                    const toastContainer = document.querySelector('.toast-container');
+                    const toastElement = `
+                <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 10000;">
+                 <div class="d-flex">
+        <div class="toast-body">
+          ${errorMessage}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+         </div>
+         `;
+                    toastContainer.innerHTML = toastElement;
+                    const toast = new bootstrap.Toast(toastContainer.querySelector('.toast'));
+                    toast.show();
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    });
+
+
+    function sendCroppedImage(imageData) {
+    // Create a new FormData object
+    const formData = new FormData();
+
+    // Append the cropped image data as a blob to the FormData
+    formData.append('profileimage', dataURItoBlob(imageData), 'cropped_image.jpg');
+
+    // Send the cropped image data to the server using fetch or AJAX
+    fetch('/upload-profileimage', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('image uploaded successfully');
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
+
+// Function to convert a data URI to a Blob object
+function dataURItoBlob(dataURI) {
+    const byteString = atob(dataURI.split(',')[1]);
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: mimeString });
+}
+</script>

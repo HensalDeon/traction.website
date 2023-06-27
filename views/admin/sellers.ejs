@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <%- include("../partials/admin-header") %>
+</head>
+
+<body>
+
+    <div class="screen-overlay"></div>
+    <!-- aside -->
+    <%- include("./layouts/sidebar.ejs") %>
+    <main class="main-wrap">
+    <%- include("./layouts/header.ejs") %>
+    <% if (showSellerCard) { %>
+        <%- include("./components/sellers/seller-card.ejs") %>
+    <% } else if(showSellersLIst) { %>
+        <%- include("./components/sellers/sellers-list.ejs") %>
+    <% } else { %>
+        <%- include("./components/sellers/seller-details.ejs") %>
+    <% } %>
+    <%- include("./layouts/admin-footer.ejs") %>
+</main>
+<%- include("./components/script/script.ejs") %>
+</body>
+
+</html>

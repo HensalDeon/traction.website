@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <%- include("../partials/user-header.ejs") %>
+        <%- include("./components/preloading.ejs") %>
+
+            <style>
+                @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                    font-family: 'Poppins', sans-serif
+                }
+
+                p {
+                    margin: 0
+                }
+
+
+
+                .box-right {
+                    padding: 30px 25px;
+                    background-color: white;
+                    border-radius: 15px
+                }
+
+                .box-left {
+                    padding: 20px 20px;
+                    background-color: white;
+                    border-radius: 15px
+                }
+
+                .textmuted {
+                    color: #7a7a7a
+                }
+
+                .bg-green {
+                    background-color: #d4f8f2;
+                    color: #06e67a;
+                    padding: 3px 0;
+                    display: inline;
+                    border-radius: 25px;
+                    font-size: 11px
+                }
+
+                .p-blue {
+                    font-size: 14px;
+                    color: #1976d2
+                }
+
+                .fas.fa-circle {
+                    font-size: 12px
+                }
+
+                .p-org {
+                    font-size: 14px;
+                    color: #fbc02d
+                }
+
+
+                @media(max-width:320px) {
+                    .h8 {
+                        font-size: 11px
+                    }
+
+                    .h7 {
+                        font-size: 13px
+                    }
+
+                    ::placeholder {
+                        font-size: 10px
+                    }
+                }
+            </style>
+
+
+</head>
+
+<body>
+    <%- include("./layouts/navbar") %>
+
+        <div class="container">
+            <div class="row m-5 justify-content-center">
+                <div class="col-md-7 col-12">
+                    <div class="row">
+
+                        <div class="card  col-12 mb-4">
+                            <div class="row box-right">
+                                <div class="col-md-8 ps-0 ">
+                                    <p class="ps-3 textmuted fw-bold h6 mb-0">Wallent balance</p>
+                                    <p class="h1 fw-bold d-flex"> <span
+                                            class=" fas fa-dollar-sign textmuted pe-1 h6 align-text-top mt-1"></span><span>&#8377;</span><%= locals.walletAmount %>
+                                    </p>
+                                    <p class="ms-3 px-2 badge alert-primary">Shop now and get new offers</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p class="p-blue"> <span class="fas fa-circle pe-2"></span>Refund pending </p>
+                                    <p class="fw-bold mb-3"><span class="fas fa-dollar-sign pe-1">&#8377;</span><%= locals.walletPending %>
+                                    </p>
+                                    <a class="btn btn-sm" href="/shop">
+                                        shop now 
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <%- include("./layouts/footer.ejs")%>
+            <%- include("./script/script.ejs") %>
+</body>
+
+
+</html>

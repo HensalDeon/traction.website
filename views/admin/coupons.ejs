@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <%- include("../partials/admin-header") %>
+</head>
+
+<body>
+
+    <div class="screen-overlay"></div>
+    <!-- aside -->
+    <%- include("./layouts/sidebar.ejs") %>
+
+    <main class="main-wrap">
+    <%- include("./layouts/header.ejs") %>
+
+    <%#- include("./components/coupon/add-coupon.ejs") %>
+    <%- include("./components/coupon/coupon-list.ejs") %>
+
+    <%- include("./layouts/admin-footer.ejs") %>
+</main>
+<%- include("./components/script/script.ejs") %>
+</body>
+
+</html>

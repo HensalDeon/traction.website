@@ -1,0 +1,158 @@
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'poppins', sans-serif;
+
+    }
+
+    .coupon-row {
+        display: flex;
+        overflow-x: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .coupon-row::-webkit-scrollbar {
+        display: none;
+    }
+
+    .container-coupon {
+        flex: 0 0 auto;
+        margin: 10px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .coupon-card-coupon {
+
+        width: 200px;
+        height: auto;
+
+        background: linear-gradient(135deg, #7158fe, #9d4de6);
+        color: #fff;
+        text-align: center;
+        padding: 8px 16px;
+        border-radius: 15px;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+        position: relative;
+
+    }
+
+    .logo-coupon {
+        width: 32px;
+        border-radius: 1.6px;
+        margin-bottom: 4px;
+        margin: auto auto 4px auto;
+
+    }
+
+    .coupon-card-coupon h3 {
+        font-size: 11.2px;
+        font-weight: 160;
+        line-height: 16px;
+
+    }
+
+    .coupon-card-coupon p {
+        font-size: 3px;
+
+    }
+
+    .coupon-row-coupon {
+        display: flex;
+        align-items: center;
+        margin: 5px auto;
+        width: fit-content;
+
+    }
+
+    .cpnCode-coupon {
+        border: 1px dashed #fff;
+        padding: 2px 4px;
+        border-right: 0;
+        font-size: 10px;
+
+    }
+
+    .cpnBtn-coupon {
+        border: 1px solid #fff;
+        background: #fff;
+        padding: 2px 4px;
+        color: #7158fe;
+        cursor: pointer;
+        font-size: 10px;
+    }
+
+    .circle1-coupon,
+    .circle2-coupon {
+        background: #ffff;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+
+    }
+
+    .circle1-coupon {
+        left: -10px;
+    }
+
+    .circle2-coupon {
+        right: -10px;
+    }
+</style>
+
+<div class="row coupon-row">
+
+    <div class="container-coupon ">
+        <% (locals.coupons || []).forEach(coupon=> { %>
+            <% if (coupon.isActive) { %>
+             
+            <div class="coupon-card-coupon mx-2" >
+                <h3 style="color: #ffffff;max-width: 207px; font-weight: 300;"><span style="font-weight: 800;"><%= coupon.discount %></span>% offer for minimum purchase of  &#8377;<span style="font-weight: 800;"><%= coupon.minimumPurchase %></span></h3>
+                <!-- <img src="" class="logo-coupon"> -->
+                
+                <di class="coupon-row-coupon">
+                    <span style="color: #ffff;" class="cpnCode-coupon" id="cpnCode-coupon<%= coupon._id %>"><%= coupon.code %></span>
+                  
+                    <span class="cpnBtn-coupon" id="cpnBtn-coupon<%= coupon._id %>"
+                        onclick="copyCoupon('<%= coupon._id %>')">COPY CODE</span>
+                        
+                </di>
+                <h3 style="color: #fff;max-width: 207px;">
+                    <%= coupon.couponDescription.toUpperCase() %>
+                </h3>
+                <% const expiryDate=new Date(coupon.validUntil); const options={ year: 'numeric' , month: 'short' ,
+                    day: 'numeric' }; const formattedDate=expiryDate.toLocaleDateString('en-US', options); %>
+                    <p style="color: #fff; margin-bottom: 3px; font-size: 11.2px;
+        font-weight: 160;">Valid Till: <%= formattedDate %>
+                    </p>
+                    <div class="circle1-coupon"></div>
+                    <div class="circle2-coupon"></div>
+            </div>
+            <% } %>
+
+            <% }) %>
+    </div>
+</div>
+
+<div class="bt-1 border-color-1 mt-20 mb-20"></div>
+
+<script>
+    function copyCoupon(id) {
+        var cpnBtn = document.getElementById("cpnBtn-coupon" + id);
+        var cpnCode = document.getElementById("cpnCode-coupon" + id);
+        
+        cpnBtn.onclick = function () {
+            navigator.clipboard.writeText(cpnCode.innerHTML);
+            cpnBtn.innerHTML = "COPIED";
+            setTimeout(function () {
+                cpnBtn.innerHTML = "COPY CODE";
+            }, 3000);
+        }
+    }
+</script>

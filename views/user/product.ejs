@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <%- include("../partials/user-header.ejs") %>
+    <%- include("./components/preloading.ejs") %>
+</head>
+
+<body>
+        <%- include("./layouts/navbar") %>
+            <main class="main">
+                <section class="mt-50 mb-50">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="product-detail accordion-detail">
+                                    <div class="row mb-50">
+
+                                        <%- include("./components/product/mainSlide-thumbnail.ejs") %>
+                                            <%- include("./components/product/product-details.ejs") %>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-10 m-auto entry-main-content">
+
+                                            <%- include("./components/product/reviews.ejs") %>
+                                            
+                                            <%- include("./components/product/addReview.ejs") %>
+                                            
+                                            <%- include("./components/product/shareProduct.ejs") %>
+                                        </div>
+                                    </div>
+                                    <%- include("./components/product/relatedProducts.ejs") %>
+
+                                        <%- include("./components/product/slide-banner.ejs") %>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+            <%- include("./layouts/footer.ejs")%>
+                <%- include("./script/script.ejs") %>
+</body>
+
+
+</html>
+
+<script>
+
+</script>

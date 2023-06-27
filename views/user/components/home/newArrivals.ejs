@@ -1,0 +1,46 @@
+ 
+<section class="pt-25 pb-20">
+    <div class="container wow fadeIn animated">
+        <% if (products.length===0) { %>
+         
+            <h3 class="section-title mb-20"><span>New</span> Arrivals</h3>
+            <% } %>
+        <div class="carausel-6-columns-cover position-relative">
+            <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-2-arrows"></div>
+            <div class="carausel-6-columns carausel-arrow-center" id="carausel-6-columns-2">
+                
+                <% products.forEach(product=>{ %>
+                    <% if(product.productStatus && product.productCategory.active && (new Date() - new
+                        Date(product.createdAt)) < ( 7 * 4* 24 * 60 * 60 * 1000)) { %>
+                        <div class="product-cart-wrap small hover-up">
+                            <div class="product-img-action-wrap">
+                                <div class="product-img product-img-zoom">
+                                    <a href="/product/<%= product.slug %>">
+                                        <img class="default-img" src="<%= product.productImageUrls[0] %>" alt="">
+                                        <img class="hover-img" src="<%= product.productImageUrls[1] %>" alt="">
+                                    </a>
+                                </div>
+                              
+                                <div class="product-badges product-badges-position product-badges-mrg">
+                                    <span class="new">New</span>
+                                </div>
+                            </div>
+                            <div class="product-content-wrap">
+                                <h2><a href="/"><%- product.productName %></a></h2>
+                                <div class="rating-result" title="90%">
+                                    <span>
+                                    </span>
+                                </div>
+                                <div class="product-price">
+                                    <span>&#8377;<%= product.productPrice %></span>
+                                    <span class="old-price"> &#8377; <%= product.productOldPrice %></span>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                        
+                        <% }) %>
+                        </div>
+                        </div>
+        </div>
+</section>

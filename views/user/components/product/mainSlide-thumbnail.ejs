@@ -1,0 +1,22 @@
+<div class="col-md-6 col-sm-12 col-xs-12">
+        <div class="detail-gallery">
+                <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+
+                <div class="product-image-slider">
+                        <% product.productImageUrls.forEach((image)=> { %>
+                                <figure class="border-radius-10">
+                                        <img src="<%= image %>" alt="product image">
+                                </figure>
+                                <% }) %>
+                </div>
+
+                <div class="slider-nav-thumbnails pl-15 pr-15">
+                        <% product.productImageUrls.forEach((image)=> { %>
+                                <div><img src="<%= image %>" alt="product image">
+                                </div>
+                                <% }) %>
+
+                </div>
+        </div>
+
+</div>

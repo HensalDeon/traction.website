@@ -1,0 +1,49 @@
+<style>
+    .card.active {
+        border: 2px solid rgb(42, 145, 129);
+    }
+
+    .card-row .card-body {
+        height: 200px;
+        overflow: auto;
+    }
+  
+    .my-custom-card-class :hover{
+        background-color: rgb(241, 241, 241);
+    }
+</style>
+
+<div class="mb-30">
+    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editAddressModal" style="float: right;">Add new address</button>
+</div>
+
+<div class="row card-row">
+    <!-- <div class="col-md-1"  >
+        <div class="card mb-3 dash my-custom-card-class">
+            <div class="card-body">
+                 <h4 class="card-title">Add new address</h4>
+            </div>
+        </div>
+    </div> -->
+    <% addresses.forEach((address,index) => { %>
+    <div id="cardBodyId" class="col-md-6">
+        <div class="card mb-3 my-custom-card-class" addressId="<%= address._id %>" onclick="selectAddress('<%= address._id %>')">
+
+            <div class="card-body">
+                <h4 class="card-title">Shipping address <%= ++index %></h4>
+                <label>
+                    <p>
+                        <strong>Name: </strong> <%=address.fname %> <%=address.lname %><br>
+                        <strong>Phone: </strong> <%=address.phone %><br>
+                        <strong>Email: </strong> <%=address.email %><br>
+                        <strong>Street: </strong><%=address.street_address %>,<%=address.city %>,<%=address.state %>,<%=address.country %>, <%=address.zipcode %><br>
+                    </p>
+                </label>
+            </div>
+        </div>
+    </div>
+    <% }) %>
+    
+    
+
+</div>

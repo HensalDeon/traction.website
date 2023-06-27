@@ -1,0 +1,23 @@
+<div class="tab-pane fade active show" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+  <div class="card">
+    <div class="card-header">
+      <% if (userData) { %>
+        <h5 class="mb-0">Hei <%= userData.username %>
+        </h5>
+        <% } else { %>
+          <h5 class="mb-0">Hei you</h5>
+          <% } %>
+    </div>
+    <% if (userData) { %>
+      <div class="card-body">
+        <p>From your account dashboard. you can easily check &amp; view your <a href="#">recent orders</a>, manage your
+          <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a></p>
+      </div>
+      <% } else { %>
+        <div class="card-body">
+          <p> <a href="/signup"> Create new account</a></p>
+        </div>
+        <% } %>
+
+  </div>
+</div>

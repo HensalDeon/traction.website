@@ -1,0 +1,98 @@
+<section class="home-slider position-relative pt-25 pb-20">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9 ">
+
+                <form id="myForm" action="/admin/edit-banner" method="post" enctype="multipart/form-data">
+                    <div class="mb-4 d-flex gap-3">
+                        <img id="bannerImagePreview1" src="<%= banners[0]?.imageURL %>" alt="Preview"
+                            class="banner-image-preview" style="display: none;" />
+                        <img id="bannerImagePreview2" src="<%= banners[1]?.imageURL %>" alt="Preview"
+                            class="banner-image-preview" style="display: none;" />
+                    </div>
+
+                    <!-- <div class="mb-4">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" name="title" placeholder="Type here" class="form-control" id="bannerTitle" />
+                    </div> -->
+
+                    <div class="mb-4">
+                        <select required class="form-select" name="bannerId" onchange="handleBannerSelection(event)">
+                            <option value="<%= banners[0]._id.toHexString() %>">
+                                B1
+                            </option>
+                            <option value="<%= banners[1]._id.toHexString() %>">
+                               B2
+                            </option>
+                        </select>
+                    </div>
+<!-- 
+                    <div class="mb-4">
+                        <label for="bannerNumber" class="form-label">Banner number</label>
+                        <input type="number" name="bannerNumber" placeholder="2" class="form-control"
+                            id="bannerNumber" />
+                    </div> -->
+
+                    <div class="mb-4">
+                        <label for="bannerImage" class="form-label">Banner image</label>
+                        <input type="file" name="bannerImage" class="form-control" id="bannerImage"
+                            onchange="previewImage(event)" />
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Change</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .banner-image-preview {
+        max-width: 500px;
+        max-height: 250px;
+        width: 100%;
+        /* Add this line to ensure consistent width */
+        border-radius: 20px;
+        object-fit: cover;
+    }
+</style>
+
+<script>
+    window.addEventListener("DOMContentLoaded", function () {
+        var selectedOption = document.querySelector('select[name="bannerId"]').value;
+        handleBannerSelection({ target: { value: selectedOption } });
+    });
+
+    function handleBannerSelection(event) {
+        var selectedOption = event.target.value;
+        var bannerImagePreview1 = document.getElementById("bannerImagePreview1");
+        var bannerImagePreview2 = document.getElementById("bannerImagePreview2");
+
+        if (selectedOption === "<%= banners[0]._id.toHexString() %>") {
+            bannerImagePreview1.style.display = "block";
+            bannerImagePreview2.style.display = "none";
+        } else if (selectedOption === "<%= banners[1]._id.toHexString() %>") {
+            bannerImagePreview1.style.display = "none";
+            bannerImagePreview2.style.display = "block";
+        }
+    }
+
+    function previewImage(event) {
+        var selectedOption = document.querySelector('select[name="bannerId"]').value;
+        var file = event.target.files[0];
+
+        // Update the corresponding image preview based on the selected option
+        if (selectedOption === "<%= banners[0]._id.toHexString() %>") {
+            var bannerImagePreview1 = document.getElementById("bannerImagePreview1");
+            bannerImagePreview1.style.display = "block";
+            bannerImagePreview1.src = URL.createObjectURL(file);
+        } else if (selectedOption === "<%= banners[1]._id.toHexString() %>") {
+            var bannerImagePreview2 = document.getElementById("bannerImagePreview2");
+            bannerImagePreview2.style.display = "block";
+            bannerImagePreview2.src = URL.createObjectURL(file);
+        }
+    }
+
+</script>

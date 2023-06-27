@@ -1,0 +1,63 @@
+<script>
+  var phoneInput = document.getElementById("phone");
+  var sendOTPButton = document.getElementById("send-otp-btn");
+
+  sendOTPButton.disabled = true;
+
+  // Add an event listener to the phone input element
+  phoneInput.addEventListener("input", function () {
+    // Get the phone number entered by the user
+    var phone = phoneInput.value;
+    var errorMsg = "";
+
+    // Validate the phone number using a regular expression
+    if (!phone.match(/^\d{10}$/)) {
+      errorMsg = "Please enter a valid 10-digit phone number.";
+      document.getElementById("errors").innerHTML = '<span style="color:red">' + errorMsg + '</span>';
+      sendOTPButton.disabled = true;
+    } else {
+      document.getElementById("errors").innerHTML = "";
+      sendOTPButton.disabled = false;
+    }
+  });
+  function sendOTP() {
+  // Get the phone number entered by the user
+  var phone = document.getElementById("phone").value;
+  var errorMsg = "";
+
+  // Validate the phone number using a regular expression
+  if (!phone.match(/^\d{10}$/)) {
+    errorMsg = "Please enter a valid 10-digit phone number.";
+    document.getElementById("errors").innerHTML = '<span style="color:red">' + errorMsg + '</span>';
+    sendOTPButton.disabled = true;
+    return;
+  } else {
+    
+    sendOTPButton.disabled = true;
+    // Send an AJAX request to generate the OTP
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/otp-login', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        window.location.href = '/otp-verify';
+      } else if (xhr.status === 400) {
+        errorMsg = "Phone number not registered";
+        document.getElementById("errors").innerHTML = '<span style="color:red">' + errorMsg + '</span>';
+        setTimeout(() => {
+          document.getElementById("errors").innerHTML = "";
+        }, 5000);
+      } else {
+        errorMsg = "Something went wrong";
+        document.getElementById("errors").innerHTML = '<span style="color:red">' + errorMsg + '</span>';
+        setTimeout(() => {
+          document.getElementById("errors").innerHTML = "";
+        }, 5000);
+      }
+      sendOTPButton.disabled = false;
+    };
+    xhr.send('phone=' + phone);
+  }
+}
+
+</script>

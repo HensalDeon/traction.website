@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <%- include("../partials/user-header") %>
+    <%- include("./components/preloading.ejs") %>
+</head>
+
+<body>
+    <%- include("./layouts/navbar") %>
+        <main class="main blur">
+            <%- include("./components/home/banner-1") %>
+            <%- include("./components/home/horizontalcards.ejs") %>
+            <%- include("./components/home/products.ejs") %>
+            <%#- include("./components/home/banner-2") %>
+            <%- include("./components/home/monthlybest.ejs") %>
+            <%- include("./components/home/newArrivals.ejs") %>
+            <%- include("./components/home/featuredbrands.ejs") %>
+
+        </main>
+        <%- include("./layouts/footer.ejs")%>
+        <%- include("./script/script.ejs") %>
+</body>
+
+
+</html>

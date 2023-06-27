@@ -1,0 +1,70 @@
+<div class="col-md-6 col-sm-12 col-xs-12">
+    <div class="detail-info">
+        <h2 class="title-detail"><%= product.productName %></h2>
+        <div class="product-detail-rating">
+            <div class="pro-details-brand">
+                <span> Brands: <a
+                        href="user-grid-right.html">Funkoo</a></span>
+            </div>
+            <div class="product-rate-cover text-end">
+                <div class="product-rate d-inline-block">
+                    <div class="product-rating" style="width:90%">
+                    </div>
+                </div>
+                <span class="font-small ml-5 text-muted"> (25 reviews)</span>
+            </div>
+        </div>
+        <div class="clearfix product-price-cover">
+            <div class="product-price primary-color float-left">
+                <ins><span class="text-brand">&#8377;  <%= product.productPrice %></span></ins>
+                <ins><span class="old-price font-md ml-15">&#8377; <%= product.productOldPrice %></span></ins>
+                <span class="save-price  font-md color3 ml-15"><%= Math.floor(((product.productOldPrice - product.productPrice) / product.productOldPrice) * 100) %>%Off</span>
+            </div>
+        </div>
+        <div class="bt-1 border-color-1 mt-15 mb-15"></div>
+        <div class="short-desc mb-30">
+            <p><%= product.productDescription %></p>
+        </div>
+        <div class="product_sort_info font-xs mb-30">
+            <ul>
+                <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 1 Year Space
+                    Brand Warranty</li>
+                <li class="mb-10"><i class="fi-rs-refresh mr-5"></i> 30 Day
+                    Return
+                    Policy</li>
+                <li><i class="fi-rs-credit-card mr-5"></i> Cash on Delivery
+                    available</li>
+            </ul>
+        </div>
+       
+        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+        <div class="detail-extralink">
+            <div class="detail-qty border radius">
+                <a href="#" class="qty-down"><i
+                        class="fi-rs-angle-small-down"></i></a>
+                <span class="qty-val">1</span>
+                <a href="#" class="qty-up"><i
+                        class="fi-rs-angle-small-up"></i></a>
+            </div>
+            <div class="product-extra-link2">
+                    <% if (product.stocks > 0) { %>
+                        <button type="submit" id="addToCartButton" class="addTocartButton button button-add-to-cart" data-product-id="<%= product._id %>">Add to Cart</button>
+                    <% } else { %>
+                        <button class="button notify-me-btn">Notify Me</button>
+                    <% } %>
+                <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                    href="/wishlist"><i class="fi-rs-heart"></i></a>
+                <a aria-label="Compare" class="action-btn hover-up"
+                    href="/"><i class="fi-rs-shuffle"></i></a>
+            </div>
+        </div>
+        <ul class="product-meta font-xs color-grey mt-50">
+            <li class="mb-5">ID: <a href="#"><%= product.productNumber %></a></li>
+            <li class="mb-5">Tags: <a href="#" rel="tag">POP</a>, <a href="#"
+                    rel="tag">MARVEL</a>, <a href="#" rel="tag">TOYS</a> </li>
+                    <li>Availability: <span class="<%= product.stocks < 1 ? 'text-danger' : 'text-success' %> in-stock ml-5">
+                        <%= product.stocks < 1 ? 'Out of Stock' : product.stocks %>
+                    </span></li>
+                            </ul>
+    </div>
+</div>
