@@ -5,6 +5,14 @@
 @import url(vendors/select2.min.css);
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,300;1,400;1,700;1,900&amp;display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Spartan:wght@300;400;500;600;700&amp;display=swap");
+/* Custom */
+body{
+    background-image: url(../imgs/page/bodyBg.png);
+    background-position: center top;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+   
+}
 
 html,
 body,
@@ -588,7 +596,7 @@ b {
 }
 
 .card-title {
-    color: #383e50 !important
+    color: orange !important
 }
 
 .text-body {
@@ -611,17 +619,17 @@ b {
 }
 
 .menu-aside .menu-item .icon {
-    color: #adb5bd;
+    color: #000;
     margin-right: 10px;
     font-size: 24px
 }
 
 .menu-aside .menu-item.active .icon {
-    color: #088178
+    color: orangered
 }
 
 .menu-aside .menu-item.active .menu-link {
-    background-color: rgba(8, 129, 120, 0.2)
+    background-color: #e383835e
 }
 
 .menu-aside .menu-item.active .submenu a.active {
@@ -774,7 +782,7 @@ b {
     padding: 10px 40px;
     color: #ffffff;
     border: none;
-    background-color: #088178;
+    background-color: #000;
     border-radius: 4px
 }
 
@@ -785,7 +793,8 @@ b {
 }
 
 .btn.btn-primary:hover {
-    background-color: #046963
+    color: #000 !important;
+    background-color: orange;
 }
 
 .btn.btn-secondary {
@@ -806,7 +815,7 @@ b {
 .btn.btn-md {
     padding: 0.5rem 0.95rem;
     font-weight: 500;
-    background-color: #088178;
+    background-color: #000;
     color: #ffffff
 }
 
@@ -960,7 +969,7 @@ b {
     -webkit-box-shadow: none;
     box-shadow: none;
     padding-left: 20px;
-    color: #4f5d77;
+    color: #000;
     width: 100%;
     border-radius: 4px;
     height: 45px
@@ -968,7 +977,7 @@ b {
 
 .form-control:focus,
 .form-select:focus {
-    background: transparent;
+    background-color: #fff;
     border-color: #f4f5f9;
     -webkit-box-shadow: none;
     box-shadow: none
@@ -1145,7 +1154,13 @@ textarea.form-control {
 }
 
 .card-login {
-    max-width: 350px
+    max-width: 350px;
+    background: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(118px);
 }
 
 .input-upload {
@@ -3088,9 +3103,9 @@ ul.row-sm {
     margin-top: 75px !important
 }
 
-.mt-80 {
+/* .mt-80 {
     margin-top: 80px !important
-}
+} */
 
 .mt-85 {
     margin-top: 85px !important
@@ -3693,10 +3708,9 @@ body.offcanvas-active {
 }
 
 .content-main {
-    padding: 30px 3%;
+    padding: 84px 3%;
     margin-left: auto;
     margin-right: auto;
-    background-color: #f8f9fa
 }
 
 .navbar-aside {
@@ -3907,11 +3921,10 @@ body.aside-mini .menu-aside .menu-item.has-submenu .menu-link:after {
 
 footer.main-footer {
     bottom: 0;
-    padding: 30px 3%;
-    position: absolute;
+    padding: 0px 3%;
     right: 0;
     width: 100%;
-    height: 60px
+    height: 37px
 }
 
 body.dark {

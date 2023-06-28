@@ -97,7 +97,7 @@ async function addNewProduct(dataBody, dataFiles) {
     for (let i = 0; i < dataFiles.length; i++) {
       let locaFilePath = dataFiles[i].path;
       let response = await cloudinary.uploader.upload(locaFilePath, {
-        folder: 'space/product_images',
+        folder: 'traction/product_images',
         unique_filename: true,
       });
       imageUrlList.push(response.url);
@@ -156,7 +156,7 @@ async function updateProduct(productId, productData, productImages) {
       for (let i = 0; i < productImages.length; i++) {
         let locaFilePath = productImages[i].path;
         let response = await cloudinary.uploader.upload(locaFilePath, {
-          folder: 'space/product_images',
+          folder: 'traction/product_images',
           unique_filename: true,
         });
         product.productImageUrls.push(response.url);

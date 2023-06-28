@@ -62,7 +62,7 @@ const url =
 // connect to database
 mongoose
   .connect(url, { useNewUrlParser: true })
-  .then(() => console.log("MongoDb is connected"))
+  .then(() => console.log("MongoDb is connected!🚀"))
   .catch((err) => console.log(err));
 
 // route middlewares
@@ -76,5 +76,5 @@ console.clear()
 // });
 
 app.listen(port, function () {
-  console.log("Express app running on port " + port);
+  console.log("Express app running on port " + port+"🚀");
 });

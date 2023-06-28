@@ -15,26 +15,26 @@ function isLoggedOut(req, res, next) {
   }
 }
 
-// // !admin
-// function isAdminLoggedIn(req, res, next) {
-//   if (req.session.adminLoggedIn) {
-//     next();
-//   } else {
-//     res.redirect('/admin/login');
-//   }
-// }
+// !admin
+function isAdminLoggedIn(req, res, next) {
+  if (req.session.adminLoggedIn) {
+    next();
+  } else {
+    res.redirect('/admin/login');
+  }
+}
 
-// function isAdminLoggedOut(req, res, next) {
-//   if (!req.session.adminLoggedIn) {
-//     next();
-//   } else {
-//     res.redirect('/admin');
-//   }
-// }
+function isAdminLoggedOut(req, res, next) {
+if (!req.session.adminLoggedIn) {
+    next();
+  } else {
+    res.redirect('/admin');
+  }
+}
 
 module.exports = {
   isLoggedIn,
   isLoggedOut,
-  // isAdminLoggedIn,
-  // isAdminLoggedOut,
+  isAdminLoggedIn,
+  isAdminLoggedOut,
 };

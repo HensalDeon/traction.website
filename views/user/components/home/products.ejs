@@ -60,6 +60,9 @@
                                                     <span>90%</span>
                                                 </span>
                                             </div>
+                                            <div class="view-dtl">
+                                                <a href="/product/<%= product.slug %>"><button><p>View Details</p></button></a>
+                                            </div>
                                             <div class="product-price">
                                                 <span>&#8377;<%= product.productPrice %></span>
                                                 <span class="old-price"> &#8377; <%= product.productOldPrice %></span>
@@ -182,11 +185,6 @@
                                                 </a>
                                             </div>
                                             <h2><a href="/product/<%= product.slug %>"><%- product.productName %></a></h2>
-                                            <div class="rating-result" title="90%">
-                                                <span>
-                                                    <span>90%</span>
-                                                </span>
-                                            </div>
                                             <div class="product-price">
                                                 <span>&#8377;<%= product.productPrice %></span>
                                                 <span class="old-price"> &#8377; <%= product.productOldPrice %></span>

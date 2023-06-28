@@ -1,24 +1,24 @@
-<div class="col-md-6 col-sm-12 col-xs-12">
+<div class="col-md-6 col-sm-12 col-xs-12 pt-30 dmWhite bdr">
     <div class="detail-info">
-        <h2 class="title-detail"><%= product.productName %></h2>
+        <h2 class="title-detail h2cl"><%= product.productName %></h2>
         <div class="product-detail-rating">
             <div class="pro-details-brand">
-                <span> Brands: <a
-                        href="user-grid-right.html">Funkoo</a></span>
+                <span style="color: black;"> Brands: <a
+                        href="user-grid-right.html"><span style="color: #0b3823;">Tamiya</span></a></span>
             </div>
             <div class="product-rate-cover text-end">
                 <div class="product-rate d-inline-block">
                     <div class="product-rating" style="width:90%">
                     </div>
                 </div>
-                <span class="font-small ml-5 text-muted"> (25 reviews)</span>
+                <!-- <span class="font-small ml-5 text-muted"> (25 reviews)</span> -->
             </div>
         </div>
         <div class="clearfix product-price-cover">
             <div class="product-price primary-color float-left">
                 <ins><span class="text-brand">&#8377;  <%= product.productPrice %></span></ins>
-                <ins><span class="old-price font-md ml-15">&#8377; <%= product.productOldPrice %></span></ins>
-                <span class="save-price  font-md color3 ml-15"><%= Math.floor(((product.productOldPrice - product.productPrice) / product.productOldPrice) * 100) %>%Off</span>
+                <ins><span class="old-price font-md ml-15" style="color: #0b3823;">&#8377; <%= product.productOldPrice %></span></ins>
+                <span class="save-price  font-md color3 ml-15 bb"><%= Math.floor(((product.productOldPrice - product.productPrice) / product.productOldPrice) * 100) %>%Off</span>
             </div>
         </div>
         <div class="bt-1 border-color-1 mt-15 mb-15"></div>
@@ -26,8 +26,8 @@
             <p><%= product.productDescription %></p>
         </div>
         <div class="product_sort_info font-xs mb-30">
-            <ul>
-                <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 1 Year Space
+            <ul class="gr">
+                <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 1 Year Traction
                     Brand Warranty</li>
                 <li class="mb-10"><i class="fi-rs-refresh mr-5"></i> 30 Day
                     Return
@@ -59,11 +59,11 @@
             </div>
         </div>
         <ul class="product-meta font-xs color-grey mt-50">
-            <li class="mb-5">ID: <a href="#"><%= product.productNumber %></a></li>
-            <li class="mb-5">Tags: <a href="#" rel="tag">POP</a>, <a href="#"
+            <li class="mb-5 bb">ID: <a href="#"><%= product.productNumber %></a></li>
+            <li class="mb-5 bb">Tags: <a href="#" rel="tag">POP</a>, <a href="#"
                     rel="tag">MARVEL</a>, <a href="#" rel="tag">TOYS</a> </li>
-                    <li>Availability: <span class="<%= product.stocks < 1 ? 'text-danger' : 'text-success' %> in-stock ml-5">
-                        <%= product.stocks < 1 ? 'Out of Stock' : product.stocks %>
+                    <li class="bb">Availability: <span class="<%= product.stocks < 1 ? 'text-danger' : 'text-success' %> in-stock ml-5">
+                        <%= product.stocks < 1 ? 'Out of Stock' : product.stocks %> items in Stock
                     </span></li>
                             </ul>
     </div>

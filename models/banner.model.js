@@ -24,7 +24,7 @@ async function addNewBanner(bannerData, bannerImage) {
 
     let response = await cloudinary.uploader.upload(path, {
       transformation: [{ width: 966, height: 542, crop: 'crop' }],
-      folder: `space/banner_images/${bannerNumber}`,
+      folder: `Traction/banner_images/${bannerNumber}`,
       unique_filename: true,
     });
 
@@ -58,7 +58,7 @@ async function updateBanner(bannerData, bannerImage) {
     if (bannerImage && bannerImage.path) {
       const response = await cloudinary.uploader.upload(bannerImage.path, {
         transformation: [{ width: 966, height: 542, scale: 'fit' }],
-        folder: `space/banner_images/${1}`,
+        folder: `Traction/banner_images/${1}`,
         unique_filename: true,
       });
 

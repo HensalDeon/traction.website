@@ -8,7 +8,7 @@ const {
   getDashBoardData,
 } = require('../models/admin.model');
 
-const { generateSalesReport } = require('../config/pdfKit');
+// const { generateSalesReport } = require('../config/pdfKit');
 const { getOrderData } = require('../models/order.model');
 
 /**

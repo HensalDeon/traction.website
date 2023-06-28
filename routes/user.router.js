@@ -16,8 +16,8 @@ const {
   httpPostVerifyOtp,
   httpSignupOtpVerify,
   httpPostSignup,
-  httpGetAccount,
-  httpUpdateUserdata,
+  // httpGetAccount,
+  // httpUpdateUserdata,
   httpGetLogout,
   httpGet404,
 } = require('../controllers/user.controller');

@@ -16,6 +16,45 @@
 html{
   scroll-behavior: smooth;
 }
+.view-dtl button{
+  border: none;
+  background-color: antiquewhite;
+  border-radius: 3px;
+}
+.view-dtl p {
+  font-size: 0.9em;
+  color: #000;
+}
+.view-dtl button:hover {
+  background-color: #1e1c1c
+}
+.view-dtl p:hover{
+  color: #fff;
+}
+.mobile-social-icon a img{
+  background-color: #993333;
+}
+.h2cl{
+  color: #6c0b14;
+}
+.short-desc p{
+  color: #000;
+}
+.gr{
+  color: #0b3823;
+}
+.bb{
+  color: #1a1a1a;
+}
+.bb a {
+  color: #fff;
+}
+body{
+  background-image: url(../imgs/page/bodyBg.png);
+  background-position: center top;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
 .brand-logo.slick-slide{
   background-color: #f4f5f978;
 }
@@ -41,6 +80,9 @@ input[type=text]:focus,
 .hoverable-text:focus{
   background-color: white;
 }
+.dmWhite{
+  background-color: #f4f5f978 !important;
+}
 .blur{
   top: 0;
   left: 0;
@@ -49,12 +91,19 @@ input[type=text]:focus,
   backdrop-filter: blur(8px); /* Adjust the blur amount as needed */
   z-index: -1;
 }
+.blurMr{
+  backdrop-filter: blur(118px); /* Adjust the blur amount as needed */
+}
+
+.bdr{
+  border-radius: 10px;
+}
 /* Set the desired color for the placeholder text for search */
 .custom-input::placeholder {
   color: #ffffff; 
 }
 .custom-input{
-  background:none;
+  background: none !important;
 }
 .hoverable-text {
   display: inline-block;
@@ -206,12 +255,6 @@ thead {
   font-weight: 600;
 }
 
-body{
-  background-image: url(../imgs/page/bodyBg.png);
-  background-position: center top;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-}
 article,
 aside,
 details,
@@ -427,6 +470,7 @@ input[type=number]:focus,
 .hover-up {
   -webkit-transition: all 0.25s cubic-bezier(0.02, 0.01, 0.47, 1);
   transition: all 0.25s cubic-bezier(0.02, 0.01, 0.47, 1);
+  z-index: 999;
 }
 
 .hover-up:hover {
@@ -453,7 +497,7 @@ input[type=number]:focus,
 }
 
 .text-success {
-  color: #3ed092 !important;
+  color: #a2ffd7 !important;
 }
 
 .text-info {
@@ -1692,8 +1736,8 @@ label {
   width: 100%;
 }
 
-.comment-form input:focus {
-  background: transparent;
+.comment_form input:focus {
+  background-color: #fff !important;
   outline: none !important;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -1717,6 +1761,7 @@ label {
 }
 
 .form-control:focus {
+  background-color: #fff !important;
   outline: 0;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -3609,6 +3654,8 @@ table .product-thumbnail img {
 .product-cart-wrap:hover {
   -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+  background-color: rgb(197, 197, 197);
+  border-radius: 20px
 }
 
 .product-cart-wrap .product-img-action-wrap {
@@ -3650,6 +3697,7 @@ table .product-thumbnail img {
 .product-cart-wrap .product-img-action-wrap .product-img-zoom a img {
   -webkit-transition: all 1.5s cubic-bezier(0, 0, 0.05, 1);
   transition: all 1.5s cubic-bezier(0, 0, 0.05, 1);
+  background-color: #e6e6e6;
 }
 
 .product-cart-wrap .product-action-1 {
@@ -4485,7 +4533,7 @@ table .product-thumbnail img {
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-
+/* 
 .product-rate {
   background-image: url("../imgs/theme/rating-stars.png");
   background-position: 0 -12px;
@@ -4494,7 +4542,7 @@ table .product-thumbnail img {
   width: 60px;
   transition: all 0.5s ease-out 0s;
   -webkit-transition: all 0.5s ease-out 0s;
-}
+} */
 
 .product-rating {
   height: 12px;
@@ -5984,15 +6032,15 @@ h6.post-title {
   border-radius: 4px;
   line-height: 1;
   padding: 10px 20px;
-  background-color: #088178;
+  background-color: #1a1a1a;
   font-family: "Spartan", sans-serif;
-  border: 2px solid #088178;
+  /* border: 2px solid #088178; */
 }
 
 .cart-dropdown-wrap .shopping-cart-footer .shopping-cart-button a.outline {
-  background-color: transparent;
-  border: 2px solid #088178;
-  color: #088178;
+  background-color: #1a1a1a;
+  /* border: 2px solid #088178; */
+  color: #ffffff;
 }
 
 .cart-dropdown-wrap .shopping-cart-footer .shopping-cart-button a.outline:hover {
@@ -7372,7 +7420,7 @@ span.fi-rs-apps {
 
 .main-categori-wrap>a span {
   margin-right: 7px;
-  color: #161c27;
+  color: #ffffff;
 }
 
 .main-categori-wrap>a>i {
@@ -10347,5 +10395,5 @@ span.fi-rs-apps {
   z-index: 9999;
 }
 
-/*# sourceMappingURL=main.css.map */
+/* # sourceMappingURL=main.css.map */
 
