@@ -1,13 +1,13 @@
 require('dotenv').config();
 
-const {categoryMiddleware, loggedInMiddleware} = require("./middlewares/custom.middleware")
+const {categoryMiddleware, loggedInMiddleware, cartProducts} = require("./middlewares/custom.middleware")
 const path = require('path');
 const express = require("express");
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const mongoose = require("mongoose");
 const multer = require("multer");
-// const bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -23,12 +23,12 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // to parse json data from request object
-app.use(express.json());
-app.use(multer().any());
+// app.use(express.json());
+// app.use(multer().any());
 
 //global middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(mongoSanitize());
 app.use(xss());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -50,6 +50,7 @@ app.use(
 //custom middlewares
 app.use(categoryMiddleware);
 app.use(loggedInMiddleware);
+app.use(cartProducts);
 
 mongoose.set("strictQuery", false);
 

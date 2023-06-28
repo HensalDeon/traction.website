@@ -22,6 +22,23 @@ const {
   httpGet404,
 } = require('../controllers/user.controller');
 
+const {
+  httpGetProduct,
+  httpGetAllProducts,
+  httpCategoryProduct,
+  httpProductsBySearch,
+  httpSearchResult,
+} = require('../controllers/product.controller');
+
+const {
+  httpGetCart,
+  httpPostToCart,
+  httpRemoveFromCart,
+  httpUpdateQuantity,
+  httpClearCart,
+} = require('../controllers/cart.controller');
+
+
 userRouter.get('/', httpGetHome);
 userRouter.get('/login', isLoggedOut, httpGetLogin);
 userRouter.post('/login', httpPostLoginVerify);
@@ -38,11 +55,12 @@ userRouter.get('/product/:slug', httpGetProduct);
 userRouter.get('/shop', httpGetAllProducts);
 userRouter.get('/shop/:id', httpCategoryProduct);
 
-// userRouter.get('/cart', isLoggedIn, httpGetCart);
-// userRouter.post('/cart', isLoggedIn, httpPostToCart);
-// userRouter.delete('/cart', isLoggedIn, httpRemoveFromCart);
-// userRouter.patch('/cart', isLoggedIn, httpUpdateQuantity);
-// userRouter.delete('/clear-cart', isLoggedIn, httpClearCart);
+userRouter.get('/cart', isLoggedIn, httpGetCart);
+userRouter.post('/cart', isLoggedIn, httpPostToCart);
+userRouter.delete('/cart', isLoggedIn, httpRemoveFromCart);
+userRouter.patch('/cart', isLoggedIn, httpUpdateQuantity);
+userRouter.delete('/clear-cart', isLoggedIn, httpClearCart);
+
 userRouter.get('/search', httpSearchResult);
 userRouter.post('/search-products', httpProductsBySearch);
 

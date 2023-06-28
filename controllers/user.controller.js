@@ -41,14 +41,14 @@ async function httpGetLogin(req, res) {
 }
 
 async function httpPostLoginVerify(req, res) {
+  console.log("hiiii");
   const { email, password } = req.body;
-  console.log(email, password);
   try {
     const userResult = await checkUserWithEmail(email, password);
-
     if (userResult?.status) {
       req.session.userloggedIn = true;
       req.session.user = userResult.user;
+      res.redirect("/")
       res.status(200).json({ status: true, message: userResult?.message });
     } else {
       res.json({ status: false, message: userResult?.message });
@@ -229,7 +229,6 @@ module.exports = {
   httpSignupOtpVerify,
   httpPostSignup,
   httpUpdateUserdata,
-
   httpGetAccount,
   httpGetLogout,
   httpGet404,
