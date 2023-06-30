@@ -34,6 +34,22 @@ async function addCategory(name) {
   }
 }
 
+async function editCategory(categoryId, newName) {
+  try {
+    const category = await categoryDatabase.updateOne(
+      { _id: categoryId },
+      { $set: { name: newName } }
+    );
+    if (category.modifiedCount > 0) {
+      return { status: true };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    throw new Error(`Error editing category: ${error.message}`);
+  }
+}
+
 async function updateCategory(categoryId, updateStatus) {
   try {
     const category = await categoryDatabase.updateOne(
@@ -54,4 +70,5 @@ module.exports = {
   fetchCategories,
   addCategory,
   updateCategory,
+  editCategory
 };

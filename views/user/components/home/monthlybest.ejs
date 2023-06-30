@@ -29,7 +29,7 @@
                     <img src="/user/assets/imgs/banner/banner-9.jpg" alt="">
                     <div class="banner-text">
                         <span>Pop Area</span>
-                        <h4 class="mt-5">Save 17% on <br>Funkoo</h4>
+                        <h4 class="mt-5">Save 17% on <br>Traxx</h4>
                         <a href="" class="text-white">Shop Now <i class="fi-rs-arrow-right"></i></a>
                     </div>
                 </div>
@@ -44,8 +44,8 @@
 
 
                                 <% products.forEach(product=>{ %>
-                                    <% if(product.productStatus && product.productCategory.active &&
-                                        product.productCategory.name==='ANIME & MANGA' ) { %>
+                                    <% if(product.productStatus && product.productCategory.active 
+                                    && product.productCategory.name === 'RC TRUCKS'|| 'RC CARS') { %>
                                         <div class="product-cart-wrap">
                                             <div class="product-img-action-wrap">
                                                 <div class="product-img product-img-zoom">
@@ -60,8 +60,8 @@
                                                 <div class="product-badges product-badges-position product-badges-mrg">
                                                     <!-- <span class="new">New</span> -->
                                                     <span class="best">Best Sell</span>
-                                                    <!-- <span class="hot">-<%= Math.floor((product.productOldPrice - product.productPrice) / product.productOldPrice * 100) %>%</span>
-                                                    <span class="sale">Out of stocks</span> -->
+                                                    <span class="hot">-<%= Math.floor((product.productOldPrice - product.productPrice) / product.productOldPrice * 100) %>%</span>
+                                                    <!-- <span class="sale">Out of stocks</span> -->
                                                 </div>
                                             </div>
                                             <div class="product-content-wrap">
@@ -91,8 +91,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <% } %>
-                                            <% }) %>
+                                    <% } %>
+                                <% }) %>
                             </div>
                         </div>
                     </div>

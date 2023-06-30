@@ -31,6 +31,7 @@ async function findUserWithId(userId, action) {
     } else {
       if (action === 'block') {
         user.status = false;
+
       } else if (action === 'unblock') {
         user.status = true;
       }

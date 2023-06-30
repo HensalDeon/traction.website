@@ -1,12 +1,26 @@
+
 <section class="content-main">
     <div class="content-header">
         <div>
             <h2 class="content-title card-title">Categories</h2>
             <p>Add, edit or delete a category</p>
         </div>
-        <div>
-            <input type="text" placeholder="Search Categories" class="form-control bg-white">
+        <!-- modal usage -->
+        <div class="bg-modal" id="editModal">
+            <div class="box-modal">
+              <p>Edit Category Name</p>
+              <form id="editForm" class="d-flex" style="justify-content: center; position: relative;">
+                <label class="input-container">
+                  <input type="text" id="newNameInput" class="" value="<%= category.name %>" >
+                  <button type="submit" class="btn rounded btn-md font-sm">OK</button>
+                </label>
+              </form>
+            </div>
         </div>
+         <!-- modal end -->
+          <div>
+            <input type="text" placeholder="Search Categories" class="form-control bg-white">
+         </div>
     </div>
     <div class="card">
         <div class="card-body">
@@ -22,6 +36,7 @@
                             <button type="submit" class="btn btn-primary">Create category</button>
                         </div>
                     </form>
+                    
                 </div>
                 <div class="col-md-9">
                     <div class="table-responsive">
@@ -41,7 +56,7 @@
                                             <td>
                                                 <%= num++ %>
                                             </td>
-                                            <td><b>
+                                            <td><b id="category-name-<%= category._id %>">
                                                     <%= category.name %>
                                                 </b></td>
                                             <% if (category.active) { %>
@@ -52,9 +67,15 @@
                                                             id="category-status-<%= category._id %>">Disabled</span>
                                                     </td>
                                                     <% } %>
-                                                      
                                                             <td class="text-end">
                                                                 <% if(category.active) { %>
+                                                                    <button 
+                                                                        class="btn btn-success rounded btn-sm font-sm btncol"
+                                                                        id="category-edit-<%= category._id %>"
+                                                                        <%console.log(category.name)%>
+                                                                        onclick="editCategory('<%= category._id %>' ,'<%= category.name %>')">
+                                                                        Edit
+                                                                    </button>
                                                                     <button
                                                                         class="btn btn-danger rounded btn-sm font-sm"
                                                                         id="category-action-<%= category._id %>"
@@ -123,8 +144,62 @@
         }
     });
 
+    function editCategory(categoryId, name) {
+        var editModal = document.getElementById('editModal');
+        var editForm = document.getElementById('editForm');
+        var newNameInput = document.getElementById('newNameInput');
+        editModal.style.display = 'block';
+        editForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            var newName = newNameInput.value;
+            if (!newName) {
+            callAlertify('warning', 'Category name required');
+            return;
+            }
+            try {
+            const response = await updateCategoryName(categoryId, newName);
+            if (response.status) {
+                var categoryNameElement = document.getElementById('category-name-' + categoryId);
+                categoryNameElement.textContent = newName;
+                console.log(newNameInput+'joooooppppp')
+                newNameInput.value=newName;
+                console.log(newNameInput.value+'jooo=jooppppp')
+                editModal.style.display = 'none';
+            } else {
+                console.error('Failed to update category name on the server.');
+            }
+            } catch (error) {
+            console.error('Error occurred while updating category name:', error.message);
+            } 
+        });
+        window.onclick = function(event) {
+            if (event.target === editModal) {
+            editModal.style.display = 'none';
+            }
+        }
 
-    function updateCategory(categoryId, status) {
+    }
+    async function updateCategoryName(categoryId, newName) {
+    try {
+    const response = await fetch('/admin/category-name', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id: categoryId, newName: newName })
+    });
+    if (!response.ok) {
+      throw new Error('Failed to update category name on the server.');
+    }
+    const data = await response.json();
+    console.log(data);
+    return data;
+  } catch (error) {
+    throw new Error(`Error updating category name: ${error.message}`);
+  }
+}
+
+    function updateCategory(categoryId,  status) {
 
         swal({
             title: "Are you sure?",

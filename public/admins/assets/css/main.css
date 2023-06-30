@@ -13,6 +13,88 @@ body{
     background-repeat: no-repeat;
    
 }
+.input-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-container input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .input-container button[type="submit"] {
+    margin-left: 8px;
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .input-container button[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+.bg-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .box-modal {
+    position: relative;
+    background-color: #fff;
+    margin: 100px auto;
+    padding: 20px;
+    width: 400px;
+    border-radius: 5px;
+    animation-name: modal-open;
+    animation-duration: 0.3s;
+    animation-timing-function: ease-in-out;
+  }
+  
+  @keyframes modal-open {
+    from {
+      transform: scale(0);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .modal-closing {
+    animation-name: modal-close;
+  }
+  
+  @keyframes modal-close {
+    from {
+      transform: scale(1);
+      opacity: 1;
+    }
+    to {
+      transform: scale(0);
+      opacity: 0;
+    }
+  }
+.btncol{
+    background-color: rgb(45, 89, 183);
+    color: #fff;
+}
+.btncol:hover{
+    background-color: rgb(28, 69, 158);;
+    color: #fff;
+}
 
 html,
 body,

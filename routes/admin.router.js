@@ -30,6 +30,7 @@ const {
   httpGetCategories,
   httpPostCategories,
   httpPutCategory,
+  httpPutCategoryName,
 } = require('../controllers/category.controller');
 
 const { isAdminLoggedIn, isAdminLoggedOut } = require('../middlewares/auth.handler');
@@ -42,6 +43,7 @@ adminRouter.get('/logout', isAdminLoggedIn, httpGetLogout);
 adminRouter.get('/categories', isAdminLoggedIn, httpGetCategories);
 adminRouter.post('/categories', isAdminLoggedIn, httpPostCategories);
 adminRouter.put('/category-status', isAdminLoggedIn, httpPutCategory);
+adminRouter.put('/category-name', isAdminLoggedIn, httpPutCategoryName);
 
 adminRouter.get('/users', isAdminLoggedIn, httpGetUsers);
 adminRouter.put('/user-status', isAdminLoggedIn, httpPutBlockUser);

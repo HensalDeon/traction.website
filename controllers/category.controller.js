@@ -4,6 +4,7 @@ const {
   fetchCategories,
   addCategory,
   updateCategory,
+  editCategory,
 } = require('../models/category.model');
 
 
@@ -77,8 +78,23 @@ async function httpPutCategory(req, res) {
   }
 }
 
+async function httpPutCategoryName(req, res) {
+  const { id, newName } = req.body;
+  try {
+    const response = await editCategory(id, newName);
+    if (response.status) {
+      res.status(200).json({ status: true, newName });
+    } else {
+      res.status(400).json({ status: false });
+    }
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
 module.exports = {
   httpGetCategories,
   httpPostCategories,
   httpPutCategory,
+  httpPutCategoryName,
 };
