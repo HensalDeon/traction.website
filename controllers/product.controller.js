@@ -197,6 +197,10 @@ async function httpCategoryProduct(req, res) {
     const limit = parseInt(req.query.limit) || 8;
     const sortBy = req.query.sortBy;
     const categoryId = req.params.id;
+    
+    if (categoryId === "undefined") {
+      return res.redirect('/shop');
+    }
 
     const result = await getProductsWithCategory(categoryId, page, limit, sortBy);
 

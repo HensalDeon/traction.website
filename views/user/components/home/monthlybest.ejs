@@ -45,7 +45,7 @@
 
                                 <% products.forEach(product=>{ %>
                                     <% if(product.productStatus && product.productCategory.active 
-                                    && product.productCategory.name === 'RC TRUCKS'|| 'RC CARS') { %>
+                                    && product.productCategory.name === 'RC TRUCKS'|| 'RC CARS' || 'RC BOATS') { %>
                                         <div class="product-cart-wrap">
                                             <div class="product-img-action-wrap">
                                                 <div class="product-img product-img-zoom">
@@ -103,59 +103,45 @@
                                 id="carausel-4-columns-2-arrows"></div>
                             <div class="carausel-4-columns carausel-arrow-center" id="carausel-4-columns-2">
 
-
-                                <% products.forEach(product=>{ %>
-                                    <% if(product.productStatus && product.productCategory.active &&
-                                        product.productCategory.name==='MARVEL HEROS' ) { %>
-                                        <div class="product-cart-wrap">
-                                            <div class="product-img-action-wrap">
-                                                <div class="product-img product-img-zoom">
-                                                    <a href="/product/<%= product.slug %>">
-                                                        <img class="default-img"
-                                                            src="<%= product.productImageUrls[0] %>" alt="">
-                                                        <img class="hover-img" src="<%= product.productImageUrls[1] %>"
-                                                            alt="">
-                                                    </a>
-                                                </div>
-                                               
-                                                <div class="product-badges product-badges-position product-badges-mrg">
-                                                    <!-- <span class="new">New</span> -->
-                                                    <!-- <span class="best">Best Sell</span> -->
-                                                    <span class="hot">Hot</span>
-                                                    <!-- <span class="hot">-<%= Math.floor((product.productOldPrice - product.productPrice) / product.productOldPrice * 100) %>%</span>
-                                                    <span class="sale">Out of stocks</span> -->
-                                                </div>
+                                <% const randomProducts = products.filter(product =>
+                                    product.productStatus && product.productCategory.active).sort(() => Math.random() - 0.5); %>
+                                <% randomProducts.forEach(product => { %>
+                                    <div class="product-cart-wrap">
+                                        <div class="product-img-action-wrap">
+                                            <div class="product-img product-img-zoom">
+                                                <a href="/product/<%= product.slug %>">
+                                                    <img class="default-img" src="<%= product.productImageUrls[0] %>" alt="">
+                                                    <img class="hover-img" src="<%= product.productImageUrls[1] %>" alt="">
+                                                </a>
                                             </div>
-                                            <div class="product-content-wrap">
-                                                <div class="product-category">
-                                                    <a href="/all-products">
-                                                        <%= product.productCategory.name %>
-                                                    </a>
-                                                </div>
-                                                <h2><a href="/product/<%= product.slug %>">
-                                                        <%= product.productName %>
-                                                    </a></h2>
-                                                <div class="rating-result" title="90%">
-                                                    <span>
-                                                        <span>70%</span>
-                                                    </span>
-                                                </div>
-                                                <div class="product-price">
-                                                    <span>&#8377;<%= product.productPrice %></span>
-                                                    <span class="old-price">
-                                                        &#8377;<%= product.productOldPrice %>
-                                                    </span>
-                                                </div>
-                                                <div class="product-action-1 show">
-                                                    <a aria-label="Add To Cart" class="addTocartButton action-btn hover-up" data-product-id="<%= product._id %>"
-                                                        ><i class="fi-rs-shopping-bag-add"></i></a>
-                                                </div>
+                                            <div class="product-badges product-badges-position product-badges-mrg">
+                                                <span class="hot">Hot</span>
                                             </div>
                                         </div>
-                                        <% } %>
-                                            <% }) %>
-
-
+                                        <div class="product-content-wrap">
+                                            <div class="product-category">
+                                                <a href="/all-products">
+                                                    <%= product.productCategory.name %>
+                                                </a>
+                                            </div>
+                                            <h2><a href="/product/<%= product.slug %>"><%= product.productName %></a></h2>
+                                            <div class="rating-result" title="90%">
+                                                <span>
+                                                    <span>70%</span>
+                                                </span>
+                                            </div>
+                                            <div class="product-price">
+                                                <span>&#8377;<%= product.productPrice %></span>
+                                                <span class="old-price">&#8377;<%= product.productOldPrice %></span>
+                                            </div>
+                                            <div class="product-action-1 show">
+                                                <a aria-label="Add To Cart" class="addTocartButton action-btn hover-up" data-product-id="<%= product._id %>">
+                                                    <i class="fi-rs-shopping-bag-add"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% }) %>
                             </div>
                         </div>
                     </div>
@@ -167,7 +153,7 @@
 
                                 <% products.forEach(product=>{ %>
                                     <% if(product.productStatus && product.productCategory.active &&
-                                        product.productCategory.name==='COMICS  & SUPERHEROS' ) { %>
+                                        product.productCategory.name==='RC BOATS' ) { %>
                                         <div class="product-cart-wrap">
                                             <div class="product-img-action-wrap">
                                                 <div class="product-img product-img-zoom">
