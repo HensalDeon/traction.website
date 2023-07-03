@@ -67,9 +67,30 @@
                                     </div>
                                 </div>
                                 <div class="row product-grid-3">
-
-                                    <% products.forEach(product=> { %>
-
+                                    <!-- Quick view -->
+                                    <div class="modal fade custom-modal" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">              
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>       
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-12 col-xs-12">
+                                                            <div class="detail-gallery">
+                                                                <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+                                                                <!-- MAIN SLIDES -->
+                                                                <div class="product-image-slider">
+                                                                        <figure class="border-radius-10">
+                                                                            <img alt="product image" class="quick-view-image">
+                                                                        </figure>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% products.forEach((product)=> {%> 
                                         <div class="col-lg-3 col-md-4">
                                             <div class="product-cart-wrap mb-30">
                                                 <div class="product-img-action-wrap">
@@ -83,15 +104,14 @@
                                                     </div>
                                                     <div class="product-action-1">
                                                         <a aria-label="Quick view" class="action-btn hover-up"
-                                                            data-bs-toggle="modal" data-bs-target="#quickViewModal">
+                                                            data-bs-toggle="modal" data-bs-target="#quickViewModal" onclick="loadFromBackEnd('<%= product._id %>')">
                                                             <i class="fi-rs-search"></i></a>
                                                         <a aria-label="Add To Wishlist" class="action-btn hover-up"
                                                             href="/wishlist/<%= product.slug %>"><i
                                                                 class="fi-rs-heart"></i></a>
-                                                        <a aria-label="Compare" class="action-btn hover-up" href="/"><i
-                                                                class="fi-rs-shuffle"></i></a>
+                                                        <!-- <a aria-label="Compare" class="action-btn hover-up" href="/"><i
+                                                                class="fi-rs-shuffle"></i></a> -->
                                                     </div>
-
                                                     <div
                                                         class="product-badges product-badges-position product-badges-mrg">
                                                         <% var availableBadges=["New", "Hot" , "Sale" , "Limited" ]; %>
@@ -171,16 +191,36 @@
                 </section>
             </main>
             <%- include("./layouts/footer.ejs")%>
-                <%- include("./script/script.ejs") %>
-</body>
+            <script>
+                function handleSortByChange() {
+                    const sortBy = document.getElementById('sortByDropdown').value;
+                    const page = '<%= currentPage %>';
+                    const limit = '<%= limit %>';
+                    const url = `/shop?page=${page}&limit=${limit}&sortBy=${sortBy}`;
+                    window.location.href = url;
+                }
+                function loadFromBackEnd(productId) {
+                    fetch(`/product/images/${productId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                        const productImages = data.productImageUrls;
 
-<script>
-    function handleSortByChange() {
-        const sortBy = document.getElementById('sortByDropdown').value;
-        const page = '<%= currentPage %>';
-        const limit = '<%= limit %>';
-        const url = `/shop?page=${page}&limit=${limit}&sortBy=${sortBy}`;
-        window.location.href = url;
-    }
-</script>
+                        // Update the quick view modal with the new images
+                        const quickViewImages = document.querySelectorAll('.quick-view-image');
+                        quickViewImages.forEach((image, index) => {
+                            if (productImages[index]) {
+                            image.src = productImages[index];
+                            }
+                        });
+                        })
+                        .catch(error => {
+                        console.error('Error:', error);
+                        });
+                    }
+
+            </script>
+                <%- include("./script/script.ejs") %>
+        </body>
+        
+        
 </html>

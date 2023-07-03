@@ -16,6 +16,9 @@
 html{
   scroll-behavior: smooth;
 }
+.card-body p{
+  color: #212529;
+}
 .product-content-wrap h2{
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -2461,9 +2464,11 @@ label {
 }
 
 .dashboard-menu {
-  border: 1px solid #e2e9e1;
+  border: 1px solid #dc3545;
   border-radius: 5px;
   overflow: hidden;
+  backdrop-filter: blur(118px);
+  background-color: #ffffff00;
 }
 
 .dashboard-menu ul {
@@ -2477,7 +2482,7 @@ label {
 
 .dashboard-menu ul li a {
   font-size: 14px;
-  color: #242424;
+  color: #ffc107;
   padding: 15px 30px;
 }
 
@@ -2496,9 +2501,12 @@ label {
 }
 
 .dashboard-menu ul li:not(:last-child) {
+  transition: background-color 0.3s ease;
   border-bottom: 1px solid #e2e9e1;
 }
-
+.dashboard-menu ul li:not(:last-child):hover{
+  background-color: #27322d;
+}
 .tab-header {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -3710,6 +3718,7 @@ table .product-thumbnail img {
 }
 
 .product-cart-wrap .product-action-1 {
+  display: flex;
   position: absolute;
   left: 50%;
   top: 50%;

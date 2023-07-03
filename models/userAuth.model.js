@@ -28,15 +28,14 @@ async function checkUserWithEmail(email, password) {
 async function checkUserExistOrNot(phoneNumber) {
   try {
     const user = await userDatabase.findOne({ phone: phoneNumber });
+    const res = {}
     if (user) {
-      const result = await sendOtp(phoneNumber);
-      if (result) {
-        return true;
-      } else {
-        return false;
-      }
+     const sendotp = await  sendOtp(user.phone)
+      if(!sendotp)  return {status:false,message:"Unable to send otp sorry burh"}
+      return {status:true,message:"Successfully send "}
+
     } else {
-      return false;
+      return { status:false,message:"User not registered!"};
     }
   } catch (error) {
     console.error(error);
@@ -46,6 +45,7 @@ async function checkUserExistOrNot(phoneNumber) {
 
 async function verifyPhoneNumber(phoneNumber, otp) {
   try {
+    console.log("hello world")
     const isVerified = await verifyOtp(phoneNumber, otp);
     if (isVerified) {
       const user = await userDatabase.findOne({ phone: phoneNumber });
@@ -63,7 +63,7 @@ async function sendVerificationSignup(phoneNumber) {
   try {
     const user = await userDatabase.findOne({ phone: phoneNumber });
     if (!user) {
-      await sendOtp(phoneNumber);
+      sendOtp(phoneNumber);
       return true;
     } else {
       return false; //phone number already registered

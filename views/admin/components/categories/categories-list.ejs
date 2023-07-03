@@ -161,9 +161,7 @@
             if (response.status) {
                 var categoryNameElement = document.getElementById('category-name-' + categoryId);
                 categoryNameElement.textContent = newName;
-                console.log(newNameInput+'joooooppppp')
                 newNameInput.value=newName;
-                console.log(newNameInput.value+'jooo=jooppppp')
                 editModal.style.display = 'none';
             } else {
                 console.error('Failed to update category name on the server.');
@@ -192,7 +190,6 @@
       throw new Error('Failed to update category name on the server.');
     }
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     throw new Error(`Error updating category name: ${error.message}`);

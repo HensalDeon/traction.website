@@ -2,6 +2,24 @@ const productDatabase = require('../schema/product.schema');
 const cloudinary = require('../config/cloudinary');
 const slugify = require('slugify');
 
+async function setProductImage(productId, remainingImageUrls) {
+  try {
+    const product = await Product.findByIdAndUpdate(
+      productId,
+      { productImageUrls: remainingImageUrls },
+      { new: true }
+    );
+
+    if (!product) {
+      throw new Error('Product not found');
+    }
+
+    return { success: true, message: 'Product image updated successfully' };
+  } catch (error) {
+    throw new Error('Failed to update product image');
+  }
+}
+
 async function fetchAllProducts(page, limit, sortBy) {
   try {
     try {
@@ -140,22 +158,28 @@ async function getProductImages(productId) {
   }
 }
 
-async function updateProduct(productId, productData, productImages) {
+async function updateProduct(productId, productData, productImages,deletedImages) {
   try {
     const product = await productDatabase.findById(productId);
-
+    
     if (!product) {
       throw new Error('Product not found');
     }
+    
+    if (deletedImages && deletedImages.length > 0) {
+      product.productImageUrls = product.productImageUrls.filter(url => !deletedImages.includes(url));
+      if(product.productImageUrls.length === 0 && productImages?.length === 0){
+          return {status:false,message:'Minimum 1 image required'}
+      }
+    }
+    if (productImages) {
+      if(productImages.length + product.productImageUrls.length > 4){
+          return {status:false,message:'Cant add more than four images' }
+      }
 
-    if (
-      productImages &&
-      product.productImageUrls.length < 4 &&
-      product.productImageUrls.length + productImages.length < 4
-    ) {
       for (let i = 0; i < productImages.length; i++) {
-        let locaFilePath = productImages[i].path;
-        let response = await cloudinary.uploader.upload(locaFilePath, {
+        let localFilePath = productImages[i].path;
+        let response = await cloudinary.uploader.upload(localFilePath, {
           folder: 'traction/product_images',
           unique_filename: true,
         });
@@ -172,7 +196,7 @@ async function updateProduct(productId, productData, productImages) {
 
     const updatedProduct = await product.save();
 
-    return updatedProduct;
+    return {status:true,updatedProduct:updatedProduct,message:"Product updated successfully"};
   } catch (error) {
     throw new Error(`Error updating product details: ${error.message}`);
   }
@@ -243,4 +267,6 @@ module.exports = {
   updateProduct,
   getProductsWithCategory,
   searchProductsWithRegex,
+
+  setProductImage,
 };

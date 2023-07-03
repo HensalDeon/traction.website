@@ -40,7 +40,7 @@
 </style>
 
 <section class="content-main">
-  <form id="myForm">
+  <form id="myForm" enctype="multipart/form-data">
     <div class="row">
       <div class="col-9">
         <div class="content-header">
@@ -54,7 +54,7 @@
             <div class="mb-4">
               <span id="productId" data-productId="<%= product._id %>" hidden></span>
               <label for="productName" class="form-label">Product title</label>
-              <input type="text" value="<%-  product.productName %>" class="form-control" id="productName"
+              <input type="text" value="<%- product.productName %>" class="form-control" id="productName"
                 name="productName" required>
             </div>
             <div class="mb-4">
@@ -93,11 +93,11 @@
                   <label class="form-label">Category</label>
                   <select class="form-select" name="productCategory" id="productCategory" required>
                     <% categories.forEach(category=> { %>
-
+                      <!-- display the current pdt category -->
                       <% if(category.name === product?.productCategory?.name ) { %>
                        <option selected value="<%= category._id %>"><%= category.name %> %></option>
                        <% } %>
-
+                        <!-- display the remanining active category -->
                       <% if(category.active && category.name != product?.productCategory?.name ) { %>
                         <option value="<%= category._id %>"><%= category.name %></option>
                       <% } %>
@@ -144,25 +144,32 @@
 
 
 <script>
-document.getElementById('update-product-btn').addEventListener('click', (event) => {
+  var deletedImages = [];
+
+const submitButton = document.getElementById('update-product-btn')
+  submitButton.addEventListener('click', (event) => {
   event.preventDefault();
 
   const imageInput = document.getElementById('productImage');
   const selectedImages = imageInput.files;
-
+  
+  submitButton.disabled = true;
   const form = document.getElementById('myForm');
   const formData = new FormData(form);
 
   const productId = document.getElementById('productId').getAttribute('data-productId')
-  formData.delete('productImage');
+  console.log("pdt"+productId);
   formData.append('productId',productId);
 
-  for (let i = 0; i < selectedImages.length; i++) {
-    formData.append('productImage', selectedImages[i]);
-  }
-  
-  const url = '/admin/edit-product'
+  // const remainingImageUrls = getRemainingImageUrls();
 
+  // formData.append('remainingImageUrls', JSON.stringify(remainingImageUrls));
+
+  formData.append('deletedImages',deletedImages)
+
+
+  const url = '/admin/edit-product'
+  submitButton.disabled = true;
   axios
     .put(url, formData, {
       headers: {
@@ -171,10 +178,12 @@ document.getElementById('update-product-btn').addEventListener('click', (event) 
     })
     .then((response) => {
       if(response.data.success){
+        submitButton.disabled = false;
         callAlertify('success',response.data.message)
         window.location.href = '/admin/products';
       }else{
-        callAlertify('error',response.data.message)
+        callAlertify('error',response.data.message);
+        submitButton.disabled = false;
       }
     })
     .catch((error) => {
@@ -198,6 +207,7 @@ document.getElementById('update-product-btn').addEventListener('click', (event) 
       .then(data => {
         
         uploadedImages = data.productImageUrls;
+        console.log("img url"+uploadedImages);
         displayImages();
       })
       .catch(error => console.error(error));
@@ -243,6 +253,7 @@ document.getElementById('update-product-btn').addEventListener('click', (event) 
   // Function to handle image selection
   function imageSelect() {
     var fileInput = document.getElementById('productImage');
+    fileInput.addEventListener('change', imageSelect);
     var files = fileInput.files;
 
     for (var i = 0; i < files.length; i++) {
@@ -261,7 +272,9 @@ document.getElementById('update-product-btn').addEventListener('click', (event) 
 
   // Function to delete an image
   function deleteImage(index) {
+    deletedImages.push(uploadedImages[index]);
     uploadedImages.splice(index, 1);
+    console.log("index",index);
     displayImages();
   }
 
@@ -287,128 +300,28 @@ document.getElementById('update-product-btn').addEventListener('click', (event) 
     fileInput.click();
   }
 
+
+/* 
+function getRemainingImageUrls() {
+  const originalImages = Array.from(document.querySelectorAll('.image_container'));
+  const remainingImageUrls = [];
+
+  for (let i = 0; i < originalImages.length; i++) {
+    const image = originalImages[i];
+    const imageUrl = image.querySelector('img').src;
+    const hasParent = image.parentNode !== null;
+    console.log("img urls", imageUrl);
+
+    if (hasParent) {
+      remainingImageUrls.push(imageUrl);
+      console.log("remain url",remainingImageUrls);
+    }
+  }
+
+  return remainingImageUrls;
+} */
+
   const productId = document.getElementById('productId');
   let product = productId.getAttribute('data-productId');
   loadImagesFromBackend(product);
-
-  
 </script>
-
-
-
-
-
-<!-- <script>
-
-let images = []; 
-
-// Function to handle image selection
-function imageSelect() {
-  const imageInput = document.getElementById('productImage');
-  const selectedImages = imageInput.files;
-
-  if (images.length + selectedImages.length > 4) {
-    callAlertify('error', `You can only select 4 images`);
-    imageInput.value = '';
-    return;
-  }
-
-  // Iterate over selected images and add them to the images array
-  for (let i = 0; i < selectedImages.length; i++) {
-    const file = selectedImages[i];
-    const url = URL.createObjectURL(file);
-    if (checkDuplicate(file.name)) {
-      images.push({
-        name: file.name,
-        url: url,
-        file: file,
-      });
-    } else {
-      callAlertify('warning', `${file.name} is already added`);
-    }
-  }
-
-  updateImagePreview(); // Update the image preview
-}
-
-// Function to update the image preview
-function updateImagePreview() {
-  console.log(images);
-  const imagePreviewContainer = document.getElementById('image-preview');
-  imagePreviewContainer.innerHTML = '';
-
-  images.forEach((image, index) => {
-    const imageContainer = document.createElement('div');
-    imageContainer.className = 'image_container d-flex justify-content-center position-relative';
-
-    const imgElement = document.createElement('img');
-    imgElement.src = image.url;
-    imgElement.alt = 'img';
-
-    const deleteIcon = document.createElement('span');
-    deleteIcon.className = 'position-absolute delete-icon';
-    deleteIcon.innerHTML = '&times;';
-    deleteIcon.addEventListener('click', () => deleteImage(index));
-
-    const editIcon = document.createElement('span');
-    editIcon.className = 'position-absolute edit-icon';
-    editIcon.innerHTML = '&#9998;';
-    editIcon.addEventListener('click', () => changeImage(index));
-
-    imageContainer.appendChild(imgElement);
-    imageContainer.appendChild(deleteIcon);
-    imageContainer.appendChild(editIcon);
-
-    imagePreviewContainer.appendChild(imageContainer);
-  });
-}
-
-// Function to delete an image from the images array
-function deleteImage(index) {
-  images.splice(index, 1);
-  updateImagePreview();
-}
-
-// Function to check for duplicate image name in the images array
-function checkDuplicate(name) {
-  for (let i = 0; i < images.length; i++) {
-    if (images[i].name === name) {
-      return false; // Duplicate found
-    }
-  }
-  return true; // No duplicate found
-}
-
-// Function to handle image change (edit)
-function changeImage(index) {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
-  input.addEventListener('change', (event) => handleImageChange(event, index));
-  input.click();
-}
-
-// Function to handle the file selection when editing an image
-function handleImageChange(event, index) {
-  const file = event.target.files[0];
-  const url = URL.createObjectURL(file);
-
-  images[index] = {
-    name: file.name,
-    url: url,
-    file: file,
-  };
-
-  updateImagePreview();
-}
-
-// Function to handle form submission (update button)
-function handleFormSubmit() {
- console.log('hi');
-}
-
-// Add an event listener to the update button
-const updateBtn = document.getElementById('update-product-btn');
-updateBtn.addEventListener('click', handleFormSubmit);
-
-</script> -->

@@ -69,13 +69,15 @@ async function httpLoginVerifyPhone(req, res) {
   const { phone } = req.body;
   console.log(phone + '📞');
   try {
-    const userExists = await checkUserExistOrNot(phone);
-    if (userExists) {
-      req.session.phone = phone;
-      res.status(200).json({ status: true });
-    } else {
-      res.status(400).json({ status: false }); //phone number already registered
+   
+    const  result = await checkUserExistOrNot(phone)
+    if(result.status) {
+      req.session.phone = phone 
+      return res.status(200).json(result)
+    }else{
+      return res.status(400).json(result)
     }
+   
   } catch (error) {
     handleError(res, error);
   }
@@ -83,6 +85,7 @@ async function httpLoginVerifyPhone(req, res) {
 
 async function httpGetOtpVerify(req, res) {
   try {
+    console.log("entered");
     const phone = req.session.phone;
     return res.render('user/logins/otp-verify', { phone });
   } catch (error) {
@@ -92,14 +95,16 @@ async function httpGetOtpVerify(req, res) {
 
 async function httpPostVerifyOtp(req, res) {
   try {
+    console.log("hello world")
     const phone = req.session.phone;
     const { otp } = req.body;
     const response = await verifyPhoneNumber(phone, otp);
+    console.log(response)
     if (response.status) {
       req.session.userloggedIn = true;
       req.session.user = response.user;
       return res.json({ status: true });
-    } else {
+    } else {  
       return res.json({ status: false });
     }
   } catch (error) {
@@ -135,13 +140,10 @@ async function httpPostSignup(req, res) {
     const validation = signupSchema.validate(req.body, {
       abortEarly: false,
     });
-
     if (validation.error) {
       return res.status(400).json({ error: validation.error.details[0].message });
     }
-
     const { status, user, message } = await submitSignup(req.body);
-
     if (!status) {
       return res.status(400).json({ error: message, status });
     }
@@ -160,17 +162,17 @@ async function httpGetAccount(req, res) {
     const limit = parseInt(req.query.limit) || 10;
 
     const userData = req.session?.user;
-    if (userData) {
-      const orders = await fetchUserOrderDetails(req.session.user._id, res,page,limit);
-      return res.render('user/account', {
-        userData: userData,
-        orders: orders.orderDetails,
-        addresses: orders.addresses,
-        totalPages:orders.totalPages,
-        currentPage:orders.currentPage,
-        limit: orders.limit,
-      });
-    }
+    // if (userData) {
+    //   const orders = await fetchUserOrderDetails(req.session.user._id, res,page,limit);
+    //   return res.render('user/account', {
+    //     userData: userData,
+    //     orders: orders.orderDetails,
+    //     addresses: orders.addresses,
+    //     totalPages:orders.totalPages,
+    //     currentPage:orders.currentPage,
+    //     limit: orders.limit,
+    //   });
+    // }
     return res.render('user/account', { userData });
   } catch (error) {
     handleError(res, error);

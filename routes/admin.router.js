@@ -11,9 +11,9 @@ const {
   httpGetUsers,
   httpPutBlockUser,
   httpGet404,
-  httpGetGraphData,
-  httpGetChartData,
-  httpGetReport,
+  // httpGetGraphData,
+  // httpGetChartData,
+  // httpGetReport,
 } = require('../controllers/admin.controller');
 
 const {
@@ -53,13 +53,9 @@ adminRouter.get('/add-products', isAdminLoggedIn, httpGetAddProduct);
 adminRouter.post('/add-products',upload.array('productImage', 4),isAdminLoggedIn,httpPostAddProduct);
 
 adminRouter.get('/edit-product/:slug', isAdminLoggedIn, httpGetEditProduct);
-adminRouter.get('/getProductImages/:id', isAdminLoggedIn, httpGetProductImages);
 adminRouter.put('/edit-product',upload.array('productImage', 4),isAdminLoggedIn,httpPutProductDetails);
+adminRouter.get('/getProductImages/:id', isAdminLoggedIn, httpGetProductImages);
 adminRouter.put('/product-status/:id', isAdminLoggedIn, httpPutProduct);
-
-// adminRouter.get('/orders', isAdminLoggedIn, httpGetOrderPage);
-// adminRouter.post('/order-status', isAdminLoggedIn, httpChangeOrderStatus);
-// adminRouter.get('/order-details', isAdminLoggedIn, httpGetOrderDetails);
 
 adminRouter.get('/*', httpGet404);
 

@@ -1,7 +1,6 @@
 <script>
   var phoneInput = document.getElementById("phone");
   var sendOTPButton = document.getElementById("send-otp-btn");
-
   sendOTPButton.disabled = true;
 
   // Add an event listener to the phone input element
@@ -39,10 +38,12 @@
     xhr.open('POST', '/otp-login', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function () {
+      const response = JSON.parse(xhr.responseText);
+      const message = response.message;
       if (xhr.status === 200) {
         window.location.href = '/otp-verify';
       } else if (xhr.status === 400) {
-        errorMsg = "Phone number not registered";
+        errorMsg = message;
         document.getElementById("errors").innerHTML = '<span style="color:red">' + errorMsg + '</span>';
         setTimeout(() => {
           document.getElementById("errors").innerHTML = "";

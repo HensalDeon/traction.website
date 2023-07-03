@@ -1,7 +1,7 @@
 const express = require('express');
 const userRouter = express.Router();
 
-const upload = require('../config/multer');
+// const upload = require('../config/multer');
 
 const { isLoggedIn, isLoggedOut } = require('../middlewares/auth.handler');
 
@@ -16,7 +16,7 @@ const {
   httpPostVerifyOtp,
   httpSignupOtpVerify,
   httpPostSignup,
-  // httpGetAccount,
+  httpGetAccount,
   // httpUpdateUserdata,
   httpGetLogout,
   httpGet404,
@@ -28,16 +28,8 @@ const {
   httpCategoryProduct,
   httpProductsBySearch,
   httpSearchResult,
+  httpGetProductImages,
 } = require('../controllers/product.controller');
-
-const {
-  httpGetCart,
-  httpPostToCart,
-  httpRemoveFromCart,
-  httpUpdateQuantity,
-  httpClearCart,
-} = require('../controllers/cart.controller');
-
 
 userRouter.get('/', httpGetHome);
 userRouter.get('/login', isLoggedOut, httpGetLogin);
@@ -54,16 +46,12 @@ userRouter.post('/signup-otp', isLoggedOut, httpSignupOtpVerify);
 userRouter.get('/product/:slug', httpGetProduct);
 userRouter.get('/shop', httpGetAllProducts);
 userRouter.get('/shop/:id', httpCategoryProduct);
-
-userRouter.get('/cart', isLoggedIn, httpGetCart);
-userRouter.post('/cart', isLoggedIn, httpPostToCart);
-userRouter.delete('/cart', isLoggedIn, httpRemoveFromCart);
-userRouter.patch('/cart', isLoggedIn, httpUpdateQuantity);
-userRouter.delete('/clear-cart', isLoggedIn, httpClearCart);
+userRouter.get('/product/images/:id', httpGetProductImages);//use slug
 
 userRouter.get('/search', httpSearchResult);
 userRouter.post('/search-products', httpProductsBySearch);
 
+userRouter.get('/account', isLoggedIn, httpGetAccount);
 userRouter.get('/logout', httpGetLogout);
 userRouter.get('/*', httpGet404);
 

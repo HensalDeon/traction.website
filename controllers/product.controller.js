@@ -13,6 +13,8 @@ const {
   updateProduct,
   getProductsWithCategory,
   searchProductsWithRegex,
+
+  setProductImage,
 } = require('../models/product.model');
 
 async function httpGetProducts(req, res) {
@@ -84,6 +86,8 @@ async function httpGetEditProduct(req, res) {
     const productResult = await fetchProduct(slug);
     const categoryResult = await fetchCategories();
 
+    console.log("hiii"+categoryResult.categories);
+
     if (productResult.status) {
       res.render('admin/update-products', {
         categories: categoryResult.categories,
@@ -116,25 +120,24 @@ async function httpPutProduct(req, res) {
 
 async function httpPutProductDetails(req, res) {
   try {
-    const { productId } = req.body;
+    const { deletedImages,...dataBody} = req.body;
     const validation = updateProductSchema.validate(
-      { ...req.body, productImage: req.files },
+      { ...dataBody },
       { abortEarly: false },
     );
-
+    
     if (validation.error) {
       return res.status(400).json({ success: false, message: validation.error.details[0].message });
     }
-
-    const productResult = await updateProduct(productId, req.body, req.files);
-    if (productResult) {
+    const productResult = await updateProduct(req.body.productId, dataBody, req.files,deletedImages);
+    if (productResult.status) {
       return res.json({
         success: true,
-        message: 'Product details updated successfully',
-        data: productResult,
+        message: productResult.message,
+        data: productResult.updatedProduct,
       });
     } else {
-      return res.json({ success: false, message: 'Failed to update product details' });
+      return res.json({ success: false, message: productResult.message });
     }
   } catch (error) {
     handleError(res, error);

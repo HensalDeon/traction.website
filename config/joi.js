@@ -71,16 +71,13 @@ const updateProductSchema = Joi.object({
     'number.base': 'Old price must be a number',
     'number.positive': 'Old price must be a positive number'
   }),
+  productCategory: Joi.string().required().messages({
+    'any.required': 'Category is required'
+  }),
   stocks: Joi.number().integer().min(0).messages({
     'number.base': 'Stocks must be a number',
     'number.integer': 'Stocks must be an integer',
     'number.min': 'Stocks cannot be negative'
-  }),
-  productCategory: Joi.string().required().messages({
-    'any.required': 'Category is required'
-  }),
-  productImage: Joi.array().messages({
-    'any.required': 'Product image is required'
   }),
   productId: Joi.any().optional(),
 }).min(1); 

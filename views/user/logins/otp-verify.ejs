@@ -34,7 +34,7 @@
                         Enter the OTP sent to
                         <span class="font-semibold">+91 <%= phone %></span>
                       </div>
-                      <form  id="otp-form">
+                      <form >
                         <div class="form-group">
                           <input id="otp" name="otp" class="form-control" placeholder="Enter OTP" type="text">
                           <div id="otp-error" class="invalid-feedback"></div>
@@ -57,8 +57,84 @@
       </section>
     </main>
     <%- include("../layouts/footer.ejs") %>
-      <%- include("../script/script.ejs") %>
-          <%- include("./validation/otp-validation.ejs") %>
+        
+      <script>
+        const verifyBtn = document.getElementById("verify-button");
+        const otp = document.getElementById("otp");
+        const otpRegex = /^\d{6}$/;
+        const otpError = "<strong>Invalid OTP format. Please enter a 6-digit number.</strong>";
+        const invalidOtpError = "<strong>The OTP entered is incorrect. Please ensure you have entered the correct OTP and try again.</strong>";
+    
+        otp.addEventListener("input", () => {
+            let otpErrorText = "";
+            if (otp.value.trim() !== "" && !otpRegex.test(otp.value.trim())) {
+                otpErrorText = otpError;
+            }
+            document.getElementById("otp-error").innerHTML = otpErrorText;
+            otp.classList.toggle("is-invalid", otpErrorText !== "");
+        });
+    
+        verifyBtn.addEventListener("click", async (event) => {
+            event.preventDefault();
+            let isValid = true;
+            let otpErrorText = "";
+    
+            // Check if the OTP field is empty or invalid
+            if (otp.value.trim() === "") {
+                otpErrorText = "<strong>OTP is required.</strong>";
+                isValid = false;
+            } else if (!otpRegex.test(otp.value.trim())) {
+                otpErrorText = otpError;
+                isValid = false;
+            }
+    
+            // Display error message if any
+            if (!isValid) {
+                document.getElementById("otp-error").innerHTML = otpErrorText;
+                otp.classList.add("is-invalid");
+                return;
+            }
+    
+            const url = '/otp-verify';
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ otp: otp.value.trim() })
+            };
+    
+        fetch(url, requestOptions)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('something wrong!verification failed');
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.status) {
+                     window.location.href = '/';
+                } else {
+                     otpErrorText = invalidOtpError;
+                     document.getElementById("otp-error").innerHTML = otpErrorText;
+                     otp.classList.add("is-invalid");
+                 }
+        })
+        .catch(error => {
+          otpErrorText = invalidOtpError;
+            document.getElementById("otp-error").innerHTML = otpErrorText;
+          otp.classList.add("is-invalid");
+        });
+    
+        });
+    
+        // Clear error message and class when input field is focused
+        otp.addEventListener("focus", () => {
+            document.getElementById("otp-error").innerHTML = "";
+            otp.classList.remove("is-invalid");
+        });
+    </script>
+
+<%- include("../script/script.ejs") %>
+
 
 </body>
 

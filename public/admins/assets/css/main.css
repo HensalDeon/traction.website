@@ -13,6 +13,12 @@ body{
     background-repeat: no-repeat;
    
 }
+.btn-edit,
+.btn-delete {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+}
+  
 .input-container {
     display: flex;
     align-items: center;

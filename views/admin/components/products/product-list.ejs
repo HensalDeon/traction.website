@@ -5,46 +5,39 @@
 
         </div>
         <div>
-            <!-- <a href="#" class="btn btn-light rounded font-md">Export</a>
-            <a href="#" class="btn btn-light rounded  font-md">Import</a> -->
             <a href="/admin/add-products" class="btn btn-primary btn-sm rounded">Create new</a>
         </div>
     </div>
     <div class="card mb-4">
         <header class="card-header">
             <div class="row align-items-center">
-
                 <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                    <select class="form-select">
-                        <option hidden selected>ALL CATEGORIES</option>
+                    <select class="form-select" id="categorySelect">
+                        <option value="all">ALL CATEGORIES</option>
                         <% categories.forEach(category=> { %>
                             <% if(category.active) { %>
-                                <option value="<%= category._id %>">
+                                <option value="<%= category.name %>">
                                     <%= category.name %>
                                 </option>
-                                <% } %>
-                                    <% }); %>
+                            <% } %>
+                        <% }); %>
                     </select>
                 </div>
-                <!-- <div class="col-md-2 col-6">
-                    <input type="date" value="02.05.2021" class="form-control">
-                </div> -->
                 <div class="col-md-2 col-6">
-                    <select class="form-select">
-                        <option selected="">Status</option>
-                        <option>Active</option>
-                        <option>Disabled</option>
-                        <option>Show all</option>
+                    <select class="form-select" id="statusSelect">
+                        <option value="active">Active</option>
+                        <option value="disabled">Disabled</option>
+                        <option value="all">Show all</option>
                     </select>
                 </div>
             </div>
         </header> <!-- card-header end// -->
         <div class="card-body">
-            <% product.forEach((product,index)=> { %>
-                <% if(product.productStatus && product.productCategory.active) { %>
-                    <article class="itemlist">
+            <% product.forEach((product,index)=> { %>           
+                    <article class="itemlist" 
+                    data-product-status="<%= product.productStatus %>" 
+                    data-product-category="<%= product.productCategory.name %>">
                         <div class="row align-items-center">
-
                             <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
                                 <a class="itemside" href="#">
                                     <div class="left">
@@ -76,21 +69,20 @@
                             </div>
 
 
-                            <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
+                            <div class="col-lg-2 col-sm-2 col-4 col-action text-end d-flex align-items-center justify-content-end">
                                 <a href="/admin/edit-product/<%- product.slug %>"
-                                    class="btn btn-sm font-sm rounded btn-brand">
+                                    class="btn btn-edit me-2">
                                     <i class="material-icons md-edit"></i> Edit
                                 </a>
                                 <a id="deletbtn" onclick="deleteProduct('<%= product._id %>')"
                                     data-product-id="<%= product._id %>"
-                                    class="btn btn-sm font-sm btn-light rounded deleteProductclass">
+                                    class="btn btn-delete deleteProductclass">
                                     <i class="material-icons md-delete_forever"></i> Delete
                                 </a>
                             </div>
                         </div> <!-- row .// -->
                     </article> <!-- itemlist  .// -->
-                    <% } %>
-                        <% }); %>
+            <% }); %>
         </div>
     </div> <!-- card end// -->
     <div class="pagination-area mt-15 mb-50">
@@ -129,7 +121,7 @@
 
         swal({
             title: "Are you sure?",
-            text: "Once deleted, you will able to recover from unlisted page!",
+            text: "Once deleted, you will able to find it in Product disabled section!",
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -158,5 +150,33 @@
         });
 
     }
+
+    var categorySelect = document.getElementById('categorySelect');
+    var statusSelect = document.getElementById('statusSelect');
+    // Add event listener for change event
+    categorySelect.addEventListener('change', filterProducts);
+    statusSelect.addEventListener('change', filterProducts);
+
+    // Function to filter the products based on the selected status
+    function filterProducts() {
+        var selectedCategory = categorySelect.value;
+        var selectedStatus = statusSelect.value;
+        var productList = document.querySelectorAll('.itemlist');
+        productList.forEach(function(product) {
+        var productStatus = product.getAttribute('data-product-status');
+        var productCategory = product.getAttribute('data-product-category')
+
+        if (
+            (selectedCategory === 'all' || productCategory === selectedCategory) &&
+            (selectedStatus === 'all' || (selectedStatus === 'active' && productStatus) || (selectedStatus === 'disabled' && !productStatus))
+        ) {
+            product.style.display = 'block';
+        } else {
+            product.style.display = 'none';
+        }
+        });
+    }
+  // Initial filter on page load
+  filterProducts();
 
 </script>

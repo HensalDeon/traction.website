@@ -1,3 +1,26 @@
+<!-- Quick view -->
+<div class="modal fade custom-modal" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">              
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>       
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <div class="detail-gallery">
+                            <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+                            <!-- MAIN SLIDES -->
+                            <div class="product-image-slider">
+                                    <figure class="border-radius-10">
+                                        <img alt="product image" class="quick-view-image">
+                                    </figure>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <section class="product-tabs section-padding wow fadeIn animated">
     <div class="container">
         <div class="tab-header">
@@ -39,7 +62,16 @@
                                                         alt="">
                                                 </a>
                                             </div>
+                                            <!-- quick view -->
+                                            <!-- <div class="product-action-1">
+                                                <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal"
+                                                    data-bs-toggle="modal" data-bs-target="#quickViewModal" onclick="loadFromBackEnd('<%= product._id %>')">
+                                                    <i class="fi-rs-search"></i></a>
+                                                <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                                                    href="/wishlist/<%= product.slug %>"><i
+                                                        class="fi-rs-heart"></i></a>
                                             
+                                            </div> -->
                                             <div class="product-badges product-badges-position product-badges-mrg">
                                                 <span class="hot">Hot</span>
                                             </div>
@@ -96,15 +128,6 @@
                                                         alt="">
                                                 </a>
                                             </div>
-                                            <!-- <div class="product-action-1">
-                                                <a aria-label="Quick view" class="action-btn hover-up"
-                                                    data-bs-toggle="modal" data-bs-target="#quickViewModal"><i
-                                                        class="fi-rs-eye"></i></a>
-                                                <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                    href="/wishlist/<%#= product.slug %>"><i class="fi-rs-heart"></i></a>
-                                                <a aria-label="Compare" class="action-btn hover-up"><i
-                                                        class="fi-rs-shuffle"></i></a>
-                                            </div> -->
                                             <div class="product-badges product-badges-position product-badges-mrg">
                                                 <span class="hot">Hot</span>
                                             </div>
@@ -161,15 +184,7 @@
                                                         alt="">
                                                 </a>
                                             </div>
-                                            <!-- <div class="product-action-1">
-                                                <a aria-label="Quick view" class="action-btn hover-up"
-                                                    data-bs-toggle="modal" data-bs-target="#quickViewModal"><i
-                                                        class="fi-rs-eye"></i></a>
-                                                <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                    href="/wishlist/<#%= product.slug %>"><i class="fi-rs-heart"></i></a>
-                                                <a aria-label="Compare" class="action-btn hover-up"><i
-                                                        class="fi-rs-shuffle"></i></a>
-                                            </div> -->
+                                            
                                             <div class="product-badges product-badges-position product-badges-mrg">
                                                 <span class="hot">Hot</span>
                                             </div>
@@ -203,3 +218,23 @@
         </div>
     </div>
 </section>
+<!-- <script>
+    function loadFromBackEnd(productId) {
+                    fetch(`/product/images/${productId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                        const productImages = data.productImageUrls;
+
+                        // Update the quick view modal with the new images
+                        const quickViewImages = document.querySelectorAll('.quick-view-image');
+                        quickViewImages.forEach((image, index) => {
+                            if (productImages[index]) {
+                            image.src = productImages[index];
+                            }
+                        });
+                        })
+                        .catch(error => {
+                        console.error('Error:', error);
+                        });
+                    }
+</script> -->
