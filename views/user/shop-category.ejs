@@ -148,11 +148,6 @@
                                 <div class="pagination-area mt-15 mb-50">
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination justify-content-start">
-                                            <% if(currentPage> 1) { %>
-                                                <li class="page-item"><a class="page-link"
-                                                        href="/shop?page=<%=currentPage-1%>&limit=<%=limit%>"><i
-                                                            class="material-icons md-chevron_left"></i></a></li>
-                                                <% } %>
                                                     <% for (let i=1; i<=totalPages; i++) { %>
                                                         <% if (i===currentPage) { %>
                                                             <li class="page-item active"><a class="page-link" href="#">

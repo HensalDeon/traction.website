@@ -1,3 +1,4 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script>
     const form = document.getElementById("login-form");
     const email = document.getElementById("email");
@@ -13,10 +14,7 @@
 
         if (email.value.trim() === "") {
             emailError = "<strong>Email is required.</strong>";
-        } else if (!emailRegex.test(email.value)) {
-            emailError = "<strong>Invalid email format.</strong>";
-        }
-
+        } 
         document.getElementById('emailError').innerHTML = '';
         emailErrorElement.innerHTML = emailError;
         email.classList.toggle("is-invalid", emailError !== "");
@@ -28,10 +26,7 @@
 
         if (passwordInput.value.trim() === "") {
             passwordError = "<strong>Password is required.</strong>";
-        } else if (!passwordRegex.test(passwordInput.value.trim())) {
-            passwordError = "<strong>Password must be at least 6 characters long and contain at least one lowercase letter, one uppercase letter, and one number.</strong>";
-        }
-
+        } 
         document.getElementById('passwordError').innerHTML = '';
         passwordErrorElement.innerHTML = passwordError;
         passwordInput.classList.toggle("is-invalid", passwordError !== "");
@@ -44,23 +39,16 @@
         let isValid = true;
         let emailError = "";
         let passwordError = "";
-
+        
         if (email.value.trim() === "") {
             emailError = "<strong>Email is required.</strong>";
-            isValid = false;
-        } else if (!emailRegex.test(email.value)) {
-            emailError = "<strong>Invalid email format.</strong>";
             isValid = false;
         }
 
         if (passwordInput.value.trim() === "") {
             passwordError = "<strong>Password is required.</strong>";
             isValid = false;
-        } else if (!passwordRegex.test(passwordInput.value.trim())) {
-            passwordError = "<strong>Password must be at least 6 characters long and contain at least one lowercase letter, one uppercase letter, and one number.</strong>";
-            isValid = false;
         }
-
         emailErrorElement.innerHTML = emailError;
         passwordErrorElement.innerHTML = passwordError;
         email.classList.toggle("is-invalid", emailError !== "");
@@ -104,10 +92,5 @@
             callAlertify('error','Invalid credentials');
         }
     });
-
-
-
-
-
 
 </script>

@@ -85,7 +85,6 @@ async function httpLoginVerifyPhone(req, res) {
 
 async function httpGetOtpVerify(req, res) {
   try {
-    console.log("entered");
     const phone = req.session.phone;
     return res.render('user/logins/otp-verify', { phone });
   } catch (error) {
@@ -95,7 +94,6 @@ async function httpGetOtpVerify(req, res) {
 
 async function httpPostVerifyOtp(req, res) {
   try {
-    console.log("hello world")
     const phone = req.session.phone;
     const { otp } = req.body;
     const response = await verifyPhoneNumber(phone, otp);

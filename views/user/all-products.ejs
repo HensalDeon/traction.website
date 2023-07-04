@@ -102,16 +102,14 @@
                                                                 src="<%= product.productImageUrls[1] %>" alt="">
                                                         </a>
                                                     </div>
-                                                    <div class="product-action-1">
+                                                    <!-- <div class="product-action-1">
                                                         <a aria-label="Quick view" class="action-btn hover-up"
                                                             data-bs-toggle="modal" data-bs-target="#quickViewModal" onclick="loadFromBackEnd('<%= product._id %>')">
                                                             <i class="fi-rs-search"></i></a>
                                                         <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                            href="/wishlist/<%= product.slug %>"><i
+                                                            href="/wishlist/<%#= product.slug %>"><i
                                                                 class="fi-rs-heart"></i></a>
-                                                        <!-- <a aria-label="Compare" class="action-btn hover-up" href="/"><i
-                                                                class="fi-rs-shuffle"></i></a> -->
-                                                    </div>
+                                                    </div> -->
                                                     <div
                                                         class="product-badges product-badges-position product-badges-mrg">
                                                         <% var availableBadges=["New", "Hot" , "Sale" , "Limited" ]; %>
@@ -146,7 +144,7 @@
                                                     <div class="product-action-1 show">
                                                         <a aria-label="Add To Cart" data-product-id="<%= product._id %>"
                                                             class="addTocartButton action-btn hover-up"><i
-                                                                class="fi-rs-shopping-bag-add"></i></a>
+                                                            class="fi-rs-shopping-bag-add"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -159,29 +157,24 @@
                                 <div class="pagination-area mt-15 mb-50">
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination justify-content-start">
-                                            <% if(currentPage> 1) { %>
-                                                <li class="page-item"><a class="page-link"
-                                                        href="/shop?page=<%=currentPage-1%>&limit=<%=limit%>"><i
-                                                            class="material-icons md-chevron_left"></i></a></li>
+                                                <% for (let i=1; i<=totalPages; i++) { %>
+                                                    <% if (i===currentPage) { %>
+                                                        <li class="page-item active"><a class="page-link" href="#">
+                                                            <%= i %>
+                                                        </a></li>
+                                                    <% } else { %>
+                                                            <li class="page-item"><a class="page-link"
+                                                                href="/shop?page=<%=i%>&limit=<%=limit%>">
+                                                                <%= i %>
+                                                            </a></li>
+                                                    <% } %>
                                                 <% } %>
-                                                    <% for (let i=1; i<=totalPages; i++) { %>
-                                                        <% if (i===currentPage) { %>
-                                                            <li class="page-item active"><a class="page-link" href="#">
-                                                                    <%= i %>
-                                                                </a></li>
-                                                            <% } else { %>
-                                                                <li class="page-item"><a class="page-link"
-                                                                        href="/shop?page=<%=i%>&limit=<%=limit%>">
-                                                                        <%= i %>
-                                                                    </a></li>
-                                                                <% } %>
-                                                                    <% } %>
-                                                                        <% if (currentPage < totalPages) { %>
-                                                                            <li class="page-item"><a class="page-link"
-                                                                                    href="/shop?page=<%=currentPage+1%>&limit=<%=limit%>"><i
-                                                                                        class="material-icons md-chevron_right"></i></a>
-                                                                            </li>
-                                                                            <% } %>
+                                                    <% if (currentPage < totalPages) { %>
+                                                            <li class="page-item"><a class="page-link"
+                                                                href="/shop?page=<%=currentPage+1%>&limit=<%=limit%>"><i
+                                                                class="fi-rs-angle-double-small-right"></i></a>
+                                                            </li>
+                                                <% } %>
                                         </ul>
                                     </nav>
                                 </div>

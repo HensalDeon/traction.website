@@ -16,6 +16,9 @@
 html{
   scroll-behavior: smooth;
 }
+.product-action-1 a{
+  color: #000 !important;
+}
 .card-body p{
   color: #212529;
 }
@@ -1278,7 +1281,7 @@ textarea:-ms-input-placeholder {
 }
 
 input {
-  border: 1px solid #e2e9e1;
+  border: 1px solid #1e2c1c;
   border-radius: 4px;
   height: 45px;
   -webkit-box-shadow: none;
@@ -3656,7 +3659,7 @@ table .product-thumbnail img {
 /*SHOP*/
 .product-cart-wrap {
   position: relative;
-  background-color: #fff;
+  background-color: #e3838394;
   border: 1px solid #cce7d0;
   border-radius: 25px;
   overflow: hidden;
@@ -3675,7 +3678,6 @@ table .product-thumbnail img {
 
 .product-cart-wrap .product-img-action-wrap {
   position: relative;
-  background-color: rgb(223, 222, 222);
   padding: 10px 12px;
   overflow: hidden;
   max-height: 320px;
@@ -3903,7 +3905,7 @@ table .product-thumbnail img {
 }
 
 .product-cart-wrap .product-content-wrap .product-category a {
-  color: #90908e;
+  color: #000000;
   font-size: 12px;
 }
 
@@ -3941,7 +3943,7 @@ table .product-thumbnail img {
 .product-cart-wrap .product-content-wrap .product-price span.old-price {
   font-size: 14px;
   font-weight: 400;
-  color: #90908e;
+  color: #383636;
   margin: 0 0 0 7px;
   text-decoration: line-through;
 }
@@ -7474,7 +7476,7 @@ span.fi-rs-apps {
   left: 0;
   z-index: 9;
   margin: 0;
-  padding: 15px 0 10px 0;
+  padding: 14px 7px 14px 7px;
   background: #fff;
   border: 1px solid #eef0ee;
   border-radius: 4px;
@@ -9049,7 +9051,7 @@ span.fi-rs-apps {
 }
 
 .mb-50 {
-  margin-bottom: 50px !important;
+  padding-bottom: 50px !important;
 }
 
 .mb-55 {

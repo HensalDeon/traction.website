@@ -30,6 +30,7 @@ body {
 
 main {
   display: block;
+  backdrop-filter: blur(8px);
 }
 
 /**

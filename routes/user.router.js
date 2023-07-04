@@ -46,7 +46,7 @@ userRouter.post('/signup-otp', isLoggedOut, httpSignupOtpVerify);
 userRouter.get('/product/:slug', httpGetProduct);
 userRouter.get('/shop', httpGetAllProducts);
 userRouter.get('/shop/:id', httpCategoryProduct);
-userRouter.get('/product/images/:id', httpGetProductImages);//use slug
+userRouter.get('/product/images/:id', httpGetProductImages);
 
 userRouter.get('/search', httpSearchResult);
 userRouter.post('/search-products', httpProductsBySearch);

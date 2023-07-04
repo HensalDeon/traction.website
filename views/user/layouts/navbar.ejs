@@ -1,35 +1,39 @@
 <script>
-    window.addEventListener("DOMContentLoaded", (event) => {
+   window.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById('searchInput');
 
-    let searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('keyup', (event) => {
-            event.preventDefault();
+        event.preventDefault();
 
+        if (event.key === 'Enter') {
             const searchTerm = searchInput.value.trim();
-            const data = {
-                searchInput: searchTerm
-            };
+            const data = { searchInput: searchTerm };
+            console.log("entered");
+
             fetch('/search-products', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
-            }).then(async(res) => {
-                res = await res.json();
-                
-                if(res.success){
+            })
+            .then(response => response.json())
+            .then(result => {
+                // Handle the search result as needed
+                if (result.success) {
+                    // Redirect to the search results page
                     window.location.href = '/search';
-                }else{
-                    
+                } else {
+                    // Handle unsuccessful search
+                    console.log('Search failed:', result.error);
                 }
-
-            }).catch((error) => {
-                console.log(error);
+            })
+            .catch(error => {
+                console.log('An error occurred:', error);
             });
-
+        }
     });
-    });
+});
 
 
 </script>
@@ -60,18 +64,6 @@
                     <div class="col-xl-3 col-lg-4">
                         <div class="header-info header-info-right">
                             <ul>
-                                <!-- <li>
-                                    <a class="language-dropdown-active" href="#"> <i class="fi-rs-world"></i> English <i
-                                            class="fi-rs-angle-small-down"></i></a>
-                                    <ul class="language-dropdown">
-                                        <li><a href="#"><img src="/user/assets/imgs/theme/flag-fr.png"
-                                                    alt="">Français</a></li>
-                                        <li><a href="#"><img src="/user/assets/imgs/theme/flag-dt.png"
-                                                    alt="">Deutsch</a></li>
-                                        <li><a href="#"><img src="/user/assets/imgs/theme/flag-ru.png"
-                                                    alt="">Pусский</a></li>
-                                    </ul>
-                                </li> -->
                                 <li><i class="fi-rs-user"></i><a href="/login">Log In / Sign Up</a></li>
                             </ul>
                         </div>
@@ -92,20 +84,8 @@
                             <div class="header-right">
                                 <div class="search-style-2">
                                     <form>
-                                        <select class="select-active" id="categorySelect">
-                                            <option disabled selected>All Categories</option>
-                                            <%= categories %>
-                                            <% locals.categories.forEach(category=> { %>
-                                                <% if (category.active) { %>
-                                                    <option value="<%= category._id %>">
-                                                        <%= category.name %>
-                                                    </option>
-                                                    <% } %>
-                                                        <% }) %>
-                                        </select>
                                         <input class="custom-input" type="text" id="searchInput" placeholder="Search for items...">
                                     </form>
-    
                                 </div>
                                 <div class="header-action-right">
                                     <div class="header-action-2">
@@ -228,17 +208,18 @@
                                     <span class="fi-rs-apps"></span> Browse Categories
                                 </a>
                                 <div class="categori-dropdown-wrap categori-dropdown-active-large">
-                                    <ul>
-                                        <% categories.forEach(category=> { %>
-                                            <% if (category.active) { %>
-                                                <li>
-                                                    <a href="/shop/<%= category._id %>">
-                                                        <%= category.name %>
-                                                    </a>
-                                                </li>
-                                                <% } %>
-                                                    <% }) %>
-                                    </ul>
+                                    <input class="custom-input" type="text">
+                                        <ul>
+                                            <% categories.forEach(category=> { %>
+                                                <% if (category.active) { %>
+                                                    <li>
+                                                        <a href="/shop/<%= category._id %>">
+                                                            <%= category.name %>
+                                                        </a>
+                                                    </li>
+                                                    <% } %>
+                                                <% }) %>
+                                        </ul>
                                 </div>
 
                             </div>
@@ -371,9 +352,7 @@
 </header>
 
 <%- include("./mobile-nav.ejs") %>
-
-
-    <script src="/user/assets/js/custom/ajaxCart.js"></script>
+<script src="/user/assets/js/custom/ajaxCart.js"></script>
 
 
     

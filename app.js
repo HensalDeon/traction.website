@@ -22,10 +22,6 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// to parse json data from request object
-// app.use(express.json());
-// app.use(multer().any());
-
 //global middlewares
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -70,10 +66,6 @@ app.use('/admin', adminRouter);
 app.use('/', userRouter);
 
 console.clear()
-
-// app.use("/", function (req, res) {
-//   res.status(400).send({ status: false, message: "invalid endpoint" });
-// });
 
 app.listen(port, function () {
   console.log("Express app running on port " + port+"🚀");

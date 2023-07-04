@@ -226,7 +226,7 @@ async function httpProductsBySearch(req, res) {
     const searchTerm = req.body.searchInput.trim();
     const searchRegex = new RegExp(`^${searchTerm}`, 'i');
     const products = await searchProductsWithRegex(searchRegex);
-    console.log(products);
+
     if (products.length > 0) {
       req.session.searchProducts = products;
       return res.json({ success: true, productsCount: products.length });

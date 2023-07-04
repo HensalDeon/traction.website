@@ -1,7 +1,7 @@
 const userDatabase = require('../schema/user.schema');
 const { sendOtp, verifyOtp } = require('../config/twilio');
 const { hashPassword, comparePassword } = require('../config/security');
-// const cloudinary = require('../config/cloudinary');
+const cloudinary = require('../config/cloudinary');
 
 
 async function checkUserWithEmail(email, password) {
@@ -31,7 +31,7 @@ async function checkUserExistOrNot(phoneNumber) {
     const res = {}
     if (user) {
      const sendotp = await  sendOtp(user.phone)
-      if(!sendotp)  return {status:false,message:"Unable to send otp sorry burh"}
+      if(!sendotp)  return {status:false,message:"Unable to send otp sorry bruh"}
       return {status:true,message:"Successfully send "}
 
     } else {
