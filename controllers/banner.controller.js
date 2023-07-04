@@ -1,7 +1,7 @@
 const { getAllBanners, addNewBanner ,updateBanner} = require('../models/banner.model');
 const { handleError } = require('../middlewares/error.handler');
 
-async function httpGetBannerPage(req, res) {
+async function GetBannerPage(req, res) {
   try {
     const banners = await getAllBanners();
     res.render('admin/banners', { banners: banners, activePage: 'banners' });
@@ -10,7 +10,7 @@ async function httpGetBannerPage(req, res) {
   }
 }
 
-async function httpAddBanner(req, res) {
+async function AddBanner(req, res) {
   try {
     
     const result = await addNewBanner(req.body, req.file);
@@ -24,7 +24,7 @@ async function httpAddBanner(req, res) {
   }
 }
 
-async function httpEditBanner(req, res) {
+async function EditBanner(req, res) {
   try {
     const result =  await updateBanner(req.body,req.file);
     if (result.status) {
@@ -37,4 +37,4 @@ async function httpEditBanner(req, res) {
   }
 }
 
-module.exports = { httpGetBannerPage, httpEditBanner, httpAddBanner };
+module.exports = { GetBannerPage, EditBanner, AddBanner };

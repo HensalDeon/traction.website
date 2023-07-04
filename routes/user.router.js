@@ -6,53 +6,58 @@ const userRouter = express.Router();
 const { isLoggedIn, isLoggedOut } = require('../middlewares/auth.handler');
 
 const {
-  httpGetHome,
-  httpGetSignup,
-  httpGetLogin,
-  httpPostLoginVerify,
-  httpGetOtpLogin,
-  httpLoginVerifyPhone,
-  httpGetOtpVerify,
-  httpPostVerifyOtp,
-  httpSignupOtpVerify,
-  httpPostSignup,
-  httpGetAccount,
-  // httpUpdateUserdata,
-  httpGetLogout,
-  httpGet404,
+  GetHome,
+  GetSignup,
+  GetLogin,
+  PostLoginVerify,
+  GetOtpLogin,
+  LoginVerifyPhone,
+  GetOtpVerify,
+  PostVerifyOtp,
+  SignupOtpVerify,
+  PostSignup,
+  GetAccount,
+  // UpdateUserdata,
+  GetLogout,
+  Get404,
 } = require('../controllers/user.controller');
 
 const {
-  httpGetProduct,
-  httpGetAllProducts,
-  httpCategoryProduct,
-  httpProductsBySearch,
-  httpSearchResult,
-  httpGetProductImages,
+  GetProduct,
+  GetAllProducts,
+  CategoryProduct,
+  ProductsBySearch, 
+  SearchResult,
+  GetProductImages,
 } = require('../controllers/product.controller');
 
-userRouter.get('/', httpGetHome);
-userRouter.get('/login', isLoggedOut, httpGetLogin);
-userRouter.post('/login', httpPostLoginVerify);
-userRouter.get('/otp-login', isLoggedOut, httpGetOtpLogin);
-userRouter.post('/otp-login', httpLoginVerifyPhone);
-userRouter.get('/otp-verify', isLoggedOut, httpGetOtpVerify);
-userRouter.post('/otp-verify', isLoggedOut, httpPostVerifyOtp);
+// User Login/Home
+userRouter.get('/', GetHome);
+userRouter.get('/login', isLoggedOut, GetLogin);
+userRouter.post('/login', PostLoginVerify);
+userRouter.get('/otp-login', isLoggedOut, GetOtpLogin);
+userRouter.post('/otp-login', LoginVerifyPhone);
+userRouter.get('/otp-verify', isLoggedOut, GetOtpVerify);
+userRouter.post('/otp-verify', isLoggedOut, PostVerifyOtp);
 
-userRouter.get('/signup', isLoggedOut, httpGetSignup);
-userRouter.post('/signup', isLoggedOut, httpPostSignup);
-userRouter.post('/signup-otp', isLoggedOut, httpSignupOtpVerify);
+// User SignUp
+userRouter.get('/signup', isLoggedOut, GetSignup);
+userRouter.post('/signup', isLoggedOut, PostSignup);
+userRouter.post('/signup-otp', isLoggedOut, SignupOtpVerify);
 
-userRouter.get('/product/:slug', httpGetProduct);
-userRouter.get('/shop', httpGetAllProducts);
-userRouter.get('/shop/:id', httpCategoryProduct);
-userRouter.get('/product/images/:id', httpGetProductImages);
+// Product/Catogery List
+userRouter.get('/product/:slug', GetProduct);
+userRouter.get('/shop', GetAllProducts);
+userRouter.get('/shop/:id', CategoryProduct);
+userRouter.get('/product/images/:id', GetProductImages);
 
-userRouter.get('/search', httpSearchResult);
-userRouter.post('/search-products', httpProductsBySearch);
+// Product Search
+userRouter.get('/search', SearchResult);
+userRouter.post('/search-products', ProductsBySearch);
 
-userRouter.get('/account', isLoggedIn, httpGetAccount);
-userRouter.get('/logout', httpGetLogout);
-userRouter.get('/*', httpGet404);
+// Accnt details/LogOut
+userRouter.get('/account', isLoggedIn, GetAccount);
+userRouter.get('/logout', GetLogout);
+userRouter.get('/*', Get404);
 
 module.exports = userRouter;

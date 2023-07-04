@@ -10,17 +10,17 @@ const {
 
 /**
  * This function retrieves the cart products of a user and renders them on a webpage.
- * @param req - The request object, which contains information about the incoming HTTP request such as
+ * @param req - The request object, which contains information about the incoming  request such as
  * headers, parameters, and body.
  * @param res - The `res` parameter is the response object that will be sent back to the client with
- * the HTTP response. It contains methods and properties that allow the server to send data, headers,
+ * the  response. It contains methods and properties that allow the server to send data, headers,
  * and status codes to the client.
- * @returns The function `httpGetCart` is returning a rendered view of the user's cart with the items
+ * @returns The function `GetCart` is returning a rendered view of the user's cart with the items
  * and total price if the cartResult status is true, and an empty cart with a total of 0 if the status
  * is false. If there is an error, it will be handled by the `handleError` function.
  */
 
-async function httpGetCart(req, res) {
+async function GetCart(req, res) {
   try {
     const userId = req.session.user._id;
 
@@ -43,18 +43,18 @@ async function httpGetCart(req, res) {
 }
 
 /**
- * This function handles a HTTP POST request to add a product to a user's cart and returns a JSON
+ * This function handles a  POST request to add a product to a user's cart and returns a JSON
  * response with the status, message, and product data.
- * @param req - The request object containing information about the incoming HTTP request.
+ * @param req - The request object containing information about the incoming  request.
  * @param res - The `res` parameter is the response object that will be sent back to the client with
- * the result of the HTTP request. It contains methods to set the status code, headers, and body of the
+ * the result of the  request. It contains methods to set the status code, headers, and body of the
  * response.
- * @returns This function is used to handle an HTTP POST request to add an item to a user's cart. It
+ * @returns This function is used to handle an  POST request to add an item to a user's cart. It
  * expects the request to contain a product ID and a quantity. If the request is valid, it calls the
  * `addItemToCart` function with the user ID, product ID, and quantity. If the `addItemToCart` function
  * returns a successful result, the function returns a JSON response with a
  */
-async function httpPostToCart(req, res) {
+async function PostToCart(req, res) {
   try {
     const { productId, quantity } = req.body;
     const userId = req.session.user._id;
@@ -86,15 +86,15 @@ async function httpPostToCart(req, res) {
 /**
  * This function removes a product from a user's cart and returns a response with the updated cart
  * total.
- * @param req - The request object containing information about the HTTP request made to the server.
+ * @param req - The request object containing information about the  request made to the server.
  * @param res - The "res" parameter is the response object that will be sent back to the client with
- * the result of the HTTP request.
- * @returns a response to an HTTP request. The response is either a success message with a status code
+ * the result of the  request.
+ * @returns a response to an  request. The response is either a success message with a status code
  * of 200 and a JSON object containing the status, message, and total, or an error message with a
  * status code of 404 and a JSON object containing the status and message.
  */
 
-async function httpRemoveFromCart(req, res) {
+async function RemoveFromCart(req, res) {
   try {
     const { productId } = req.body;
     const userId = req.session.user._id;
@@ -121,10 +121,10 @@ async function httpRemoveFromCart(req, res) {
 /**
  * This is an asynchronous function that clears the cart items of a user and returns a JSON response
  * indicating success or failure.
- * @param req - The request object, which contains information about the incoming HTTP request such as
+ * @param req - The request object, which contains information about the incoming  request such as
  * headers, parameters, and body.
- * @param res - The `res` parameter in the `httpClearCart` function is the response object that will be
- * sent back to the client making the HTTP request. It is used to send a JSON response with a success
+ * @param res - The `res` parameter in the `ClearCart` function is the response object that will be
+ * sent back to the client making the  request. It is used to send a JSON response with a success
  * status and message or an error status and message.
  * @returns This function returns a JSON response with a success status and a message. The success
  * status can be either true or false depending on the result of the clearCartItems function. The
@@ -132,7 +132,7 @@ async function httpRemoveFromCart(req, res) {
  * the handleError function is called.
  */
 
-async function httpClearCart(req, res) {
+async function ClearCart(req, res) {
   try {
     const cartResult = await clearCartItems(req.session.user._id);
     if (cartResult.status) {
@@ -148,15 +148,15 @@ async function httpClearCart(req, res) {
 /**
  * This function updates the quantity of a product in a user's cart and returns a JSON response with
  * the updated total and a success or error message.
- * @param req - The request object contains information about the HTTP request that was made, such as
+ * @param req - The request object contains information about the  request that was made, such as
  * the request method, headers, and body.
  * @param res - The "res" parameter is the response object that will be sent back to the client after
- * the function is executed. It contains information such as the HTTP status code, headers, and the
+ * the function is executed. It contains information such as the  status code, headers, and the
  * response body.
  * @returns a JSON response with either a success message, total quantity and a success flag or an
  * error message and a failure flag.
  */
-async function httpUpdateQuantity(req, res) {
+async function UpdateQuantity(req, res) {
   try {
     const { quantity, productId } = req.body;
     const userId = req.session.user._id;
@@ -179,9 +179,9 @@ async function httpUpdateQuantity(req, res) {
 
 
 module.exports = {
-  httpGetCart,
-  httpPostToCart,
-  httpRemoveFromCart,
-  httpClearCart,
-  httpUpdateQuantity,
+  GetCart,
+  PostToCart,
+  RemoveFromCart,
+  ClearCart,
+  UpdateQuantity,
 };

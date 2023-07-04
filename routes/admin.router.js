@@ -4,59 +4,65 @@ const adminRouter = express.Router();
 const upload = require('../config/multer');
 
 const {
-  httpGetDashBoard,
-  httpGetLogin,
-  httpPostLogin,
-  httpGetLogout,
-  httpGetUsers,
-  httpPutBlockUser,
-  httpGet404,
-  // httpGetGraphData,
-  // httpGetChartData,
-  // httpGetReport,
+  GetDashBoard,
+  GetLogin,
+  PostLogin,
+  GetLogout,
+  GetUsers,
+  PutBlockUser,
+  Get404,
+  // GetGraphData,
+  // GetChartData,
+  // GetReport,
 } = require('../controllers/admin.controller');
 
 const {
-  httpGetProducts,
-  httpGetAddProduct,
-  httpPostAddProduct,
-  httpGetEditProduct,
-  httpGetProductImages,
-  httpPutProduct,
-  httpPutProductDetails,
+  GetProducts,
+  GetAddProduct,
+  PostAddProduct,
+  GetEditProduct,
+  GetProductImages,
+  PutProduct,
+  PutProductDetails,
 } = require('../controllers/product.controller');
 
 const {
-  httpGetCategories,
-  httpPostCategories,
-  httpPutCategory,
-  httpPutCategoryName,
+  GetCategories,
+  PostCategories,
+  PutCategory,
+  PutCategoryName,
 } = require('../controllers/category.controller');
 
+// session handler
 const { isAdminLoggedIn, isAdminLoggedOut } = require('../middlewares/auth.handler');
 
-adminRouter.get('/', isAdminLoggedIn, httpGetDashBoard);
-adminRouter.get('/login', isAdminLoggedOut, httpGetLogin);
-adminRouter.post('/login', isAdminLoggedOut, httpPostLogin);
-adminRouter.get('/logout', isAdminLoggedIn, httpGetLogout);
+// Login/Logout
+adminRouter.get('/', isAdminLoggedIn, GetDashBoard);
+adminRouter.get('/login', isAdminLoggedOut, GetLogin);
+adminRouter.post('/login', isAdminLoggedOut, PostLogin);
+adminRouter.get('/logout', isAdminLoggedIn, GetLogout);
 
-adminRouter.get('/categories', isAdminLoggedIn, httpGetCategories);
-adminRouter.post('/categories', isAdminLoggedIn, httpPostCategories);
-adminRouter.put('/category-status', isAdminLoggedIn, httpPutCategory);
-adminRouter.put('/category-name', isAdminLoggedIn, httpPutCategoryName);
+//Category Management
+adminRouter.get('/categories', isAdminLoggedIn, GetCategories);
+adminRouter.post('/categories', isAdminLoggedIn, PostCategories);
+adminRouter.put('/category-status', isAdminLoggedIn, PutCategory);
+adminRouter.put('/category-name', isAdminLoggedIn, PutCategoryName);
 
-adminRouter.get('/users', isAdminLoggedIn, httpGetUsers);
-adminRouter.put('/user-status', isAdminLoggedIn, httpPutBlockUser);
+//User Management
+adminRouter.get('/users', isAdminLoggedIn, GetUsers);
+adminRouter.put('/user-status', isAdminLoggedIn, PutBlockUser);
 
-adminRouter.get('/products', isAdminLoggedIn, httpGetProducts);
-adminRouter.get('/add-products', isAdminLoggedIn, httpGetAddProduct);
-adminRouter.post('/add-products',upload.array('productImage', 4),isAdminLoggedIn,httpPostAddProduct);
+//Product Management
+adminRouter.get('/products', isAdminLoggedIn, GetProducts);
+adminRouter.get('/add-products', isAdminLoggedIn, GetAddProduct);
+adminRouter.post('/add-products',upload.array('productImage', 4),isAdminLoggedIn,PostAddProduct);
 
-adminRouter.get('/edit-product/:slug', isAdminLoggedIn, httpGetEditProduct);
-adminRouter.put('/edit-product',upload.array('productImage', 4),isAdminLoggedIn,httpPutProductDetails);
-adminRouter.get('/getProductImages/:id', isAdminLoggedIn, httpGetProductImages);
-adminRouter.put('/product-status/:id', isAdminLoggedIn, httpPutProduct);
+adminRouter.get('/edit-product/:slug', isAdminLoggedIn, GetEditProduct);
+adminRouter.put('/edit-product',upload.array('productImage', 4),isAdminLoggedIn,PutProductDetails);
+adminRouter.get('/getProductImages/:id', isAdminLoggedIn, GetProductImages);
+adminRouter.put('/product-status/:id', isAdminLoggedIn, PutProduct);
 
-adminRouter.get('/*', httpGet404);
+//Others(404)
+adminRouter.get('/*', Get404);
 
 module.exports = adminRouter;

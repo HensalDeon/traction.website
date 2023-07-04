@@ -28,14 +28,14 @@ const { getAllCoupons, addCouponData } = require('../models/coupon.model');
  * This function retrieves user addresses and cart product total and renders the checkout page with the
  * addresses if available, otherwise an empty array, or redirects to the cart page if the cart is
  * empty.
- * @param req - The `req` parameter is an object representing the HTTP request made by the client. It
+ * @param req - The `req` parameter is an object representing the  request made by the client. It
  * contains information such as the request method, URL, headers, and any data sent in the request
  * body.
- * @param res - `res` is the response object that is used to send the HTTP response back to the client.
- * It is an instance of the `http.ServerResponse` class in Node.js. It is used to set the response
+ * @param res - `res` is the response object that is used to send the  response back to the client.
+ * It is an instance of the `.ServerResponse` class in Node.js. It is used to set the response
  * headers, status code, and send the response body. In this code snippet, `
  */
-async function httpGetCheckout(req, res) {
+async function GetCheckout(req, res) {
   try {
     const cartResult = await cartProductTotal(req.session.user._id);
     const coupons = await getAllCoupons();
@@ -94,10 +94,10 @@ async function httpGetCheckout(req, res) {
 /**
  * This is an asynchronous function that adds an address to a user's account and returns a success or
  * failure message in JSON format.
- * @param req - The req parameter is an object that represents the HTTP request made to the server. It
+ * @param req - The req parameter is an object that represents the  request made to the server. It
  * contains information such as the request method, headers, URL, and request body. In this case, it is
  * being used to extract the request body and the user ID from the session.
- * @param res - The `res` parameter is the response object that is used to send the HTTP response back
+ * @param res - The `res` parameter is the response object that is used to send the  response back
  * to the client. It contains methods and properties that allow you to set the response status code,
  * headers, and body. In this case, it is being used to send a JSON response with a success flag and
  * @returns This function returns a JSON response with a success status and a message. If the
@@ -106,7 +106,7 @@ async function httpGetCheckout(req, res) {
  * returns a status of `false`, the success status is set to `false` and
  */
 
-async function httpAddAddress(req, res) {
+async function AddAddress(req, res) {
   try {
     const addressRsult = await addAdrress(req.body, req.session.user._id, res);
     if (addressRsult.status) {
@@ -119,12 +119,12 @@ async function httpAddAddress(req, res) {
   }
 }
 /**
- * This function handles the HTTP POST request for checkout and generates the appropriate response
+ * This function handles the  POST request for checkout and generates the appropriate response
  * based on the payment method selected.
- * @param req - The request object represents the HTTP request that was sent by the client to the
+ * @param req - The request object represents the  request that was sent by the client to the
  * server.
  * @param res - The "res" parameter is the response object that is used to send the response back to
- * the client making the HTTP request. It contains information such as the status code, headers, and
+ * the client making the  request. It contains information such as the status code, headers, and
  * body of the response.
  * @returns a JSON response with different properties depending on the payment method selected by the
  * user. If the payment method is 'cashOnDelivery', the response includes a success flag, the payment
@@ -133,7 +133,7 @@ async function httpAddAddress(req, res) {
  * property 'order' that
  */
 
-async function httpPostCheckout(req, res) {
+async function PostCheckout(req, res) {
   try {
     const { paymentmethod, addressId } = req.body;
     const checkoutResult = await addOrderDetails(
@@ -193,15 +193,15 @@ async function httpPostCheckout(req, res) {
 
 /**
  * This function verifies a payment and updates the payment status if successful.
- * @param req - The request object containing information about the incoming HTTP request.
+ * @param req - The request object containing information about the incoming  request.
  * @param res - `res` is the response object that is used to send the response back to the client who
- * made the HTTP request. It contains methods like `json()` to send a JSON response, `send()` to send a
- * plain text response, and `status()` to set the HTTP status code of the response
+ * made the  request. It contains methods like `json()` to send a JSON response, `send()` to send a
+ * plain text response, and `status()` to set the  status code of the response
  * @returns a JSON response with either a success message and a message indicating that the payment
  * result has been updated, or a failure message indicating that something went wrong and the payment
  * result was not updated.
  */
-async function httpVerifyPayment(req, res) {
+async function VerifyPayment(req, res) {
   try {
     const verifyResult = await verifyPayment(req.body, res);
     if (verifyResult) {
@@ -229,15 +229,15 @@ async function httpVerifyPayment(req, res) {
 
 /**
  * The code defines two async functions to render success and failed pages for a user.
- * @param req - The `req` parameter is an object that represents the HTTP request made by the client to
+ * @param req - The `req` parameter is an object that represents the  request made by the client to
  * the server. It contains information such as the request method, URL, headers, and any data sent in
  * the request body.
- * @param res - `res` stands for response and it is an object that represents the HTTP response that an
- * Express app sends when it receives an HTTP request. It contains methods for sending the response
+ * @param res - `res` stands for response and it is an object that represents the  response that an
+ * Express app sends when it receives an  request. It contains methods for sending the response
  * back to the client, such as `render()` which is used to render a view template and send the HTML
  * response to the
  */
-async function httpSuccessPage(req, res) {
+async function SuccessPage(req, res) {
   try {
     const id = req.params.id;
 
@@ -259,7 +259,7 @@ async function httpSuccessPage(req, res) {
   }
 }
 
-async function httpFailedPage(req, res) {
+async function FailedPage(req, res) {
   if (req.session.coupon) {
     delete req.session.coupon;
   }
@@ -273,12 +273,12 @@ async function httpFailedPage(req, res) {
 /**
  * This is an asynchronous function that cancels an order and returns a success or failure message in
  * JSON format.
- * @param req - The request object containing information about the incoming HTTP request.
- * @param res - The `res` parameter in the `httpCancelOrder` function is an object representing the
- * HTTP response that will be sent back to the client. It contains methods and properties that allow
+ * @param req - The request object containing information about the incoming  request.
+ * @param res - The `res` parameter in the `CancelOrder` function is an object representing the
+ *  response that will be sent back to the client. It contains methods and properties that allow
  * the server to send data, headers, and status codes back to the client.
  */
-async function httpCancelOrder(req, res) {
+async function CancelOrder(req, res) {
   try {
     const { id, cancelreason } = req.body;
     const cancelResult = await cancelOrder(id, cancelreason);
@@ -292,7 +292,7 @@ async function httpCancelOrder(req, res) {
   }
 }
 
-async function httpReturnOrder(req, res) {
+async function ReturnOrder(req, res) {
   try {
     const { id, returnReason } = req.body;
     const cancelResult = await returnOrder(id, returnReason);
@@ -306,7 +306,7 @@ async function httpReturnOrder(req, res) {
   }
 }
 
-async function httpDeleteAddress(req, res) {
+async function DeleteAddress(req, res) {
   try {
     const addressResult = await deleteAddress(req.body.id);
     if (addressResult) {
@@ -319,7 +319,7 @@ async function httpDeleteAddress(req, res) {
   }
 }
 
-async function httpGetOrderPage(req, res) {
+async function GetOrderPage(req, res) {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
@@ -349,7 +349,7 @@ async function httpGetOrderPage(req, res) {
   }
 }
 
-async function httpChangeOrderStatus(req, res) {
+async function ChangeOrderStatus(req, res) {
   try {
     const { orderId, status } = req.body;
     const result = await changeOrderStatus(status, orderId);
@@ -363,7 +363,7 @@ async function httpChangeOrderStatus(req, res) {
   }
 }
 
-async function httpGetOrderDetails(req, res) {
+async function GetOrderDetails(req, res) {
   try {
     const orderId = req.query.id;
     const admin = req.query.admin;
@@ -384,7 +384,7 @@ async function httpGetOrderDetails(req, res) {
   }
 }
 
-async function httpGetWallet(req, res) {
+async function GetWallet(req, res) {
   try {
     const walletAmount = await getWallet(req.session.user._id);
     if (walletAmount.status) {
@@ -403,7 +403,7 @@ async function httpGetWallet(req, res) {
   }
 }
 
-async function httpApplyWallet(req, res) {
+async function ApplyWallet(req, res) {
   try {
     const walletAmount = req.body.walletInput;
     const userId = req.session.user._id;
@@ -446,18 +446,18 @@ async function httpApplyWallet(req, res) {
 }
 
 module.exports = {
-  httpGetCheckout,
-  httpPostCheckout,
-  httpAddAddress,
-  httpVerifyPayment,
-  httpSuccessPage,
-  httpFailedPage,
-  httpCancelOrder,
-  httpReturnOrder,
-  httpDeleteAddress,
-  httpGetOrderPage,
-  httpChangeOrderStatus,
-  httpGetWallet,
-  httpApplyWallet,
-  httpGetOrderDetails,
+  GetCheckout,
+  PostCheckout,
+  AddAddress,
+  VerifyPayment,
+  SuccessPage,
+  FailedPage,
+  CancelOrder,
+  ReturnOrder,
+  DeleteAddress,
+  GetOrderPage,
+  ChangeOrderStatus,
+  GetWallet,
+  ApplyWallet,
+  GetOrderDetails,
 };

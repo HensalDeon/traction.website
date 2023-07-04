@@ -36,7 +36,6 @@ async function findUserWithId(userId, action) {
         user.status = true;
       }
       await user.save();
-
       return { status: true };
     }
   } catch (error) {

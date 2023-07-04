@@ -4,9 +4,7 @@ const cartDatabase = require('../schema/cart.schema');
 
 async function addCoupen(dataBody) {
   try {
-    const { couponname, couponDescription, discount, validFrom, validUntil, minimumPurchase } =
-      dataBody;
-
+    const { couponname, couponDescription, discount, validFrom, validUntil, minimumPurchase } = dataBody;
     const randomThreeDigitNumber = Math.floor(100 + Math.random() * 900);
     const code = `${couponname.split(' ').join('')}${randomThreeDigitNumber}`.toUpperCase();
     const coupon = new couponDatabase({

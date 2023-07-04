@@ -12,7 +12,7 @@ const {
 const { getOrderData } = require('../models/order.model');
 
 /**
- * This function renders the admin dashboard page in response to an HTTP GET request.
+ * This function renders the admin dashboard page in response to an  GET request.
  * @param req - The `req` parameter is an object that represents the HTTP request made by the client to
  * the server. It contains information such as the request method, URL, headers, and any data sent in
  * the request body.
@@ -20,7 +20,7 @@ const { getOrderData } = require('../models/order.model');
  * back to the client. It contains methods and properties that allow the server to send data, headers,
  * and status codes back to the client. In this case, the `res` object is being used to render a
  */
-async function httpGetDashBoard(req, res) {
+async function GetDashBoard(req, res) {
   try {
     const result = await getDashBoardData();
     res.render('admin/dashboard', {
@@ -45,7 +45,7 @@ async function httpGetDashBoard(req, res) {
  * status codes back to the client. In this case, the `res` object is being used to render a login
  */
 
-async function httpGetLogin(req, res) {
+async function GetLogin(req, res) {
   try {
     res.render('admin/login');
   } catch (error) {
@@ -65,7 +65,7 @@ async function httpGetLogin(req, res) {
  * credentials are incorrect or if the admin credentials are not set. If the login credentials are
  * correct, it sets a session variable and returns a JSON response with a status of true.
  */
-async function httpPostLogin(req, res) {
+async function PostLogin(req, res) {
   try {
     if (process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD) {
       if (
@@ -95,7 +95,7 @@ async function httpPostLogin(req, res) {
  * It is an instance of the `http.ServerResponse` class in Node.js. The `res` object has methods like
  * `res.render()` to render a view template, `res.send()` to send
  */
-async function httpGetUsers(req, res) {
+async function GetUsers(req, res) {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
@@ -129,7 +129,7 @@ async function httpGetUsers(req, res) {
  * code will be 404 and the message will be "User not found". If the user is found, the status code
  * will be 200 and the message will be "User status updated. User [action]ed successfully."
  */
-async function httpPutBlockUser(req, res) {
+async function PutBlockUser(req, res) {
   const { id, action } = req.body;
   try {
     const user = await findUserWithId(id, action);
@@ -156,7 +156,7 @@ async function httpPutBlockUser(req, res) {
  * used to redirect the user to a login page or render a 404 error page.
  */
 
-async function httpGetLogout(req, res) {
+async function GetLogout(req, res) {
   try {
     req.session.destroy();
     res.redirect('/admin/login');
@@ -165,7 +165,7 @@ async function httpGetLogout(req, res) {
   }
 }
 
-async function httpGet404(req, res) {
+async function Get404(req, res) {
   try {
     res.render('admin/404');
   } catch (error) {
@@ -174,7 +174,7 @@ async function httpGet404(req, res) {
 }
 
 //chart data
-async function httpGetGraphData(req, res) {
+async function GetGraphData(req, res) {
   try {
     const result = await getGraphData();
     if (result.status) {
@@ -193,7 +193,7 @@ async function httpGetGraphData(req, res) {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 }
-async function httpGetChartData(req, res) {
+async function GetChartData(req, res) {
   try {
     const result = await getChartData();
     if (result.status) {
@@ -221,7 +221,7 @@ async function httpGetChartData(req, res) {
   }
 }
 
-async function httpGetReport(req, res) {
+async function GetReport(req, res) {
   try {
     const reportData = await getOrderData();
      generateSalesReport(reportData, res);
@@ -231,14 +231,14 @@ async function httpGetReport(req, res) {
 }
 
 module.exports = {
-  httpGetDashBoard,
-  httpGetLogin,
-  httpPostLogin,
-  httpGetUsers,
-  httpPutBlockUser,
-  httpGetLogout,
-  httpGet404,
-  httpGetGraphData,
-  httpGetChartData,
-  httpGetReport,
+  GetDashBoard,
+  GetLogin,
+  PostLogin,
+  GetUsers,
+  PutBlockUser,
+  GetLogout,
+  Get404,
+  GetGraphData,
+  GetChartData,
+  GetReport,
 };

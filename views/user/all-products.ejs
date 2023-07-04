@@ -26,25 +26,21 @@
                                     </div>
                                     <div class="sort-by-product-area">
                                         <% if (productCount>50) { %>
-
                                         <div class="sort-by-cover mr-10">
                                             <div class="sort-by-product-wrap">
                                                 <div class="sort-by">
                                                     <span><i class="fi-rs-apps"></i>Show:</span>
                                                 </div>
                                                 <div class="sort-by-dropdown-wrap">
-                                                    <span> 50 <i class="fi-rs-angle-small-down"></i></span>
+                                                        <select id="">
+                                                            <option value="featured">50</option>
+                                                            <option  value="lowToHigh">100</option>
+                                                            <option value="highToLow">150</option>
+                                                            <option value="releaseDate">200</option>
+                                                        </select>
                                                 </div>
                                             </div>
-                                            <div class="sort-by-dropdown">
-                                                <ul>
-                                                    <li><a class="active" href="#">50</a></li>
-                                                    <li><a href="#">100</a></li>
-                                                    <li><a href="#">150</a></li>
-                                                    <li><a href="#">200</a></li>
-                                                    <li><a href="#">All</a></li>
-                                                </ul>
-                                            </div>
+                                            
                                         </div>
                                         <% } %>
 

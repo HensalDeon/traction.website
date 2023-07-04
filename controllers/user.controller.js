@@ -14,7 +14,7 @@ const {getAllBanners} = require('../models/banner.model')
 const { handleError } = require('../middlewares/error.handler');
 const { signupSchema, updateUserSchema } = require('../config/joi');
 
-async function httpGetHome(req, res) {
+async function GetHome(req, res) {
   try {
     const productResult = await fetchAllProducts();
     const banner = await getAllBanners();
@@ -32,7 +32,7 @@ async function httpGetHome(req, res) {
   }
 }
 
-async function httpGetLogin(req, res) {
+async function GetLogin(req, res) {
   try {
     res.render('user/logins/login');
   } catch (error) {
@@ -40,7 +40,7 @@ async function httpGetLogin(req, res) {
   } 
 }
 
-async function httpPostLoginVerify(req, res) {
+async function PostLoginVerify(req, res) {
   const { email, password } = req.body;
   try {
     const userResult = await checkUserWithEmail(email, password);
@@ -57,7 +57,7 @@ async function httpPostLoginVerify(req, res) {
 }
 
 //otp login
-function httpGetOtpLogin(req, res) {
+function GetOtpLogin(req, res) {
   try {
     res.render('user/logins/otp-login');
   } catch (error) {
@@ -65,7 +65,7 @@ function httpGetOtpLogin(req, res) {
   }
 }
 
-async function httpLoginVerifyPhone(req, res) {
+async function LoginVerifyPhone(req, res) {
   const { phone } = req.body;
   console.log(phone + '📞');
   try {
@@ -83,7 +83,7 @@ async function httpLoginVerifyPhone(req, res) {
   }
 }
 
-async function httpGetOtpVerify(req, res) {
+async function GetOtpVerify(req, res) {
   try {
     const phone = req.session.phone;
     return res.render('user/logins/otp-verify', { phone });
@@ -92,7 +92,7 @@ async function httpGetOtpVerify(req, res) {
   }
 }
 
-async function httpPostVerifyOtp(req, res) {
+async function PostVerifyOtp(req, res) {
   try {
     const phone = req.session.phone;
     const { otp } = req.body;
@@ -111,7 +111,7 @@ async function httpPostVerifyOtp(req, res) {
 }
 
 //sign up
-async function httpGetSignup(req, res) {
+async function GetSignup(req, res) {
   try {
     res.render('user/logins/signup');
   } catch (error) {
@@ -119,7 +119,7 @@ async function httpGetSignup(req, res) {
   }
 }
 
-async function httpSignupOtpVerify(req, res) {
+async function SignupOtpVerify(req, res) {
   try {
     const { phone } = req.body;
     const phoneExist = await sendVerificationSignup(phone);
@@ -133,7 +133,7 @@ async function httpSignupOtpVerify(req, res) {
   }
 }
 
-async function httpPostSignup(req, res) {
+async function PostSignup(req, res) {
   try {
     const validation = signupSchema.validate(req.body, {
       abortEarly: false,
@@ -154,7 +154,7 @@ async function httpPostSignup(req, res) {
   }
 }
 
-async function httpGetAccount(req, res) {
+async function GetAccount(req, res) {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
@@ -177,7 +177,7 @@ async function httpGetAccount(req, res) {
   }
 }
 
-async function httpUpdateUserdata(req, res) {
+async function UpdateUserdata(req, res) {
   try {
     const { error, value } = updateUserSchema.validate(req.body);
     if (error) {
@@ -198,7 +198,7 @@ async function httpUpdateUserdata(req, res) {
   }
 }
 
-function httpGetLogout(req, res) {
+function GetLogout(req, res) {
   try {
     req.session.destroy();
     res.redirect('/');
@@ -207,7 +207,7 @@ function httpGetLogout(req, res) {
   }
 }
 
-function httpGet404(req, res) {
+function Get404(req, res) {
   try {
     res.status(404).render('user/404');
   } catch (error) {
@@ -216,18 +216,18 @@ function httpGet404(req, res) {
 }
 
 module.exports = {
-  httpGetHome,
-  httpGetSignup,
-  httpGetLogin,
-  httpPostLoginVerify,
-  httpGetOtpLogin,
-  httpLoginVerifyPhone,
-  httpGetOtpVerify,
-  httpPostVerifyOtp,
-  httpSignupOtpVerify,
-  httpPostSignup,
-  httpUpdateUserdata,
-  httpGetAccount,
-  httpGetLogout,
-  httpGet404,
+  GetHome,
+  GetSignup,
+  GetLogin,
+  PostLoginVerify,
+  GetOtpLogin,
+  LoginVerifyPhone,
+  GetOtpVerify,
+  PostVerifyOtp,
+  SignupOtpVerify,
+  PostSignup,
+  UpdateUserdata,
+  GetAccount,
+  GetLogout,
+  Get404,
 };

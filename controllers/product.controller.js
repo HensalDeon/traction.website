@@ -17,7 +17,7 @@ const {
   setProductImage,
 } = require('../models/product.model');
 
-async function httpGetProducts(req, res) {
+async function GetProducts(req, res) {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
@@ -42,7 +42,7 @@ async function httpGetProducts(req, res) {
   }
 }
 
-async function httpGetAddProduct(req, res) {
+async function GetAddProduct(req, res) {
   try {
     const categoryResult = await fetchCategories();
     return res.render('admin/add-products', {
@@ -54,7 +54,7 @@ async function httpGetAddProduct(req, res) {
   }
 }
 
-async function httpPostAddProduct(req, res) {
+async function PostAddProduct(req, res) {
   try {
     if (req.fileValidationError) {
       return res.status(400).json({ error: req.fileValidationError.message });
@@ -80,7 +80,7 @@ async function httpPostAddProduct(req, res) {
   }
 }
 
-async function httpGetEditProduct(req, res) {
+async function GetEditProduct(req, res) {
   try {
     const slug = req.params.slug;
     const productResult = await fetchProduct(slug);
@@ -103,7 +103,7 @@ async function httpGetEditProduct(req, res) {
 }
 
 //soft delete
-async function httpPutProduct(req, res) {
+async function PutProduct(req, res) {
   try {
     const productId = req.params.id;
     const productResult = await updateProductStatus(productId);
@@ -118,7 +118,7 @@ async function httpPutProduct(req, res) {
   }
 }
 
-async function httpPutProductDetails(req, res) {
+async function PutProductDetails(req, res) {
   try {
     const { deletedImages,...dataBody} = req.body;
     const validation = updateProductSchema.validate(
@@ -145,7 +145,7 @@ async function httpPutProductDetails(req, res) {
 }
 
 //user
-async function httpGetProduct(req, res) {
+async function GetProduct(req, res) {
   try {
     const slug = req.params.slug;
     const productResult = await fetchProduct(slug);
@@ -163,7 +163,7 @@ async function httpGetProduct(req, res) {
   }
 }
 
-async function httpGetAllProducts(req, res) {
+async function GetAllProducts(req, res) {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 8;
@@ -182,7 +182,7 @@ async function httpGetAllProducts(req, res) {
   }
 }
 
-async function httpGetProductImages(req, res) {
+async function GetProductImages(req, res) {
   try {
     const images = await getProductImages(req.params.id);
     res.json(images);
@@ -191,7 +191,7 @@ async function httpGetProductImages(req, res) {
   }
 }
 
-async function httpCategoryProduct(req, res) {
+async function CategoryProduct(req, res) {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 8;
@@ -221,10 +221,11 @@ async function httpCategoryProduct(req, res) {
   }
 }
 
-async function httpProductsBySearch(req, res) {
+async function ProductsBySearch(req, res) {
   try {
     const searchTerm = req.body.searchInput.trim();
     const searchRegex = new RegExp(`^${searchTerm}`, 'i');
+    // const searchRegex = new RegExp(searchTerm, 'i');
     const products = await searchProductsWithRegex(searchRegex);
 
     if (products.length > 0) {
@@ -238,7 +239,7 @@ async function httpProductsBySearch(req, res) {
   }
 }
 
-async function httpSearchResult(req, res) {
+async function SearchResult(req, res) {
   try {
     let products;
     if (req.session.searchProducts) {
@@ -253,16 +254,16 @@ async function httpSearchResult(req, res) {
 }
 
 module.exports = {
-  httpGetProducts,
-  httpGetAddProduct,
-  httpPostAddProduct,
-  httpGetEditProduct,
-  httpPutProduct,
-  httpPutProductDetails,
-  httpGetProduct,
-  httpGetAllProducts,
-  httpGetProductImages,
-  httpCategoryProduct,
-  httpProductsBySearch,
-  httpSearchResult,
+  GetProducts,
+  GetAddProduct,
+  PostAddProduct,
+  GetEditProduct,
+  PutProduct,
+  PutProductDetails,
+  GetProduct,
+  GetAllProducts,
+  GetProductImages,
+  CategoryProduct,
+  ProductsBySearch,
+  SearchResult,
 };
