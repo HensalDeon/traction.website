@@ -23,6 +23,7 @@ const {
   GetEditProduct,
   GetProductImages,
   PutProduct,
+  PutEnableProduct,
   PutProductDetails,
 } = require('../controllers/product.controller');
 
@@ -61,6 +62,7 @@ adminRouter.get('/edit-product/:slug', isAdminLoggedIn, GetEditProduct);
 adminRouter.put('/edit-product',upload.array('productImage', 4),isAdminLoggedIn,PutProductDetails);
 adminRouter.get('/getProductImages/:id', isAdminLoggedIn, GetProductImages);
 adminRouter.put('/product-status/:id', isAdminLoggedIn, PutProduct);
+adminRouter.put('/product-enable/:id', isAdminLoggedIn, PutEnableProduct);
 
 //Others(404)
 adminRouter.get('/*', Get404);

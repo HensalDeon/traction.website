@@ -43,14 +43,14 @@ async function fetchAllProducts(page, limit, sortBy) {
         }
 
         var products = await productDatabase
-          .find({ productStatus: true })
+          .find({ productStatus: { $in: [true, false] } })
           .populate('productCategory')
           .sort(sortOptions)
           .skip((page - 1) * limit)
           .limit(limit);
       } else {
         var products = await productDatabase
-          .find({ productStatus: true })
+          .find({ productStatus: { $in: [true, false] } })
           .populate('productCategory')
           .skip((page - 1) * limit)
           .limit(limit);
@@ -138,6 +138,22 @@ async function updateProductStatus(productId) {
     const product = await productDatabase.findByIdAndUpdate(
       { _id: productId },
       { $set: { productStatus: false } },
+    );
+    if (product) {
+      return { status: true, product };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    throw new Error(`Error updating product: ${error.message}`);
+  }
+}
+
+async function enableProductStatus(productId) {
+  try {
+    const product = await productDatabase.findByIdAndUpdate(
+      { _id: productId },
+      { $set: { productStatus: true } },
     );
     if (product) {
       return { status: true, product };
@@ -267,6 +283,7 @@ module.exports = {
   updateProduct,
   getProductsWithCategory,
   searchProductsWithRegex,
+  enableProductStatus,
 
   setProductImage,
 };

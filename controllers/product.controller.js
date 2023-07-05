@@ -13,6 +13,7 @@ const {
   updateProduct,
   getProductsWithCategory,
   searchProductsWithRegex,
+  enableProductStatus,
 
   setProductImage,
 } = require('../models/product.model');
@@ -86,8 +87,6 @@ async function GetEditProduct(req, res) {
     const productResult = await fetchProduct(slug);
     const categoryResult = await fetchCategories();
 
-    console.log("hiii"+categoryResult.categories);
-
     if (productResult.status) {
       res.render('admin/update-products', {
         categories: categoryResult.categories,
@@ -107,11 +106,25 @@ async function PutProduct(req, res) {
   try {
     const productId = req.params.id;
     const productResult = await updateProductStatus(productId);
-
     if (productResult.status) {
       res.status(200).json({ success: true, message: 'Product deleted succesfully' });
     } else {
       res.status(500).json({ status: false, message: 'Failed to delete product.' });
+    }
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
+//enabling
+async function PutEnableProduct(req, res) {
+  try {
+    const productId = req.params.id;
+    const productResult = await enableProductStatus(productId);
+    if (productResult.status) {
+      res.status(200).json({ success: true, message: 'Product enabled succesfully' });
+    } else {
+      res.status(500).json({ status: false, message: 'Failed to enable product.' });
     }
   } catch (error) {
     handleError(res, error);
@@ -259,6 +272,7 @@ module.exports = {
   PostAddProduct,
   GetEditProduct,
   PutProduct,
+  PutEnableProduct,
   PutProductDetails,
   GetProduct,
   GetAllProducts,

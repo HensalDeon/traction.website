@@ -1020,6 +1020,9 @@ b {
 .btn-sm {
     padding: 5px 10px
 }
+.btn-sms {
+    padding: 5px 34px
+}
 
 .btn-sm i {
     font-size: 13px;
