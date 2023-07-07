@@ -15,13 +15,12 @@ submitButton.addEventListener('click', (event) => {
   }
 
   const productName = document.getElementById('productName').value;
-  const productDescription =
-    document.getElementById('productDescription').value;
+  const productDescription = document.getElementById('productDescription').value;
   const productPrice = document.getElementById('productPrice').value;
   const productOldPrice = document.getElementById('productOldPrice').value;
   const stocks = document.getElementById('stocks').value;
   const productCategory = document.getElementById('productCategory').value;
-
+  const featured = document.getElementById('featured').value;
   if (
     !productName ||
     !productDescription ||
@@ -36,10 +35,9 @@ submitButton.addEventListener('click', (event) => {
     }, 3000);
     return;
   }
-
   const url = '/admin/add-products';
   submitButton.disabled = true;
-
+call
 
   axios
     .post(url, formData, {
@@ -52,9 +50,7 @@ submitButton.addEventListener('click', (event) => {
         console.log('Product added successfully!');
         submitButton.disabled = false;
         callAlertify('success', response.data.message);
-        // event.target.form.reset();
-        // selectedImages = [];
-        // images = []
+        
         window.location.href = '/admin/products'
         document.getElementById('image-preview').innerHTML = '';
       }else{

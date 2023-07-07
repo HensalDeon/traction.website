@@ -1,268 +1,257 @@
 <script>
-   window.addEventListener("DOMContentLoaded", () => {
+  window.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById('searchInput');
 
     searchInput.addEventListener('keyup', (event) => {
-        event.preventDefault();
+      event.preventDefault();
 
-        if (event.key === 'Enter') {
-            const searchTerm = searchInput.value.trim();
-            const data = { searchInput: searchTerm };
-            console.log("entered");
+      if (event.key === 'Enter') {
+        const searchTerm = searchInput.value.trim();
+        const data = {
+          searchInput: searchTerm
+        };
+        console.log("entered");
 
-            fetch('/search-products', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(result => {
-                // Handle the search result as needed
-                if (result.success) {
-                    // Redirect to the search results page
-                    window.location.href = '/search';
-                } else {
-                    // Handle unsuccessful search
-                    console.log('Search failed:', result.error);
-                }
-            })
-            .catch(error => {
-                console.log('An error occurred:', error);
-            });
-        }
+        fetch('/search-products', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          })
+          .then(response => response.json())
+          .then(result => {
+            // Handle the search result as needed
+            if (result.success) {
+              // Redirect to the search results page
+              window.location.href = '/search';
+            } else {
+              // Handle unsuccessful search
+              console.log('Search failed:', result.error);
+            }
+          })
+          .catch(error => {
+            console.log('An error occurred:', error);
+          });
+      }
     });
-});
-
-
+  });
 </script>
 <header class="header-area header-style-1 header-height-2">
-    <% if (!locals.user) { %>
-        <div class="header-top header-top-ptb-1 d-none d-lg-block">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-xl-3 col-lg-4">
-                        <div class="header-info">
-                            <ul>
-                                <li><i class="fi-rs-smartphone"></i> <a>(+01) - 2345 - 6789</a></li>
-                                <li><i class="fi-rs-marker"></i><a href="/contact">Our location</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-4">
-                        <div class="text-center">
-                            <div id="news-flash" class="d-inline-block">
-                                <ul>
-                                    <li>Get great devices up to 50% off <a href="/shop"><span style="color: rgb(226, 216, 216);">View details</span></a></li>
-                                    <li>Supper Value Deals💥 - Save more with coupons</li>
-                                    <li>🌞Summer Saving Sale, save up 35% off today <a href="/shop"><span style="color: rgb(226, 216, 216);">Shop now</span></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4">
-                        <div class="header-info header-info-right">
-                            <ul>
-                                <li><i class="fi-rs-user"></i><a href="/login">Log In / Sign Up</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <% if (!locals.user) { %>
+  <div class="header-top header-top-ptb-1 d-none d-lg-block">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-xl-3 col-lg-4">
+          <div class="header-info">
+            <ul>
+              <li><i class="fi-rs-smartphone"></i> <a>(+01) - 2345 - 6789</a></li>
+              <li><i class="fi-rs-marker"></i><a href="/contact">Our location</a></li>
+            </ul>
+          </div>
         </div>
-        <% } %>
-
-
-            <div>
-                <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
-                    <div class="container">
-                        <div class="header-wrap">
-                            <div class="logo logo-width-1">
-                                <a href="/"><img src="/user/assets/imgs/theme/logo.png" alt="logo"></a>
-                            </div>
-                            <div class="header-right">
-                                <div class="search-style-2">
-                                    <form>
-                                        <input class="custom-input" type="text" id="searchInput" placeholder="Search for items...">
-                                    </form>
-                                </div>
-                                <div class="header-action-right">
-                                    <div class="header-action-2">
-    
-                                        <div class="header-action-icon-2">
-                                            <a href="/account">
-                                                <% if (locals.user) { %>
-                                                    <img class="svgInject" alt="account"
-                                                        style="border: 2px solid #000000; border-radius: 50%; padding: 2px;"
-                                                        src="<%= user?.profileimage %>">
-    
-                                                    <% }%>
-    
-                                                        <!-- <img class="svgInject" alt="account"
-                                                    src="/user/assets/imgs/theme/icons/icon-account.svg"> -->
-                                            </a>
-                                        </div>
-    
-                                        <div class="header-action-icon-2">
-                                            <a href="/wallet">
-                                                <% if (locals.user) { %>
-                                                    <img class="svgInject" alt="account"
-                                                        src="/user/assets/imgs/theme/icons/wallet.svg">
-    
-                                                    <% }%>
-                                            </a>
-                                        </div>
-                                        <!-- <div class="header-action-icon-2"> -->
-                                        <!-- <a href="/wishlist">
-                                                <img class="svgInject" alt="space"
-                                                    src="/user/assets/imgs/theme/icons/icon-heart.svg">
-                                                <%# if (locals.user) { %>
-                                                    <span class="pro-count blue" id="wishlist-count">
-                                                        <%#= locals.wishlist?.items?.length ?? 0.00 %>
-                                                    </span>
-                                                    <%# } %>
-                                            </a> -->
-                                        <!-- </div> -->
-                                        <% if (locals.user ) { %>
-                                            <div class="header-action-icon-2">
-                                                <a class="mini-cart-icon" href="/cart">
-                                                    <img alt="space" src="/user/assets/imgs/theme/icons/icon-cart.svg">
-                                                    <% if (locals.user) { %>
-                                                        <span class="pro-count blue" id="cart-count1">
-                                                            <!-- optional chaining -->
-                                                            <%= locals.cart?.items?.length ?? 0 %> 
-                                                        </span>
-                                                        <% } %>
-                                                </a>
-                                                <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                                    <ul class="shopping-cart-list">
-                                                        <% (locals.cart?.items || []).forEach(item=> { %>
-                                                            <li data-product-id="<%= item.product?._id %>">
-                                                                <div class="shopping-cart-img">
-                                                                    <a href="/product"><img
-                                                                            alt="<%= item.product?.productName %>"
-                                                                            src="<%= item.product?.productImageUrls[0] %>"></a>
-                                                                </div>
-                                                                <div class="shopping-cart-title">
-                                                                    <h4><a href="/product/<%= item.product?.slug %>">
-                                                                            <%= item.product?.productName %>
-                                                                        </a></h4>
-                                                                    <h4><span id="qty-navbar-<%= item.product?._id %>">
-                                                                            <%= item.quantity %> ×
-                                                                        </span>₹<%= item.price %>
-                                                                    </h4>
-                                                                </div>
-                                                                <div class="shopping-cart-delete">
-                                                                    <a onclick="removeProduct('<%= item.product?._id %>')"><i
-                                                                            class="fi-rs-cross-small"></i></a>
-                                                                </div>
-                                                            </li>
-                                                            <% }) %>
-    
-    
-                                                    </ul>
-                                                    <div class="shopping-cart-footer">
-                                                        <div class="shopping-cart-total">
-                                                            <h4>Total <span id="nav-sub-total">₹<%= (cart?.total||0.00) %>
-                                                                </span>
-                                                            </h4>
-                                                        </div>
-                                                        <div class="shopping-cart-button">
-                                                            <a href="/cart" class="outline">View cart</a>
-                                                            <a href="/checkout">Checkout</a>
-    
-                                                        </div>
-                                                    </div>
-    
-    
-                                                </div>
-    
-                                            </div>
-    
-                                            <% } else { %>
-                                                <div class="header-action-icon-2">
-                                                    <a href="/login">
-                                                        <img class="svgInject" alt="login"
-                                                            src="/user/assets/imgs/theme/icons/icon-account.svg">
-                                                    </a>
-                                                </div>
-                                                <% } %>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                
+        <div class="col-xl-6 col-lg-4">
+          <div class="text-center">
+            <div id="news-flash" class="d-inline-block">
+              <ul>
+                <li>Get great devices up to 50% off <a href="/shop"><span style="color: rgb(226, 216, 216);">View details</span></a></li>
+                <li>Supper Value Deals💥 - Save more with coupons</li>
+                <li>🌞Summer Saving Sale, save up 35% off today <a href="/shop"><span style="color: rgb(226, 216, 216);">Shop now</span></a></li>
+              </ul>
             </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-4">
+          <div class="header-info header-info-right">
+            <ul>
+              <li><i class="fi-rs-user"></i><a href="/login">Log In / Sign Up</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
 
-            <div class="header-bottom header-bottom-bg-color sticky-bar shadow">
-                <div class="container">
-                    <div class="header-wrap header-space-between position-relative">
-                        <div class="logo logo-width-1 d-block d-lg-none">
-                            <a href="/"><img src="/user/assets/imgs/theme/logo.png" alt="logo"></a>
+
+  <div>
+    <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
+      <div class="container">
+        <div class="header-wrap">
+          <div class="logo logo-width-1">
+            <a href="/"><img src="/user/assets/imgs/theme/logo.png" alt="logo"></a>
+          </div>
+          <div class="header-right">
+            <div class="search-style-2">
+              <form>
+                <input class="custom-input" type="text" id="searchInput" placeholder="Search for items...">
+              </form>
+            </div>
+            <div class="header-action-right">
+              <div class="header-action-2">
+
+                <div class="header-action-icon-2">
+                  <a href="/account">
+                    <% if (locals.user) { %>
+                    <img class="svgInject" alt="account" style="border: 2px solid #000000; border-radius: 50%; padding: 2px;" src="<%= user?.profileimage %>">
+
+                    <% }%>
+
+                    <!-- <img class="svgInject" alt="account"
+                                                    src="/user/assets/imgs/theme/icons/icon-account.svg"> -->
+                  </a>
+                </div>
+
+                <div class="header-action-icon-2">
+                  <a href="/wallet">
+                    <% if (locals.user) { %>
+                    <img class="svgInject" alt="account" src="/user/assets/imgs/theme/icons/wallet.svg">
+
+                    <% }%>
+                  </a>
+                </div>
+                <div class="header-action-icon-2">
+                  <a href="/wishlist">
+                    <img class="svgInject" alt="space" src="/user/assets/imgs/theme/icons/icon-heart.svg">
+                    <% if (locals.user) { %>
+                    <span class="pro-count blue" id="wishlist-count">
+                      <%= locals.wishlist?.items?.length ?? 0.00 %>
+                    </span>
+                    <% } %>
+                  </a>
+                </div>
+                <% if (locals.user ) { %>
+                <div class="header-action-icon-2">
+                  <a class="mini-cart-icon" href="/cart">
+                    <img alt="space" src="/user/assets/imgs/theme/icons/icon-cart.svg">
+                    <% if (locals.user) { %>
+                    <span class="pro-count blue" id="cart-count1">
+                      <!-- optional chaining -->
+                      <%= locals.cart?.items?.length ?? 0 %>
+                    </span>
+                    <% } %>
+                  </a>
+                  <div class="cart-dropdown-wrap cart-dropdown-hm2">
+                    <ul class="shopping-cart-list">
+                      <% (locals.cart?.items || []).forEach(item=> { %>
+                      <li data-product-id="<%= item.product?._id %>">
+                        <div class="shopping-cart-img">
+                          <a href="/product"><img alt="<%= item.product?.productName %>" src="<%= item.product?.productImageUrls[0] %>"></a>
                         </div>
-                        <div class="header-nav d-none d-lg-flex">
-                            <div class="main-categori-wrap d-none d-lg-block">
-                                <a class="categori-button-active" href="#" style="color: #fff;">
-                                    <span class="fi-rs-apps"></span> Browse Categories
-                                </a>
-                                <div class="categori-dropdown-wrap categori-dropdown-active-large">
-                                    <input class="custom-input" type="text">
-                                        <ul>
-                                            <% categories.forEach(category=> { %>
-                                                <% if (category.active) { %>
-                                                    <li>
-                                                        <a href="/shop/<%= category._id %>">
-                                                            <%= category.name %>
-                                                        </a>
-                                                    </li>
-                                                    <% } %>
-                                                <% }) %>
-                                        </ul>
-                                </div>
-
-                            </div>
-                            <div class="main-menu main-menu-padding-1 d-none d-lg-block" style="line-height: 2.8em;">
-                                <nav>
-                                    <ul>
-
-                                        <li><a class="hoverable-text" href="/">Home</a>
-                                        </li>
-
-                                        <li><a class="hoverable-text" href="/shop">Shop </a>
-
-                                        </li>
-                                        <li>
-                                            <a class="hoverable-text" href="/about">About</a>
-                                        </li>
-                                        <li>
-                                            <a class="hoverable-text" href="/contact">Contact</a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
+                        <div class="shopping-cart-title">
+                          <h4><a href="/product/<%= item.product?.slug %>">
+                              <%= item.product?.productName %>
+                            </a></h4>
+                          <h4><span id="qty-navbar-<%= item.product?._id %>">
+                              <%= item.quantity %> ×
+                            </span>₹<%= item.price %>
+                          </h4>
                         </div>
-                        <div class="hotline d-none d-lg-block">
-                            <p><i class="fi-rs-headset"></i><span>Hotline</span> 1900 - 888 </p>
+                        <div class="shopping-cart-delete">
+                          <a onclick="removeProduct('<%= item.product?._id %>')"><i class="fi-rs-cross-small"></i></a>
                         </div>
+                      </li>
+                      <% }) %>
 
-                        <div class="header-action-right d-block d-lg-none">
-                            <div class="header-action-2">
-                                <div class="header-action-icon-2">
-                                    <a href="/account">
-                                        <!-- <img class="svgInject" alt="account"
+
+                    </ul>
+                    <div class="shopping-cart-footer">
+                      <div class="shopping-cart-total">
+                        <h4>Total <span id="nav-sub-total">₹<%= (cart?.total||0.00) %>
+                          </span>
+                        </h4>
+                      </div>
+                      <div class="shopping-cart-button">
+                        <a href="/cart" class="outline">View cart</a>
+                        <a href="/checkout">Checkout</a>
+
+                      </div>
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+                <% } else { %>
+                <div class="header-action-icon-2">
+                  <a href="/login">
+                    <img class="svgInject" alt="login" src="/user/assets/imgs/theme/icons/icon-account.svg">
+                  </a>
+                </div>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="header-bottom header-bottom-bg-color sticky-bar shadow">
+      <div class="container">
+        <div class="header-wrap header-space-between position-relative">
+          <div class="logo logo-width-1 d-block d-lg-none">
+            <a href="/"><img src="/user/assets/imgs/theme/logo.png" alt="logo"></a>
+          </div>
+          <div class="header-nav d-none d-lg-flex">
+            <div class="main-categori-wrap d-none d-lg-block">
+              <a class="categori-button-active" href="#" style="color: #fff;">
+                <span class="fi-rs-apps"></span> Browse Categories
+              </a>
+              <div class="categori-dropdown-wrap categori-dropdown-active-large">
+                <ul>
+                  <% categories.forEach(category=> { %>
+                  <% if (category.active) { %>
+                  <li>
+                    <a href="/shop/<%= category._id %>">
+                      <%= category.name %>
+                    </a>
+                  </li>
+                  <% } %>
+                  <% }) %>
+                </ul>
+              </div>
+
+            </div>
+            <div class="main-menu main-menu-padding-1 d-none d-lg-block" style="line-height: 2.8em;">
+              <nav>
+                <ul>
+
+                  <li><a class="hoverable-text" href="/">Home</a>
+                  </li>
+
+                  <li><a class="hoverable-text" href="/shop">Shop </a>
+
+                  </li>
+                  <li>
+                    <a class="hoverable-text" href="/about">About</a>
+                  </li>
+                  <li>
+                    <a class="hoverable-text" href="/contact">Contact</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          <div class="hotline d-none d-lg-block">
+            <p><i class="fi-rs-headset"></i><span>Hotline</span> 1900 - 888 </p>
+          </div>
+
+          <div class="header-action-right d-block d-lg-none">
+            <div class="header-action-2">
+              <div class="header-action-icon-2">
+                <a href="/account">
+                  <!-- <img class="svgInject" alt="account"
                                             src="/user/assets/imgs/theme/icons/icon-account.svg"> -->
-                                        <% if (locals.user) { %>
-                                            <img class="svgInject" alt="account"
-                                                style="border: 2px solid #000000; border-radius: 50%; padding: 2px;"
-                                                src="<%= user?.profileimage %>">
-                                            <% } %>
+                  <% if (locals.user) { %>
+                  <img class="svgInject" alt="account" style="border: 2px solid #000000; border-radius: 50%; padding: 2px;" src="<%= user?.profileimage %>">
+                  <% } %>
 
-                                    </a>
-                                </div>
-                                <!-- <div class="header-action-icon-2"> -->
-                                <!-- <a href="/wishlist">
+                </a>
+              </div>
+              <!-- <div class="header-action-icon-2"> -->
+              <!-- <a href="/wishlist">
                                         <img alt="space" src="/user/assets/imgs/theme/icons/icon-heart.svg">
                                         <%# if (locals.user) { %>
                                             <span class="pro-count blue" id="wishlist-count">
@@ -270,89 +259,81 @@
                                             </span>
                                             <%# } %>
                                     </a> -->
-                                <!-- </div> -->
-                                <% if (locals.user) { %>
-                                    <div class="header-action-icon-2">
-                                        <a class="mini-cart-icon" href="/cart">
-                                            <img alt="space" src="/user/assets/imgs/theme/icons/icon-cart.svg">
-                                            <% if (locals.user) { %>
-                                                <span class="pro-count blue" id="cart-count2">
-                                                    <%= locals.cart?.items?.length ?? 0 %>
-                                                </span>
-                                                <% } %>
-                                        </a>
+              <!-- </div> -->
+              <% if (locals.user) { %>
+              <div class="header-action-icon-2">
+                <a class="mini-cart-icon" href="/cart">
+                  <img alt="space" src="/user/assets/imgs/theme/icons/icon-cart.svg">
+                  <% if (locals.user) { %>
+                  <span class="pro-count blue" id="cart-count2">
+                    <%= locals.cart?.items?.length ?? 0 %>
+                  </span>
+                  <% } %>
+                </a>
 
 
-                                        <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                            <ul class="shopping-cart-list">
-                                                <% (locals.cart?.items || []).forEach(item=> { %>
-                                                    <li data-product-id="<%= item.product?._id %>">
-                                                        <div class="shopping-cart-img">
-                                                            <a href="/product"><img
-                                                                    alt="<%= item.product?.productName %>"
-                                                                    src="<%= item.product?.productImageUrls[0] %>"></a>
-                                                        </div>
-                                                        <div class="shopping-cart-title">
-                                                            <h4><a href="/product/<%= item.product?.slug %>">
-                                                                    <%= item.product?.productName %>
-                                                                </a></h4>
-                                                            <h4><span id="qty-navbar-<%= item.product?._id %>">
-                                                                    <%= item?.quantity %> ×
-                                                                </span>₹<%= item?.price %>
-                                                            </h4>
-                                                        </div>
-                                                        <div class="shopping-cart-delete">
-                                                            <a onclick="removeProduct('<%= item.product?._id %>')"><i
-                                                                    class="fi-rs-cross-small"></i></a>
-                                                        </div>
-                                                    </li>
-                                                    <% }) %>
-                                            </ul>
-                                            <div class="shopping-cart-footer">
-                                                <div class="shopping-cart-total">
-                                                    <h4>Total <span id="nav-sub-total">₹<%= (cart?.total||0.00) %>
-                                                        </span>
-                                                    </h4>
-                                                </div>
-
-                                                <div class="shopping-cart-button">
-                                                    <a href="/cart" class="outline">View cart</a>
-
-                                                    <a href="/checkout">Checkout</a>
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                    <% } else { %>
-                                        <div class="header-action-icon-2">
-                                            <a href="/login">
-                                                <img class="svgInject" alt="login"
-                                                    src="/user/assets/imgs/theme/icons/icon-account.svg">
-                                            </a>
-                                        </div>
-                                        <% } %>
-
-
-                                            <div class="header-action-icon-2 d-block d-lg-none">
-                                                <div class="burger-icon burger-icon-white">
-                                                    <span class="burger-icon-top"></span>
-                                                    <span class="burger-icon-mid"></span>
-                                                    <span class="burger-icon-bottom"></span>
-                                                </div>
-                                            </div>
-                            </div>
-                        </div>
+                <div class="cart-dropdown-wrap cart-dropdown-hm2">
+                  <ul class="shopping-cart-list">
+                    <% (locals.cart?.items || []).forEach(item=> { %>
+                    <li data-product-id="<%= item.product?._id %>">
+                      <div class="shopping-cart-img">
+                        <a href="/product"><img alt="<%= item.product?.productName %>" src="<%= item.product?.productImageUrls[0] %>"></a>
+                      </div>
+                      <div class="shopping-cart-title">
+                        <h4><a href="/product/<%= item.product?.slug %>">
+                            <%= item.product?.productName %>
+                          </a></h4>
+                        <h4><span id="qty-navbar-<%= item.product?._id %>">
+                            <%= item?.quantity %> ×
+                          </span>₹<%= item?.price %>
+                        </h4>
+                      </div>
+                      <div class="shopping-cart-delete">
+                        <a onclick="removeProduct('<%= item.product?._id %>')"><i class="fi-rs-cross-small"></i></a>
+                      </div>
+                    </li>
+                    <% }) %>
+                  </ul>
+                  <div class="shopping-cart-footer">
+                    <div class="shopping-cart-total">
+                      <h4>Total <span id="nav-sub-total">₹<%= (cart?.total||0.00) %>
+                        </span>
+                      </h4>
                     </div>
+
+                    <div class="shopping-cart-button">
+                      <a href="/cart" class="outline">View cart</a>
+                      <a href="/checkout">Checkout</a>
+                    </div>
+
+                  </div>
+
                 </div>
+
+              </div>
+              <% } else { %>
+              <div class="header-action-icon-2">
+                <a href="/login">
+                  <img class="svgInject" alt="login" src="/user/assets/imgs/theme/icons/icon-account.svg">
+                </a>
+              </div>
+              <% } %>
+
+
+              <div class="header-action-icon-2 d-block d-lg-none">
+                <div class="burger-icon burger-icon-white">
+                  <span class="burger-icon-top"></span>
+                  <span class="burger-icon-mid"></span>
+                  <span class="burger-icon-bottom"></span>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
 </header>
 
 <%- include("./mobile-nav.ejs") %>
 <script src="/user/assets/js/custom/ajaxCart.js"></script>
-
-
-    

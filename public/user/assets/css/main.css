@@ -446,6 +446,10 @@ input[type=number]:focus,
   box-shadow: none;
 }
 
+input[type="text"]:focus {
+  background: transparent;
+}
+
 .bg-grey-9 {
   background-color: #f4f5f978;
 }
@@ -1326,7 +1330,7 @@ textarea {
   box-shadow: none;
   padding: 10px 10px 10px 20px;
   font-size: 13px;
-  color: #161c27;
+  color: orange;
   width: 100%;
   min-height: 200px;
 }
@@ -3155,7 +3159,7 @@ table .product-thumbnail img {
 
 
 .bg-green {
-  background-color: #cee8e0;
+  background-color: #2c36337d;
 }
 
 /*modal*/

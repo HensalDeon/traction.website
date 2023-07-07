@@ -103,11 +103,17 @@
                       <% } %>
                     <% }); %>
                   </select>
+                  <% const isFeatured = product.featured || false; %>
+
+                  <label class="form-label">Featured</label>
+                  <select class="form-select" name="featured" id="featured" required>
+                    <option value="false" <%= isFeatured ? '' : 'selected' %>>Not featured</option>
+                    <option value="true" <%= isFeatured ? 'selected' : '' %>>Featured</option>
+                  </select>
                   
                 </div>
               </div>
             </div>
-
             <div class="container mt-3 w-100">
               <div class="card shadow-sm w-100">
                 <div class="card-body d-flex justify-content-between">
@@ -146,7 +152,7 @@
 <script>
   var deletedImages = [];
 
-const submitButton = document.getElementById('update-product-btn')
+  const submitButton = document.getElementById('update-product-btn')
   submitButton.addEventListener('click', (event) => {
   event.preventDefault();
 
@@ -158,13 +164,7 @@ const submitButton = document.getElementById('update-product-btn')
   const formData = new FormData(form);
 
   const productId = document.getElementById('productId').getAttribute('data-productId')
-  console.log("pdt"+productId);
   formData.append('productId',productId);
-
-  // const remainingImageUrls = getRemainingImageUrls();
-
-  // formData.append('remainingImageUrls', JSON.stringify(remainingImageUrls));
-
   formData.append('deletedImages',deletedImages)
 
 

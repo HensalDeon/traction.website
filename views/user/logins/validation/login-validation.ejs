@@ -11,11 +11,9 @@
     // Validate email field as user types
     email.addEventListener("input", () => {
         let emailError = "";
-
         if (email.value.trim() === "") {
             emailError = "<strong>Email is required.</strong>";
         } 
-        document.getElementById('emailError').innerHTML = '';
         emailErrorElement.innerHTML = emailError;
         email.classList.toggle("is-invalid", emailError !== "");
     });
@@ -23,11 +21,9 @@
     // Validate password field as user types
     passwordInput.addEventListener("input", () => {
         let passwordError = "";
-
         if (passwordInput.value.trim() === "") {
             passwordError = "<strong>Password is required.</strong>";
         } 
-        document.getElementById('passwordError').innerHTML = '';
         passwordErrorElement.innerHTML = passwordError;
         passwordInput.classList.toggle("is-invalid", passwordError !== "");
     });
@@ -60,31 +56,26 @@
                 url: '/login',
                 data: { email: email.value.trim(), password: passwordInput.value.trim() },
                 success: (response) => {
-                    if (response.message === 'User is blocked') {
-                        Swal.fire({
+                    console.log(response);
+                    if (response.message === 'Invalid credentials') {
+                        document.getElementById('invalidCredentials').style.color = 'red';
+
+                        document.getElementById('invalidCredentials').innerHTML = response.message;
+                        setTimeout(() => {
+                            document.getElementById('invalidCredentials').innerHTML = "";
+                        }, 5000)
+                        return
+                    } 
+                    if(response.message === 'User is blocked'){ Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
                             text: "Your access to this account has been blocked by the administrator. Please contact the administrator for further information.",
                         })
                         return;
-                    }
-
-                    if (response.message === 'Invalid password') {
-                        document.getElementById('passwordError').style.color = 'red';
-                        document.getElementById('passwordError').innerHTML = response.message;
-                        setTimeout(() => {
-                            document.getElementById('passwordError').innerHTML = "";
-                        }, 5000)
-                    } else if (response.message === 'Invalid email') {
-                        document.getElementById('emailError').style.color = 'red';
-
-                        document.getElementById('emailError').innerHTML = response.message;
-                        setTimeout(() => {
-                            document.getElementById('emailError').innerHTML = "";
-                        }, 5000)
-                    } else {
+                    }else {
                         window.location.href = '/';
                     }
+                
                 }
 
             })

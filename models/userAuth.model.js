@@ -4,35 +4,52 @@ const { hashPassword, comparePassword } = require('../config/security');
 const cloudinary = require('../config/cloudinary');
 
 
+// async function checkUserWithEmail(email, password) {
+//   try {
+//     const user = await userDatabase.findOne({ email: email })
+//     if (!user) {
+//       return { status: false, message: 'Invalid email' };
+//     }
+//     if (!user.status) {
+//       return { status: false, message: 'User is blocked' };
+//     }
+//     const isPasswordMatch = await comparePassword(password, user.password);
+//     if (isPasswordMatch) {
+//       return { status: true, user: user, message: 'Login succesfull!' };
+//     } else {
+//       return { status: false, message: 'Invalid password' };
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 async function checkUserWithEmail(email, password) {
   try {
     const user = await userDatabase.findOne({ email: email });
-    
-    if (!user) {
-      return { status: false, message: 'Invalid email' };
+    if (!user || !(await comparePassword(password, user.password))) {
+      return { status: false, message: 'Invalid credentials' };
     }
+
+    // Password is valid, now check if the user is blocked
     if (!user.status) {
       return { status: false, message: 'User is blocked' };
-    }
-    const isPasswordMatch = await comparePassword(password, user.password);
-    if (isPasswordMatch) {
-      return { status: true, user: user, message: 'Login succesfull!' };
     } else {
-      return { status: false, message: 'Invalid password' };
+      return { status: true, user: user, message: 'Login successful!' };
     }
   } catch (error) {
     console.log(error);
   }
 }
 
+
+
 async function checkUserExistOrNot(phoneNumber) {
   try {
     const user = await userDatabase.findOne({ phone: phoneNumber });
-    const res = {}
     if (user) {
      const sendotp = await  sendOtp(user.phone)
-      if(!sendotp)  return {status:false,message:"Unable to send otp sorry bruh"}
-      return {status:true,message:"Successfully send "}
+      if(!sendotp)  return {status:false, message:"Unable to send otp sorry bruh"}
+      return {status:true,message:"Successfully send"}
 
     } else {
       return { status:false,message:"User not registered!"};

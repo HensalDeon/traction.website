@@ -14,8 +14,6 @@ const {
   getProductsWithCategory,
   searchProductsWithRegex,
   enableProductStatus,
-
-  setProductImage,
 } = require('../models/product.model');
 
 async function GetProducts(req, res) {
@@ -57,6 +55,7 @@ async function GetAddProduct(req, res) {
 
 async function PostAddProduct(req, res) {
   try {
+    console.log("entered");
     if (req.fileValidationError) {
       return res.status(400).json({ error: req.fileValidationError.message });
     }
@@ -69,13 +68,19 @@ async function PostAddProduct(req, res) {
     if (validation.error) {
       return res.json({ success: false, message: validation.error.details[0].message });
     }
-
+    
     const productResult = await addNewProduct(req.body, req.files);
+    console.log(productResult.message);
     if (productResult.status) {
       res.status(200).json({ success: true, message: 'Product added succesfully' });
-    } else {
+    }
+    else if(productResult.message=='A product with the same name already exists.') {
+      res.status(422).json({success:false, message:'A product with the same name already exists.'})
+    }
+    else {
       res.status(500).json({ success: false, message: 'Failed to add product.' });
     }
+
   } catch (error) {
     handleError(res, error);
   }
@@ -83,6 +88,7 @@ async function PostAddProduct(req, res) {
 
 async function GetEditProduct(req, res) {
   try {
+    
     const slug = req.params.slug;
     const productResult = await fetchProduct(slug);
     const categoryResult = await fetchCategories();
@@ -138,7 +144,6 @@ async function PutProductDetails(req, res) {
       { ...dataBody },
       { abortEarly: false },
     );
-    
     if (validation.error) {
       return res.status(400).json({ success: false, message: validation.error.details[0].message });
     }

@@ -70,7 +70,6 @@ async function removeItemFromCart(userId, productId) {
     if (!product) {
       return { status: false, message: 'product not found' };
     }
-
     let cart = await cartDatabase.findOne({ user: userId });
     if (cart) {
       // If cart already exists, check if the product is in the cart
@@ -99,7 +98,6 @@ async function removeItemFromCart(userId, productId) {
 async function fetchCartProducts(userId) {
   try {
     const cart = await cartDatabase.findOne({ user: userId }).populate('items.product');
-
     if (!cart) {
       return { status: false, cart, total: 0 };
     } else {

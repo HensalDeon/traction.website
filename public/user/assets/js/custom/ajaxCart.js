@@ -1,7 +1,7 @@
 function removeProduct(productId) {
   Swal.fire({
     title: 'Are you sure?',
-    text: 'Product delete from the cart?',
+    text: 'Delete product from the cart?',
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',

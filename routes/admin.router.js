@@ -11,9 +11,9 @@ const {
   GetUsers,
   PutBlockUser,
   Get404,
-  // GetGraphData,
-  // GetChartData,
-  // GetReport,
+  GetGraphData,
+  GetChartData,
+  GetReport,
 } = require('../controllers/admin.controller');
 
 const {
@@ -33,6 +33,18 @@ const {
   PutCategory,
   PutCategoryName,
 } = require('../controllers/category.controller');
+
+const {
+  GetOrderPage,
+  ChangeOrderStatus,
+  GetOrderDetails,
+} = require('../controllers/order.controller');
+
+const {
+  GetBannerPage,
+  EditBanner,
+  AddBanner,
+} = require('../controllers/banner.controller');
 
 // session handler
 const { isAdminLoggedIn, isAdminLoggedOut } = require('../middlewares/auth.handler');
@@ -63,6 +75,20 @@ adminRouter.put('/edit-product',upload.array('productImage', 4),isAdminLoggedIn,
 adminRouter.get('/getProductImages/:id', isAdminLoggedIn, GetProductImages);
 adminRouter.put('/product-status/:id', isAdminLoggedIn, PutProduct);
 adminRouter.put('/product-enable/:id', isAdminLoggedIn, PutEnableProduct);
+// Order management
+adminRouter.get('/orders', isAdminLoggedIn, GetOrderPage);
+adminRouter.post('/order-status', isAdminLoggedIn, ChangeOrderStatus);
+adminRouter.get('/order-details', isAdminLoggedIn, GetOrderDetails);
+
+//Banner management
+adminRouter.get('/banners', isAdminLoggedIn, GetBannerPage);
+adminRouter.post('/add-banner', upload.single('bannerImage'), isAdminLoggedIn, AddBanner);
+adminRouter.post('/edit-banner', upload.single('bannerImage'), isAdminLoggedIn, EditBanner);
+
+//Dashboard
+adminRouter.get('/graph', isAdminLoggedIn, GetGraphData);
+adminRouter.get('/chart', isAdminLoggedIn, GetChartData);
+adminRouter.get('/sales-report', isAdminLoggedIn, GetReport);
 
 //Others(404)
 adminRouter.get('/*', Get404);

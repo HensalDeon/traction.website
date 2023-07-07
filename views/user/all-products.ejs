@@ -51,8 +51,9 @@
                                                 </div>
                                                 <div class="sort-by-dropdown-wrap">
                                                     <select id="sortByDropdown" onchange="handleSortByChange()">
+                                                        <option value="all"selected>All</option>
                                                         <option value="featured">Featured</option>
-                                                        <option  value="lowToHigh">Price: Low to High</option>
+                                                        <option value="lowToHigh">Price: Low to High</option>
                                                         <option value="highToLow">Price: High to Low</option>
                                                         <option value="releaseDate">Release Date</option>
                                                       </select>
@@ -183,6 +184,7 @@
             <script>
                 function handleSortByChange() {
                     const sortBy = document.getElementById('sortByDropdown').value;
+                    console.log(sortBy+"/////1");
                     const page = '<%= currentPage %>';
                     const limit = '<%= limit %>';
                     const url = `/shop?page=${page}&limit=${limit}&sortBy=${sortBy}`;

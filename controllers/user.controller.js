@@ -8,7 +8,7 @@ const {
 } = require('../models/userAuth.model');
 
 const { fetchAllProducts } = require('../models/product.model');
-// const { fetchUserOrderDetails } = require('../models/order.model');
+const { fetchUserOrderDetails } = require('../models/order.model');
 const {getAllBanners} = require('../models/banner.model')
 
 const { handleError } = require('../middlewares/error.handler');
@@ -160,17 +160,17 @@ async function GetAccount(req, res) {
     const limit = parseInt(req.query.limit) || 10;
 
     const userData = req.session?.user;
-    // if (userData) {
-    //   const orders = await fetchUserOrderDetails(req.session.user._id, res,page,limit);
-    //   return res.render('user/account', {
-    //     userData: userData,
-    //     orders: orders.orderDetails,
-    //     addresses: orders.addresses,
-    //     totalPages:orders.totalPages,
-    //     currentPage:orders.currentPage,
-    //     limit: orders.limit,
-    //   });
-    // }
+    if (userData) {
+      const orders = await fetchUserOrderDetails(req.session.user._id, res,page,limit);
+      return res.render('user/account', {
+        userData: userData,
+        orders: orders.orderDetails,
+        addresses: orders.addresses,
+        totalPages:orders.totalPages,
+        currentPage:orders.currentPage,
+        limit: orders.limit,
+      });
+    }
     return res.render('user/account', { userData });
   } catch (error) {
     handleError(res, error);

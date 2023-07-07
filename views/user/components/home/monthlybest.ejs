@@ -44,8 +44,7 @@
 
 
                                 <% products.forEach(product=>{ %>
-                                    <% if(product.productStatus && product.productCategory.active 
-                                    && product.productCategory.name === 'RC TRUCKS'|| 'RC CARS' || 'RC BOATS') { %>
+                                    <% if(product.featured && product.productStatus && product.productCategory.active) { %>
                                         <div class="product-cart-wrap">
                                             <div class="product-img-action-wrap">
                                                 <div class="product-img product-img-zoom">
@@ -150,10 +149,11 @@
                             <div class="slider-arrow slider-arrow-2 carausel-4-columns-arrow"
                                 id="carausel-4-columns-3-arrows"></div>
                             <div class="carausel-4-columns carausel-arrow-center" id="carausel-4-columns-3">
-
-                                <% products.forEach(product=>{ %>
-                                    <% if(product.productStatus && product.productCategory.active &&
-                                        product.productCategory.name==='RC BOATS' ) { %>
+                                <% const numProductsToShow3 = 8; %>
+                                <% const recentProducts = products.filter(product=>
+                                product.productStatus && product.productCategory.active &&
+                                (new Date() - new Date(product.createdAt)) < (7 * 4 * 24 * 60 * 60 * 1000)).slice(-numProductsToShow3).reverse(); %>
+                                    <% recentProducts.forEach(product => { %>
                                         <div class="product-cart-wrap">
                                             <div class="product-img-action-wrap">
                                                 <div class="product-img product-img-zoom">
@@ -164,9 +164,6 @@
                                                             alt="">
                                                     </a>
                                                 </div>
-                                              
-
-
                                                   <div class="product-badges product-badges-position product-badges-mrg">
                                                       <span class="new">New</span>
                                                       <!-- <span class="best">Best Sell</span>
@@ -174,8 +171,6 @@
                                                       <span class="hot">-<%= Math.floor((product.productOldPrice - product.productPrice) / product.productOldPrice * 100) %>%</span>
                                                       <span class="sale">Out of stocks</span> -->
                                                   </div>
-
-
                                             </div>
                                             <div class="product-content-wrap">
                                                 <div class="product-category">
@@ -203,8 +198,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <% } %>
-                                            <% }) %>
+                                    <% }) %>
 
                             </div>
                         </div>

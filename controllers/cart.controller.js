@@ -23,9 +23,7 @@ const {
 async function GetCart(req, res) {
   try {
     const userId = req.session.user._id;
-
     const cartResult = await fetchCartProducts(userId);
-
     if (cartResult.status) {
       const items = cartResult.cart.items.map((item) => ({
         product: item.product,
@@ -73,11 +71,11 @@ async function PostToCart(req, res) {
     if (cartResult.status) {
       res
         .status(200)
-        .json({ success: cartResult.status, message: cartResult.message ,product:cartResult.productData });
+        .json({ success: cartResult.status, message: cartResult.message, product: cartResult.productData });
     } else {
       res
         .status(404)
-        .json({ success: cartResult.status, message: cartResult.message,product: [] });
+        .json({ success: cartResult.status, message: cartResult.message, product: [] });
     }
   } catch (error) {
     handleError(res, error);
@@ -99,16 +97,13 @@ async function RemoveFromCart(req, res) {
     const { productId } = req.body;
     const userId = req.session.user._id;
     if (!productId || typeof productId !== 'string') {
-      return res
-        .status(400)
-        .json({ status: false, message: 'Invalid product id' });
+      return res.status(400).json({ status: false, message: 'Invalid product id' });
     }
-
     const cartResult = await removeItemFromCart(userId, productId);
     if (cartResult.status) {
       res
         .status(200)
-        .json({ status: cartResult.status, message: cartResult.message ,total:cartResult.total });
+        .json({ status: cartResult.status, message: cartResult.message, total: cartResult.total });
     } else {
       res
         .status(404)

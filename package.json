@@ -1,11 +1,12 @@
 {
   "name": "firstproject",
   "version": "1.0.0",
-  "description": "",
+  "description": "Let's do some action with our Traction toys!",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "watch": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +25,8 @@
     "mongoose": "^7.3.1",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
+    "pdfkit": "^0.13.0",
+    "razorpay": "^2.9.0",
     "slugify": "^1.6.6",
     "twilio": "^4.12.0",
     "xss": "^1.0.14",

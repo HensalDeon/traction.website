@@ -46,8 +46,7 @@
                 <div class="row product-grid-4">
 
                     <% const numProductsToShow1=8; %>
-                        <% const randomProducts1=products.filter(product=> product.productStatus &&
-                            product.productCategory.active)
+                        <% const randomProducts1=products.filter(product=> product.featured && product.productStatus && product.productCategory.active)
                             .sort(() => Math.random() - 0.5)
                             .slice(0, numProductsToShow1); %>
                             <% randomProducts1.forEach(product=> { %>
@@ -216,23 +215,3 @@
         </div>
     </div>
 </section>
-<!-- <script>
-    function loadFromBackEnd(productId) {
-                    fetch(`/product/images/${productId}`)
-                        .then(response => response.json())
-                        .then(data => {
-                        const productImages = data.productImageUrls;
-
-                        // Update the quick view modal with the new images
-                        const quickViewImages = document.querySelectorAll('.quick-view-image');
-                        quickViewImages.forEach((image, index) => {
-                            if (productImages[index]) {
-                            image.src = productImages[index];
-                            }
-                        });
-                        })
-                        .catch(error => {
-                        console.error('Error:', error);
-                        });
-                    }
-</script> -->

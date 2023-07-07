@@ -44,6 +44,10 @@ const addProductSchema = Joi.object({
   productCategory: Joi.string().required().messages({
     'any.required': 'Category is required'
   }),
+  featured: Joi.boolean().required().messages({
+    'boolean.base': 'Featured must be a boolean',
+    'any.required': 'Featured is required',
+  }),
   productImage: Joi.array().required().messages({
     'any.required': 'Product image is required'
   })
@@ -73,6 +77,10 @@ const updateProductSchema = Joi.object({
   }),
   productCategory: Joi.string().required().messages({
     'any.required': 'Category is required'
+  }),
+  featured: Joi.boolean().required().messages({
+    'boolean.base': 'Featured must be a boolean',
+    'any.required': 'Featured is required',
   }),
   stocks: Joi.number().integer().min(0).messages({
     'number.base': 'Stocks must be a number',

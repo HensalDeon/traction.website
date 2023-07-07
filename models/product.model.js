@@ -24,10 +24,11 @@ async function fetchAllProducts(page, limit, sortBy) {
   try {
     try {
       if (sortBy) {
+        let filterOptions = {};
         let sortOptions = {};
-
         switch (sortBy) {
           case 'featured':
+            filterOptions = { featured: true };
             break;
           case 'lowToHigh':
             sortOptions = { productPrice: 1 }; // Sort by price: low to high
@@ -43,11 +44,23 @@ async function fetchAllProducts(page, limit, sortBy) {
         }
 
         var products = await productDatabase
-          .find({ productStatus: { $in: [true, false] } })
+          .find({ $and: [{ productStatus: { $in: [true, false] } }, filterOptions] })
           .populate('productCategory')
           .sort(sortOptions)
           .skip((page - 1) * limit)
           .limit(limit);
+          console.log(products.length);
+          let totalProducts = products.length;
+          let totalPages = Math.ceil(totalProducts / limit);
+          console.log(totalProducts);
+          return {
+        status: true,
+        products: products,
+        totalPages: totalPages,
+        currentPage: page,
+        limit: limit,
+        productCount: totalProducts,
+      };
       } else {
         var products = await productDatabase
           .find({ productStatus: { $in: [true, false] } })
@@ -55,10 +68,8 @@ async function fetchAllProducts(page, limit, sortBy) {
           .skip((page - 1) * limit)
           .limit(limit);
       }
-
-      const totalProducts = await productDatabase.countDocuments();
-      const totalPages = Math.ceil(totalProducts / limit);
-
+      let totalProducts = await productDatabase.countDocuments();
+      let totalPages = Math.ceil(totalProducts / limit);
       return {
         status: true,
         products: products,
@@ -75,6 +86,7 @@ async function fetchAllProducts(page, limit, sortBy) {
     throw new Error(`Error finding products: ${error.message}`);
   }
 }
+
 
 async function fetchProduct(slug) {
   try {
@@ -97,8 +109,14 @@ async function addNewProduct(dataBody, dataFiles) {
     productOldPrice,
     stocks,
     productCategory,
+    featured,
   } = dataBody;
 
+  const existingProduct = await productDatabase.findOne({ productName: productName });
+  if (existingProduct) {
+    return({status: false, message: "A product with the same name already exists."})
+  }
+  
   const product = new productDatabase({
     productName: productName,
     productDescription: productDescription,
@@ -106,6 +124,7 @@ async function addNewProduct(dataBody, dataFiles) {
     productOldPrice: productOldPrice,
     stocks: stocks,
     productCategory: productCategory,
+    featured: featured,
     deleteStatus: false,
   });
   product.slug = slugify(productName, { lower: true });
@@ -209,7 +228,8 @@ async function updateProduct(productId, productData, productImages,deletedImages
     product.productOldPrice = productData.productOldPrice || product.productOldPrice;
     product.stocks = productData.stocks || product.stocks;
     product.productCategory = productData.productCategory || product.productCategory;
-
+    product.featured = productData.featured || product.featured;
+    
     const updatedProduct = await product.save();
 
     return {status:true,updatedProduct:updatedProduct,message:"Product updated successfully"};
