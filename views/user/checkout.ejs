@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
+
 <head>
-    <%- include("../partials//user-header") %>
+  <%- include("../partials//user-header") %>
 </head>
+
 <body>
-    <%- include("./components/preloading.ejs") %>
-        <%- include("./layouts/navbar.ejs") %>
-            <main class="main">
-
-                <%- include("./components/checkout/chekoutPath.ejs") %>
-                
-                <section class="mt-50 mb-50">
-                    <div class="container">
-                        <div class="row">
-
-                            <%- include('./components/checkout/coupon-view.ejs') %>
-                            <%- include('./components/checkout/address.ejs') %>
-
-                            <%- include('./components/checkout/editAddress.ejs') %>
-                                        <%- include('./components/checkout/payment.ejs') %>
-                            </div>
-                        </div>
-                    </section>
-            </main>
-            <%- include("./layouts/footer.ejs")%>
-                <%- include("./script/script.ejs") %>
+  <%- include("./components/preloading.ejs") %>
+  <%- include("./layouts/navbar.ejs") %>
+  <main class="main">
+    <%- include("./components/checkout/chekoutPath.ejs") %>
+    <section class="pt-50 mb-50 cartBg">
+      <div class="container">
+        <div class="row">
+          <%- include('./components/checkout/coupon-view.ejs') %>
+          <%- include('./components/checkout/address.ejs') %>
+          <%- include('./components/checkout/editAddress.ejs') %>
+          <%- include('./components/checkout/payment.ejs') %>
+        </div>
+      </div>
+      
+    </section>
+  </main>
+  <%- include("./layouts/footer.ejs")%>
+  <%- include("./script/script.ejs") %>
 </body>
 
 </html>

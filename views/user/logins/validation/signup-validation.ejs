@@ -8,6 +8,7 @@
     const confirmPassword = document.getElementById("confirm-password");
     const phone = document.getElementById("phone");
     const otpButton = document.getElementById("otp-button");
+    const resendButton = document.getElementById("resend-btn");
     const otp = document.getElementById("otp");
     const otpRegex = /^\d{6}$/;
     const phoneRegex = /^\d{10}$/;
@@ -17,7 +18,8 @@
 
     // Disable OTP button by default
     otpButton.disabled = true;
-
+    resendButton.disabled = true;
+    
     // Enable OTP button only when all fields are filled
     form.addEventListener('input', () => {
         if (username.value.trim() !== "" && email.value.trim() !== "" && password.value.trim() !== "" && confirmPassword.value.trim() !== "" && phone.value.trim() !== "") {
@@ -84,15 +86,6 @@
             otpError = "Invalid OTP. OTP should be a 6-digit numeric code.";
         }
 
-
-        function showAlert() {
-            swal("Please accept the terms and conditions.", {
-                buttons: false,
-                timer: 3000,
-                icon: "warning",
-            });
-        }
-
         // Display error messages and set validity flag
         document.getElementById("username-error").innerHTML = usernameError;
         document.getElementById("email-error").innerHTML = emailError;
@@ -103,10 +96,11 @@
 
         isValid = (usernameError === "" && otpError === "" && emailError === "" && passwordError === "" && confirmPasswordError === "" && phoneError === "");
 
-        if (!checkbox) {
-            event.preventDefault();
-            showAlert();
-        }
+        // if (!checkbox) {
+        //     console.log("heyyy");
+        //     event.preventDefault();
+        //     showAlert();
+        // }
 
         if (!isValid) {
             event.preventDefault();
@@ -193,44 +187,97 @@
         otp.classList.toggle("is-invalid", otpError !== "");
     });
 
-
-    $(document).ready(function () {
-        $('#otp-button').click(function () {
-            
-            otpButton.disabled = true;
+    function sendOTP() {
+      otpButton.disabled = true;
+      console.log('/////1');
+      // setTimeout(() => {
+      //     otpButton.disabled = false;
+      // }, 30000)
+      var phone = $('#phone').val();
+      $.ajax({
+        type: 'POST',
+        url: '/signup-otp',
+        data: {
+          phone: phone
+        },
+        success: function(response) {
+          // Handle successful response
+          console.log(response);
+          if (!response) {
+            document.getElementById('phone-error-verify').style.display = 'block';
+            document.getElementById('phone-error-verify').innerHTML = "Phone number already registered";
             setTimeout(() => {
-                otpButton.disabled = false;
-            }, 30000)
-            
-            var phone = $('#phone').val();
-            $.ajax({
-                type: 'POST',
-                url: '/signup-otp',
-                data: { phone: phone },
-                success: function (response) {
-                    // Handle successful response
-                    console.log(response);
-                    if (!response) {
-                        document.getElementById('phone-error-verify').style.display = 'block';
-                        document.getElementById('phone-error-verify').innerHTML = "Phone number already registered";
-                        setTimeout(() => {
-                            document.getElementById('phone-error-verify').style.display = 'none';
-                        }, 5000)
-                        otpButton.disabled = false;
+              document.getElementById('phone-error-verify').style.display = 'none';
+            }, 5000)
+            otpButton.disabled = true;
 
-                    } else {
-                        document.getElementById('phone-error-verify').style.display = 'none';
-                    }
-                },
-                error: function (xhr, status, error) {
-                    // Handle error response
-                    console.log(error);
-                }
-            });
+          } else {
+            document.getElementById("resend-btn").style.display = "block";
+            document.getElementById('phone-error-verify').style.display = 'none';
+          }
+        },
+        error: function(xhr, status, error) {
+          // Handle error response
+          console.log(error);
+        }
+      });
+      return true;
+    };
+    function resendOTP() {
+      console.log("///////2");
+      otpButton.disabled = true;
+      resendButton.disabled = true
+      setTimeout(() => {
+        resendButton.disabled = false;
+      }, 30000)
+      var phone = $('#phone').val();
+      $.ajax({
+        type: 'POST',
+        url: '/signup-otp',
+        data: {
+          phone: phone
+        },
+        success: function(response) {
+          // Handle successful response
+          console.log(response);
+          if (!response) {
+            document.getElementById('phone-error-verify').style.display = 'block';
+            document.getElementById('phone-error-verify').innerHTML = "Phone number already registered";
+            setTimeout(() => {
+              document.getElementById('phone-error-verify').style.display = 'none';
+            }, 5000)
+            resendButton.disabled = false;
 
-            return true;
-        });
+          } else {
+            document.getElementById('phone-error-verify').style.display = 'none';
+          }
+        },
+        error: function(xhr, status, error) {
+          // Handle error response
+          console.log(error);
+        }
+      });
+      return true;
+    };
+    function showAlert() {
+    swal("Please accept the terms and conditions.", {
+      buttons: false,
+      timer: 3000,
+      icon: "warning",
     });
+
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  $(document).ready(function() {
+    $('#formValid').on('submit', function(event) {
+      if (!$('#exampleCheckbox').is(':checked')) {
+        event.preventDefault();
+        showAlert();
+      }
+    });
+  });
 
     $(document).ready(function () {
         $('#formValid').on('submit', function (e) {

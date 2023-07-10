@@ -5,7 +5,7 @@ const upload = require('../config/multer');
 
 const { isLoggedIn, isLoggedOut } = require('../middlewares/auth.handler');
 
-const { GetAbout, GetContact } = require('../controllers/page.controller')
+const { GetAbout, GetContact, GetLearnMore } = require('../controllers/page.controller')
 
 const {
   GetHome,
@@ -104,6 +104,8 @@ userRouter.get('/order-details', isLoggedIn, GetOrderDetails);
 userRouter.post('/update-userdata', upload.single('profileimage'), isLoggedIn, UpdateUserdata);
 userRouter.get('/logout', GetLogout);
 
+//others
+userRouter.get('/learn-more', GetLearnMore)
 userRouter.get('/about', GetAbout);
 userRouter.get('/contact', GetContact);
 userRouter.get('/*', Get404);

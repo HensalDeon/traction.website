@@ -1,55 +1,46 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
+
 <head>
-    <%- include("../partials//user-header") %>
+  <%- include("../partials//user-header") %>
 
 </head>
+
 <body>
-    <%- include("./components/preloading.ejs") %>
-        <%- include("./layouts/navbar.ejs") %>
+  <%- include("./components/preloading.ejs") %>
+  <%- include("./layouts/navbar.ejs") %>
 
-            <main class="main">
-                <%- include("./components/cart/cartPagePath.ejs") %>
+  <main class="main">
+    <%- include("./components/cart/cartPagePath.ejs") %>
 
+    <section class="pt-10 mb-50 cartBg">
+      <div class="container">
 
-                    <section class="mt-50 mb-50">
-                        <div class="container">
+        <% if (items.length === 0) { %>
+        <div class="row">
 
-                            <% if (items.length===0) { %>
-                                <div class="row">
-                                    <div class="col-12 d-flex justify-content-center">
-                                        <img src="/user/assets/imgs/theme/cart.png" alt="Responsive Image"
-                                            class="img-fluid mx-auto d-block max-width-100vh "
-                                            style="max-height: 50vh;">
-                                    </div>
-                                </div>
-                                <% } else { %>
-                                    <div class="row">
-                                        <div class="col-12">
+          <%- include("./components/cart/emptyCartBg.ejs") %>
 
-                                            <%- include("./components/cart/cartProducts.ejs") %>
+          <% } else { %>
+          <div class="row">
+            <div class="col-12">
+              <%- include("./components/cart/cartProducts.ejs") %>
+              <%- include("./components/cart/cartTotal.ejs") %>
+              <%- include("./components/cart/calculateShipping.ejs") %>
+            </div>
+          </div>
+        </div>
 
-                                            <%- include("./components/cart/cartTotal.ejs") %>
-                                                <!-- <div class="divider center_icon mt-50 mb-50"><i
-                                                        class="fi-rs-fingerprint"></i></div>
-                                                <div class="row mb-50"> -->
-
-                                                    <%- include("./components/cart/calculateShipping.ejs") %>
-
-                                                </div>
-                                        </div>
-                                    </div>
-
-                                    <% } %>
-                        </div>
-                    </section>
-            </main>
-            <%- include("./layouts/footer.ejs")%>
-                <!-- cutom ajax -->
-                
-                <%- include("./script/script.ejs") %>
-                
-                <script src="/user/assets/js/custom/ajaxCart.js"></script>
+        <% } %>
+      </div>
+    </section>
+  </main>
+  <%- include("./layouts/footer.ejs")%>
+  
+  <%- include("./script/script.ejs") %>
+  
+  <!-- cutom ajax -->
+  <script src="/user/assets/js/custom/ajaxCart.js"></script>
 </body>
 
 </html>

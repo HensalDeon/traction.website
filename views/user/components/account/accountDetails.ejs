@@ -88,13 +88,12 @@
     </div>
 </div>
 
-<div class="modal fade" id="imagePreviewModal" tabindex="-1" role="dialog" aria-labelledby="imagePreviewModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal" id="imagePreviewModal">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="imagePreviewModalLabel">Crop Image</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -102,118 +101,120 @@
                 <div id="imagePreviewContainer"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" id="cropImageButton">Crop</button>
             </div>
         </div>
     </div>
 </div>
-
+</div>
 <script src="/user/assets/js/custom/cropper.js"></script>
-
 <script>
-    const fileIn = document.getElementById('file');
-    const profilePhoto = document.getElementById('profilePhoto');
-    const imagePreviewModal = document.getElementById('imagePreviewModal');
-    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-    const cropImageButton = document.getElementById('cropImageButton');
-    let croppedImage;
-    // Add event listener to file input
-    fileIn.addEventListener('change', function (event) {
-        const file = event.target.files[0];
-        const reader = new FileReader();
+const fileIn = document.getElementById('file');
+const profilePhoto = document.getElementById('profilePhoto');
+const imagePreviewModal = document.getElementById('imagePreviewModal');
+const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+const cropImageButton = document.getElementById('cropImageButton');
+let croppedImage;
 
-        reader.onload = function (e) {
-            const img = document.createElement('img');
-            img.src = e.target.result;
-            img.classList.add('img-fluid');
-            img.style.display = 'block';
-            img.style.maxWidth = '80%';
+// Add event listener to file input
+fileIn.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
 
-            // Display the image in the modal
-            imagePreviewContainer.innerHTML = '';
-            imagePreviewContainer.appendChild(img);
+    reader.onload = function(e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.classList.add('img-fluid');
+        img.style.display = 'block';
+        img.style.maxWidth = '80%';
 
-            // Show the modal
-            $(imagePreviewModal).modal('show');
+        // Display the image in the modal
+        imagePreviewContainer.innerHTML = '';
+        imagePreviewContainer.appendChild(img);
 
-            const cropper = new Cropper(img, {
-                aspectRatio: 1,
-                viewMode: 1,
-                cropBoxResizable: false,
-                minCropBoxWidth: 200, 
-                minCropBoxHeight: 200,  
-                dragMode: 'move'
+        // Show the modal
+        imagePreviewModal.style.display = 'block';
+
+        const cropper = new Cropper(img, {
+            aspectRatio: 1,
+            viewMode: 1,
+            cropBoxResizable: false,
+            minCropBoxWidth: 200,
+            minCropBoxHeight: 200,
+            dragMode: 'move'
+        });
+
+        cropImageButton.addEventListener('click', function() {
+            const croppedCanvas = cropper.getCroppedCanvas({
+                width: 800,
+                height: 800,
             });
+            const croppedImageData = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+            profilePhoto.src = croppedImageData;
+            croppedImage = dataURItoBlob(croppedImageData);
+            imagePreviewModal.style.display = 'none';
+        });
+    };
 
-            cropImageButton.addEventListener('click', function () {
-                const croppedCanvas = cropper.getCroppedCanvas({
-                    width: 800, 
-                    height: 800,
-                });
+    if (reader) {
+        reader.readAsDataURL(file);
+    }
+});
 
-                const croppedImageData = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+const form1 = document.getElementById('updateUser');
+form1.addEventListener('submit', (event) => {
+    event.preventDefault();
 
-                profilePhoto.src = croppedImageData;
+    document.getElementById('buttonSub').disabled = true;
+    const formData = new FormData(form1);
+    formData.delete('profileimage');
+    formData.append('profileimage', croppedImage, 'cropped_image.jpg');
 
-                 croppedImage = dataURItoBlob(croppedImageData);
+    console.log(...formData);
+    fetch('/update-userdata', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status) {
+                console.log('update successfully');
+                location.reload()
+            } else {
+                document.getElementById('buttonSub').disabled = false;
 
-                $(imagePreviewModal).modal('hide');
-            });
-        };
-
-        if(reader){
-            reader.readAsDataURL(file);
-        }
-    });
-
-    const form1 = document.getElementById('updateUser');
-    form1.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        document.getElementById('buttonSub').disabled = true;
-        const formData = new FormData(form1);
-        formData.delete('profileimage');
-        formData.append('profileimage', croppedImage, 'cropped_image.jpg');
-
-        console.log(...formData);
-        fetch('/update-userdata', {
-            method: 'POST',
-            body: formData
+                console.error(data.message);
+                const errorMessage = data.message || 'Unknown error';
+                const toastContainer = document.querySelector('.toast-container');
+                const toastElement = `
+                    <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 10000;">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                ${errorMessage}
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                `;
+                toastContainer.innerHTML = toastElement;
+                const toast = new bootstrap.Toast(toastContainer.querySelector('.toast'));
+                toast.show();
+            }
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status) {
-                    console.log('update successfully');
-                    location.reload()
-                } else {
-                    document.getElementById('buttonSub').disabled = false;
+        .catch(error => {
+            console.error(error);
+        });
+});
 
-                    console.error(data.message);
-                    const errorMessage = data.message || 'Unknown error';
-                    const toastContainer = document.querySelector('.toast-container');
-                    const toastElement = `
-                <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 10000;">
-                 <div class="d-flex">
-        <div class="toast-body">
-          ${errorMessage}
-        </div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-         </div>
-         `;
-                    toastContainer.innerHTML = toastElement;
-                    const toast = new bootstrap.Toast(toastContainer.querySelector('.toast'));
-                    toast.show();
-                }
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    });
+// Close the modal when clicked outside
+window.addEventListener('click', function(event) {
+    if (event.target === imagePreviewModal) {
+        imagePreviewModal.style.display = 'none';
+    }
+});
 
-
-    function sendCroppedImage(imageData) {
+function sendCroppedImage(imageData) {
     // Create a new FormData object
     const formData = new FormData();
 
@@ -245,4 +246,5 @@ function dataURItoBlob(dataURI) {
     }
     return new Blob([ab], { type: mimeString });
 }
+
 </script>

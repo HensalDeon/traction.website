@@ -1,73 +1,72 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
+
 <head>
-    <%- include("../partials/user-header") %>
+  <%- include("../partials/user-header") %>
 </head>
+
 <body>
-    <%- include("./components/preloading.ejs") %>
-        <%- include("./layouts/navbar") %>
-            <main class="main">
-                <div class="page-header breadcrumb-wrap">
-                    <div class="container">
-                        <div class="breadcrumb">
-                            <a href="/" rel="nofollow">Home</a>
-                            <span></span> Pages
-                            <span></span> Account
-                        </div>
-                    </div>
+  <%- include("./components/preloading.ejs") %>
+  <%- include("./layouts/navbar") %>
+  <main class="main">
+    <div class="page-header breadcrumb-wrap">
+      <div class="container">
+        <div class="breadcrumb">
+          <a href="/" rel="nofollow">Home</a>
+          <span></span> Pages
+          <span></span> Account
+        </div>
+      </div>
+    </div>
+    <section class="pt-150 pb-150">
+      <div class="container">
+
+
+        <div class="row">
+          <div class="col-lg-10 m-auto">
+            <div class="row">
+              <% if (!locals.user) { %>
+              <div class="tab-pane fade active show" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                <div class="card">
+                  <div class="card-header">
+
+                    <h5 class="mb-0">Hei you!>.........</h5>
+
+                  </div>
+                  <div class="card-body">
+                    <p>From your account dashboard. you can easily check &amp; view
+                      your <a href="#">recent orders</a>, manage your
+                      <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a>
+                    </p>
+                  </div>
+                  <div class="card-body">
+                    <p> <a href="/signup"> Create new account</a></p>
+                  </div>
+
                 </div>
-                <section class="pt-150 pb-150">
-                    <div class="container">
-                        
-                        
-                        <div class="row">
-                            <div class="col-lg-10 m-auto">
-                                <div class="row">
-                                    <% if (!locals.user) { %>
-                                        <div class="tab-pane fade active show" id="dashboard" role="tabpanel"
-                                        aria-labelledby="dashboard-tab">
-                                        <div class="card">
-                                            <div class="card-header">
+              </div>
 
-                                                <h5 class="mb-0">Hei you!>.........</h5>
-
-                                            </div>
-                                            <div class="card-body">
-                                                <p>From your account dashboard. you can easily check &amp; view
-                                                    your <a href="#">recent orders</a>, manage your
-                                                    <a href="#">shipping and billing addresses</a> and <a
-                                                        href="#">edit your password and account details.</a>
-                                                </p>
-                                            </div>
-                                            <div class="card-body">
-                                                <p> <a href="/signup"> Create new account</a></p>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    
-                                    <%} %>
-                                    <% if (locals.user) { %>
-
-                                        <%- include('./components/account/dashboard.ejs') %>
-                                            <div class="col-md-8">
-                                                <div class="tab-content dashboard-content">
-                                                    <%- include('./components/account/dashboardDetails.ejs') %>
-                                                        <%#- include('./components/account/orderList.ejs') %>
-                                                            <%#- include('./components/account/trackOrder.ejs') %>
-                                                                <%#- include('./components/account/billingAddress.ejs') %>
-                                                                    <%#- include('./components/account/accountDetails.ejs') %>
-                                                </div>
-                                            </div>
-                                        <% } %>
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-                </section>
-            </main>
-            <%- include("./layouts/footer.ejs")%>
-            <%- include("./script/script.ejs") %>
+              <%} %>
+              <% if (locals.user) { %>
+              <%- include('./components/account/dashboard.ejs') %>
+              <div class="col-md-8">
+                <div class="tab-content dashboard-content">
+                  <%- include('./components/account/dashboardDetails.ejs') %>
+                  <%- include('./components/account/orderList.ejs') %>
+                  <%- include('./components/account/trackOrder.ejs') %>
+                  <%- include('./components/account/billingAddress.ejs') %>
+                  <%- include('./components/account/accountDetails.ejs') %>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <%- include("./layouts/footer.ejs")%>
+  <%- include("./script/script.ejs") %>
 </body>
 
 </html>

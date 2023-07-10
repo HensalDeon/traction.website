@@ -10,36 +10,38 @@
     }
 </style>
 
-<div class="col-md-12">
-    <div class="order_review">
+<div class="col-md-12" >
+    <div class="order_review"
+     style="background: linear-gradient(to right, rgba(0, 0, 0, 0), rgb(143 134 134 / 50%) 50%, rgba(0, 0, 0, 0)), linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0)); background-color: #f7f8f9b5;">
         <div class="mb-20">
             <h4>Your Orders</h4>
         </div>
-        <div class="table-responsive order_table text-center">
+        <div class="table-responsive order_table text-center" style="backdrop-filter: blur(130px);">
             <table class="table">
                 <thead>
                     <tr>
-                        <th colspan="2">Product</th>
-                        <th>price</th>
+                        <th style="color: aliceblue;">Image</th>
+                        <th style="color: aliceblue;">Product</th>
+                        <th style="color: aliceblue;">price</th>
                     </tr>
                 </thead>
                 <tbody id="td">
                     <% (cart?.items || []).forEach(item=> { %>
 
-                        <tr data-item-id="<%= item.product._id %>">
+                        <tr data-item-id="<%= item.product._id %>" >
 
                             <td class="image product-thumbnail"><img alt="<%= item.product.productName %>"
                                     src="<%= item.product.productImageUrls[0] %>">
                             </td>
 
                             <td>
-                                <h5 class="product-name"><a href="/product/<%= item.product.slug %>">
+                                <h5 class="product-name" ><a href="/product/<%= item.product.slug %>" style="color: orange !important;">
                                         <%= item.product.productName %>
-                                    </a></h5> <span qty-navbar-<%=item.product._id %>" class="product-qty">x <%=
+                                    </a></h5> <span id="qty-navbar-<%=item.product._id %>" class="product-qty">x <%=
                                         item.quantity %> </span>
                             </td>
 
-                            <td class="price" data-title="Price" id="subtotal"
+                            <td class="price" data-title="Price" id="subtotal" style="color: aliceblue;"
                                 data-price="<%= item.product.productPrice %>">₹<%= item.price %>
                             </td>
 
@@ -52,7 +54,7 @@
 
                             <tr>
                                 <th>SubTotal</th>
-                                <td class="product-subtotal" colspan="2">₹<%= (cart?.total|| 0) %>
+                                <td class="product-subtotal" style="color: aliceblue;" colspan="2">₹<%= (cart?.total|| 0) %>
                                 </td>
                             </tr>
                             <!-- <%#if ( locals.walletAmount) { %>
@@ -66,7 +68,7 @@
 
                             <tr>
                                 <th>Discount</th>
-                                <td class="product-discount" colspan="2">₹<span id="coupon-discount">
+                                <td class="product-discount" style="color: aliceblue;" colspan="2">₹<span id="coupon-discount">
                                         <% if (locals.couponDiscount) { %>
                                             <%= Math.floor(locals.couponDiscount) %>
                                                 <% } else { %>0
@@ -76,7 +78,7 @@
                             </tr>
                             <tr>
                                 <th>Applied Wallet Amount</th>
-                                <td class="product-wallet" colspan="2">₹<span id="wallet-discount">
+                                <td class="product-wallet" style="color: aliceblue;" colspan="2">₹<span id="wallet-discount">
                                         <%= locals.appliedWallet?locals.appliedWallet:0 %>
                                     </span>
                                 </td>
@@ -84,7 +86,7 @@
 
                             <tr>
                                 <th>Shipping</th>
-                                <td colspan="2"><em>Free Shipping</em></td>
+                                <td colspan="2" style="color: aliceblue;"><em>Free Shipping</em></td>
                             </tr>
                             <tr>
                                 <th>Total</th>
@@ -217,13 +219,13 @@
                     <input class="form-check-input" required="" type="radio" name="payment_option" id="cashOnDelivery"
                         checked="">
                     <label class="form-check-label" for="cashOnDelivery" data-bs-toggle="collapse"
-                        data-target="#checkPayment" aria-controls="checkPayment">Cash on delivery</label>
+                        data-target="#checkPayment" aria-controls="checkPayment" style="color: aliceblue;">Cash on delivery</label>
                 </div>
                 <div class="custome-radio">
                     <input class="form-check-input" required="" type="radio" name="payment_option" id="razorpay"
                         checked="">
                     <label class="form-check-label" for="razorpay" data-bs-toggle="collapse" data-target="#razorpay"
-                        aria-controls="razorpay">Razorpay</label>
+                        aria-controls="razorpay" style="color: aliceblue;">Razorpay</label>
                 </div>
             </div>
         </div>
@@ -401,19 +403,26 @@
 
 
 
-    let selectedAddress = null
-    function selectAddress(addressId) {
-        const cards = document.querySelectorAll(".card");
-        cards.forEach((card) => {
-            if (card.getAttribute("addressId") === addressId) {
-                card.classList.add("active");
-                selectedAddress = card.getAttribute("addressId");
-            } else {
-                card.classList.remove("active");
-            }
+    let selectedAddress = null;
 
-        });
+function selectAddress(addressId) {
+  const cards = document.querySelectorAll(".card");
+  
+  cards.forEach((card) => {
+    if (card.getAttribute("addressId") === addressId) {
+      if (card.classList.contains("active")) {
+        card.classList.remove("active");
+        selectedAddress = null;
+      } else {
+        card.classList.add("active");
+        selectedAddress = card.getAttribute("addressId");
+      }
+    } else {
+      card.classList.remove("active");
     }
+  });
+}
+
 
     const form = document.querySelector('#addNewAddress');
     form.addEventListener('submit', async (event) => {
@@ -684,7 +693,7 @@
             "key": "rzp_test_YNltnS1mdzdtvV", // Enter the Key ID generated from the Dashboard
             "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             "currency": "INR",
-            "name": "space", //your business name
+            "name": "traction", //your business name
             "description": "Test Transaction",
             "image": "/user/assets/imgs/theme/logo.svg",
             "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1

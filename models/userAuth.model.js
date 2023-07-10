@@ -152,7 +152,7 @@ async function updateUserData(userData, profilePicture, userId) {
 
     if (profilePicture) {
       const response = await cloudinary.uploader.upload(profilePicture.path, {
-        folder: 'space/profile_images',
+        folder: 'traction/profile_images',
         unique_filename: true,
       });
       dataObj.profileimage = response.url;

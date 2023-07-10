@@ -110,16 +110,16 @@
                     <% }%>
                   </a>
                 </div>
-                <div class="header-action-icon-2">
+                <!-- <div class="header-action-icon-2">
                   <a href="/wishlist">
                     <img class="svgInject" alt="space" src="/user/assets/imgs/theme/icons/icon-heart.svg">
-                    <% if (locals.user) { %>
+                    <%# if (locals.user) { %>
                     <span class="pro-count blue" id="wishlist-count">
-                      <%= locals.wishlist?.items?.length ?? 0.00 %>
+                      <%#= locals.wishlist?.items?.length ?? 0.00 %>
                     </span>
-                    <% } %>
+                    <%# } %>
                   </a>
-                </div>
+                </div> -->
                 <% if (locals.user ) { %>
                 <div class="header-action-icon-2">
                   <a class="mini-cart-icon" href="/cart">
@@ -136,7 +136,7 @@
                       <% (locals.cart?.items || []).forEach(item=> { %>
                       <li data-product-id="<%= item.product?._id %>">
                         <div class="shopping-cart-img">
-                          <a href="/product"><img alt="<%= item.product?.productName %>" src="<%= item.product?.productImageUrls[0] %>"></a>
+                          <a href="/product/<%= item.product?.slug %>"><img alt="<%= item.product?.productName %>" src="<%= item.product?.productImageUrls[0] %>"></a>
                         </div>
                         <div class="shopping-cart-title">
                           <h4><a href="/product/<%= item.product?.slug %>">
@@ -152,8 +152,6 @@
                         </div>
                       </li>
                       <% }) %>
-
-
                     </ul>
                     <div class="shopping-cart-footer">
                       <div class="shopping-cart-total">
@@ -234,9 +232,9 @@
               </nav>
             </div>
           </div>
-          <div class="hotline d-none d-lg-block">
+          <!-- <div class="hotline d-none d-lg-block">
             <p><i class="fi-rs-headset"></i><span>Hotline</span> 1900 - 888 </p>
-          </div>
+          </div> -->
 
           <div class="header-action-right d-block d-lg-none">
             <div class="header-action-2">
@@ -250,34 +248,32 @@
 
                 </a>
               </div>
-              <!-- <div class="header-action-icon-2"> -->
-              <!-- <a href="/wishlist">
-                                        <img alt="space" src="/user/assets/imgs/theme/icons/icon-heart.svg">
-                                        <%# if (locals.user) { %>
-                                            <span class="pro-count blue" id="wishlist-count">
-                                                <%#= locals.wishlist?.items?.length ?? 0 %>
-                                            </span>
-                                            <%# } %>
-                                    </a> -->
-              <!-- </div> -->
+              <!-- <div class="header-action-icon-2">
+                <a href="/wishlist">
+                  <img alt="space" src="/user/assets/imgs/theme/icons/icon-heart.svg">
+                  <%# if (locals.user) { %>
+                  <span class="pro-count blue" id="wishlist-count">
+                    <%#= locals.wishlist?.items?.length ?? 0 %>
+                  </span>
+                  <%# } %>
+                </a>
+              </div> -->
               <% if (locals.user) { %>
               <div class="header-action-icon-2">
                 <a class="mini-cart-icon" href="/cart">
-                  <img alt="space" src="/user/assets/imgs/theme/icons/icon-cart.svg">
+                  <img alt="traction" src="/user/assets/imgs/theme/icons/icon-cart.svg">
                   <% if (locals.user) { %>
                   <span class="pro-count blue" id="cart-count2">
                     <%= locals.cart?.items?.length ?? 0 %>
                   </span>
                   <% } %>
                 </a>
-
-
                 <div class="cart-dropdown-wrap cart-dropdown-hm2">
                   <ul class="shopping-cart-list">
                     <% (locals.cart?.items || []).forEach(item=> { %>
                     <li data-product-id="<%= item.product?._id %>">
                       <div class="shopping-cart-img">
-                        <a href="/product"><img alt="<%= item.product?.productName %>" src="<%= item.product?.productImageUrls[0] %>"></a>
+                        <a href="/product/<%= item.product?.slug %>"><img alt="<%= item.product?.productName %>" src="<%= item.product?.productImageUrls[0] %>"></a>
                       </div>
                       <div class="shopping-cart-title">
                         <h4><a href="/product/<%= item.product?.slug %>">
@@ -289,7 +285,7 @@
                         </h4>
                       </div>
                       <div class="shopping-cart-delete">
-                        <a onclick="removeProduct('<%= item.product?._id %>')"><i class="fi-rs-cross-small"></i></a>
+                        <a onclick="removeProduct('<%= item.product._id %>')"><i class="fi-rs-cross-small"></i></a>
                       </div>
                     </li>
                     <% }) %>
@@ -318,8 +314,6 @@
                 </a>
               </div>
               <% } %>
-
-
               <div class="header-action-icon-2 d-block d-lg-none">
                 <div class="burger-icon burger-icon-white">
                   <span class="burger-icon-top"></span>

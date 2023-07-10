@@ -1,7 +1,11 @@
 <div class="table-responsive" id="cartTable">
-  <table class="table shopping-summery text-center clean">
+  <div class="cart-action mb-20" style="float: right;">
+    <a class="btn" href="/shop"><i class="fi-rs-shopping-bag mr-10"></i>Continue shopping</a>
+  </div>
+  <table class="table shopping-summery text-center clean tableBG"
+  style="background: linear-gradient(to right, rgba(0, 0, 0, 0), rgb(143 134 134 / 50%) 50%, rgba(0, 0, 0, 0)), linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0)); background-color: #f7f8f9b5;">
     <thead>
-      <tr class="main-heading">
+      <tr class="main-heading" style="color: orange;">
         <th scope="col">Image</th>
         <th scope="col">Name</th>
         <th scope="col">Price</th>
@@ -13,59 +17,53 @@
     <tbody>
 
       <% items.forEach(item=> { %>
-        <tr data-item-id="<%= item.product._id %>">
-          <td class="image product-thumbnail"><img src="<%= item.product.productImageUrls[0] %>" alt="#"></td>
-          <td class="product-des product-name">
-            <h5 class="product-name"><a href="/product/<%= item.product.slug %>">
-                <%= item.product.productName %>
-              </a></h5>
-            </p>
-          </td>
-          <td class="price" data-title="Price"><span>&#8377;<%= item.product.productPrice %></span></td>
-          <td class="text-center" data-title="Stock">
-            <div class="detail-qty border radius  m-auto" data-stockqty="<%= item.product.stocks %>" data-productid="<%= item.product._id %>">
-              <a class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
-              <span class="qty-val qty-<%= item.product._id %>" id="qty-<%= item.product._id %>"
-                data-quantity="<%= item.quantity %>">
-                <%= item.quantity %>
-
-              </span>
-
-              <a class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
-            </div>
-          </td>
-          <td class="text-right" id="subtotal" data-title="Cart" data-price="<%= item.product.productPrice %>">
-            <span id="subtotalValue">
-              <%= (item.product.productPrice * item.quantity).toLocaleString('en-IN', { style: 'currency' ,
-                currency: 'INR' }) %>
+      <tr data-item-id="<%= item.product._id %>">
+        <td class="image product-thumbnail"><img src="<%= item.product.productImageUrls[0] %>" alt="#"></td>
+        <td class="product-des product-name">
+          <h5 class="product-name"><a href="/product/<%= item.product.slug %>">
+              <%= item.product.productName %>
+            </a></h5>
+          </p>
+        </td>
+        <td class="price" data-title="Price" ><span>&#8377;<%= item.product.productPrice %></span></td>
+        <td class="text-center" data-title="Stock">
+          <div class="detail-qty border radius  m-auto" style="background-color: #b5b2ac26;" data-stockqty="<%= item.product.stocks %>" data-productid="<%= item.product._id %>">
+            <a class="qty-down"><i class="fi-rs-angle-small-down" ></i></a>
+            <span class="qty-val qty-<%= item.product._id %>" id="qty-<%= item.product._id %>" data-quantity="<%= item.quantity %>">
+              <%= item.quantity %>
             </span>
-          </td>
-          <td class="action" onclick="removeProduct('<%= item.product._id %>')" data-title="Remove">
-            <a class="text-muted"><i class="fi-rs-trash"></i></a>
-            <br>
-            <% if (item.product.stocks<item.quantity) { %>
-              <span class="text-danger outOfStock" id="outOfStock-<%= item.product._id %>" class="text-muted">out of stock</span>
-              <% } else { %>
-                <span class="text-danger outOfStock" id="outOfStock-<%= item.product._id %>" class="text-muted"></span>
-              <% } %>
-          </td>
-        </tr>
-        <% }) %>
-          <tr>
-            <td colspan="6" class="text-end">
-              <a id="clearCartL" class="text-muted "> <i class="fi-rs-cross-small"></i> Clear Cart</a>
-            </td>
-          </tr>
+            <a class="qty-up"><i class="fi-rs-angle-small-up" ></i></a>
+          </div>
+        </td>
+        <td class="text-right" id="subtotal" data-title="Cart" data-price="<%= item.product.productPrice %>">
+          <span id="subtotalValue" >
+            <%= (item.product.productPrice * item.quantity).toLocaleString('en-IN', { style: 'currency' ,
+                currency: 'INR' }) %>
+          </span>
+        </td>
+        <td class="action" onclick="removeProduct('<%= item.product._id %>')">
+          <a class="text-muted"><i class="fi-rs-trash"></i></a>
+          <br>
+          <% if (item.product.stocks<item.quantity) { %>
+          <span class="text-danger outOfStock" id="outOfStock-<%= item.product._id %>" class="text-muted">out of stock</span>
+          <% } else { %>
+          <span class="text-danger outOfStock" id="outOfStock-<%= item.product._id %>" class="text-muted"></span>
+          <% } %>
+        </td>
+      </tr>
+      <% }) %>
+      <tr>
+        <td colspan="6" class="text-end">
+          <a id="clearCartL" class="text-muted "> <i class="fi-rs-cross-small"></i> Clear Cart</a>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
 
-<div class="cart-action mb-20 ">
-  <a class="btn" href="/shop"><i class="fi-rs-shopping-bag mr-10"></i>Continue shopping</a>
-</div>
+
 
 <script>
-
   const clearCartLink = document.getElementById('clearCartL');
   clearCartLink.addEventListener('click', () => {
     Swal.fire({
@@ -94,7 +92,4 @@
       }
     });
   });
-
-
 </script>
-

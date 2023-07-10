@@ -1,79 +1,176 @@
-function removeProduct(productId) {
-  Swal.fire({
-    title: 'Are you sure?',
-    text: 'Delete product from the cart?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes,delete!',
-  }).then(async (result) => {
+// function removeProduct(productId) {
+//   Swal.fire({
+//     title: 'Are you sure?',
+//     text: 'Delete product from the cart?',
+//     icon: 'warning',
+//     showCancelButton: true,
+//     confirmButtonColor: '#3085d6',
+//     cancelButtonColor: '#d33',
+//     confirmButtonText: 'Yes,delete!',
+//   }).then(async (result) => {
+//     if (result.isConfirmed) {
+//       const url = '/cart';
+//       fetch(url, {
+//         method: 'delete',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//           productId: productId,
+//         }),
+//       })
+//         .then((response) => {
+//           if (!response.ok) {
+//             throw new Error(`HTTP error! status: ${response.status}`);
+//           }
+//           return response.json();
+//         })
+//         .then((data) => {
+//           console.log('Product deleted:', data);
+//           window.location.reload()
+
+//           const dropdownItem = document.querySelector(`li[data-product-id="${productId}"]`);
+
+//           if (window.location.href === 'https://getmyshoe/cart' || window.location.href === 'http://localhost:8000/cart' ) {
+//             const cartItem = document.querySelector(`tr[data-item-id="${productId}"]`);
+
+//             if (cartItem.parentElement.rows.length === 2) {
+//               window.location.reload();
+//               return;
+//             }
+
+//             cartItem.remove();
+
+//             let arr = false;
+//             document.querySelectorAll('.outOfStock').forEach((stock)=>{
+//               if(stock.textContent === 'out of stock'){
+//                 arr = true;
+//              }
+//              })
+            
+//              if(arr){
+//               document.getElementById('checkoutBtn').classList.add('disabled')
+//             }else{
+//                document.getElementById('checkoutBtn').classList.remove('disabled')
+//              }
+//           }
+
+//           dropdownItem.remove();
+
+//           const countElement1 = document.getElementById('cart-count1');
+//           const countElement2 = document.getElementById('cart-count2');
+//           const count1 = parseInt(countElement1.textContent);
+//           const count2 = parseInt(countElement1.textContent);
+//           if (count1 > 0 && count2 > 0) {
+//             countElement1.textContent = count1 - 1;
+//             countElement2.textContent = count2 - 1;
+//           }
+
+//           updateSubtotalAndTotal(data.total);
+//         })
+//         .catch((error) => {
+//           console.error('Error deleting product:', error);
+//         });
+//     }
+//   });
+// }
+
+async function removeProduct(productId) {
+  try {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Delete product from the cart?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete!',
+    });
+
     if (result.isConfirmed) {
       const url = '/cart';
-      fetch(url, {
-        method: 'delete',
+      const response = await fetch(url, {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           productId: productId,
         }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log('Product deleted:', data);
-          window.location.reload()
+      });
 
-          const dropdownItem = document.querySelector(`li[data-product-id="${productId}"]`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-          if (window.location.href === 'https://getmyshoe/cart' || window.location.href === 'http://localhost:8000/cart' ) {
-            const cartItem = document.querySelector(`tr[data-item-id="${productId}"]`);
+      const data = await response.json();
+      console.log('Product deleted:', data);
+      // Update cart display without page refresh
+      updateCartDisplay(productId, data.total);
+    }
+  } catch (error) {
+    console.error('Error deleting product:', error);
+  }
+}
 
-            if (cartItem.parentElement.rows.length === 2) {
-              window.location.reload();
-              return;
-            }
+function updateCartDisplay(productId, total) {
+  // Remove the deleted product from the DOM
+  const dropdownItem = document.querySelector(`li[data-product-id="${productId}"]`);
+  if (dropdownItem) {
+    dropdownItem.remove();
+  }
 
-            cartItem.remove();
+  const cartItem = document.querySelector(`tr[data-item-id="${productId}"]`);
+  if (cartItem) {
+    var runCode = true;
+    cartItem.remove();
+  }
 
-            let arr = false;
-            document.querySelectorAll('.outOfStock').forEach((stock)=>{
-              if(stock.textContent === 'out of stock'){
-                arr = true;
-             }
-             })
-            
-             if(arr){
-              document.getElementById('checkoutBtn').classList.add('disabled')
-            }else{
-               document.getElementById('checkoutBtn').classList.remove('disabled')
-             }
-          }
+  // Update cart count
+  const countElement1 = document.getElementById('cart-count1');
+  const countElement2 = document.getElementById('cart-count2');
+  const count1 = parseInt(countElement1.textContent);
+  const count2 = parseInt(countElement1.textContent);
+  if (count1 > 0 && count2 > 0) {
+    countElement1.textContent = count1 - 1;
+    countElement2.textContent = count2 - 1;
+  }
 
-          dropdownItem.remove();
+  // Check if the cart is empty
+  const cartItems = document.querySelectorAll('tr[data-item-id]');
+  console.log(cartItems);
+  console.log('cart item: '+cartItems.length);
 
-          const countElement1 = document.getElementById('cart-count1');
-          const countElement2 = document.getElementById('cart-count2');
-          const count1 = parseInt(countElement1.textContent);
-          const count2 = parseInt(countElement1.textContent);
-          if (count1 > 0 && count2 > 0) {
-            countElement1.textContent = count1 - 1;
-            countElement2.textContent = count2 - 1;
-          }
+if (runCode && cartItems.length === 0) {
+  // Cart is empty, reload the page
+  window.location.reload();
+  return;
+}
 
-          updateSubtotalAndTotal(data.total);
-        })
-        .catch((error) => {
-          console.error('Error deleting product:', error);
-        });
+
+  // Check if any products are marked as out of stock
+  const outOfStockElements = document.querySelectorAll('.outOfStock');
+  let isOutOfStock = false;
+  outOfStockElements.forEach((outOfStockElement) => {
+    if (outOfStockElement.textContent === 'out of stock') {
+      isOutOfStock = true;
     }
   });
+
+  // Update checkout button based on out-of-stock status
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  if (checkoutBtn) {
+    if (isOutOfStock) {
+      checkoutBtn.classList.add('disabled');
+    } else {
+      checkoutBtn.classList.remove('disabled');
+    }
+  }
+
+  // Update subtotal and total amounts
+  updateSubtotalAndTotal(total);
 }
+
 
 // Get all the quantity divs
 var quantityDivs = document.querySelectorAll('.detail-qty');
@@ -130,6 +227,7 @@ quantityDivs.forEach((quantityDiv) => {
     }
   });
 
+  //event listner for quantity update
   qtyDownBtn.addEventListener('click', () => {
     const currentQty = parseInt(qtySpan.dataset.quantity);
     if (currentQty > 1) {

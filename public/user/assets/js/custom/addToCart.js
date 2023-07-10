@@ -29,7 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
         .then((data) => {
 
           if (data.success) {
-            swal.fire('Good job!', 'Product added to cart!', 'success')
+
+            swal.fire({title: 'Good job!',
+            text: 'Product added to cart!',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1300 })
 
             // check if the product already exists in the cart
             const existingCartItem = document.querySelector(
@@ -48,7 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const newNavSubtotal = currentNavSubtotal + data.product.productPrice
             navSubtotalElement.textContent = `₹${newNavSubtotal.toFixed(2)}`
 
-            if (existingCartItem) {
+            console.log(data);
+            if (data.productAlreadyExist) {
+              console.log('hwiiii am exist');
               // update the quantity of the existing item
               const quantityEl = existingCartItem.querySelector(`#qty-navbar-${data.product._id}`)
               const currentQuantity = parseInt(quantityEl.textContent)
@@ -60,8 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
               
               // create a new cart item and append it to the cart list
               const cartList = document.querySelector('.shopping-cart-list')
-              const newCartItem = document.createElement('li')
-              newCartItem.setAttribute('data-product-id', data.product._id)
+              const newCartItem = document.createElement('li');
+              newCartItem.setAttribute('data-product-id', data.product._id);
               newCartItem.innerHTML = `
                 <div class="shopping-cart-img">
                   <a href="/product"><img alt="${data.product.productName}" src="${
@@ -80,6 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
                   }')"><i class="fi-rs-cross-small"></i></a>
                 </div>
               `
+              console.log('cartList');
+              console.log(cartList);
               cartList.appendChild(newCartItem)
             }
           } else {

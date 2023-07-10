@@ -8,101 +8,109 @@
 <body>
   <%- include("../components/preloading.ejs") %>
   <%- include("../layouts/navbar.ejs") %>
-    <main class="main">
-      <div class="page-header breadcrumb-wrap">
-        <div class="container">
-          <div class="breadcrumb">
-            <a href="/" rel="nofollow">Home</a>
-            <span></span> Pages
-            <span></span> Login / Register
-          </div>
+  <main class="main">
+    <div class="page-header breadcrumb-wrap">
+      <div class="container">
+        <div class="breadcrumb">
+          <a href="/" rel="nofollow">Home</a>
+          <span></span> Pages
+          <span></span> Login / Register
         </div>
       </div>
-      <section class="pt-50 pb-50">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-10 m-auto">
-              <div class="row">
-                <div class="col-lg-5 offset-lg-2 mx-auto">
-                  <div
-                    class="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5">
-                    <div class="padding_eight_all bg-white">
-                      <div class="heading_s1">
-                        <h3 class="mb-30">Login</h3>
-                      </div>
-                      <div class="text-sm text-center mt-1">
-                        Enter the OTP sent to
-                        <span class="font-semibold">+91 <%= phone %></span>
-                      </div>
-                      <form >
-                        <div class="form-group">
-                          <input id="otp" name="otp" class="form-control" placeholder="Enter OTP" type="text">
-                          <div id="otp-error" class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group">
-                          <button type="submit" class="btn btn-fill-out btn-block w-100 hover-up" name="verify"
-                            id="verify-button">VERIFY OTP</button>
-                        </div>
-                        <div class="text-muted text-center mt-4"><a href="#">Resend OTP</a></div>
-                      </form>
-                      <div class="text-muted text-center mt-15 mb-15">Don't have an account? <a href="/signup">Sign
-                          up</a></div>
+    </div>
+    <section class="pt-50 pb-50">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-10 m-auto">
+            <div class="row">
+              <div class="col-lg-5 offset-lg-2 mx-auto">
+                <div class="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5">
+                  <div class="padding_eight_all bg-white">
+                    <div class="heading_s1">
+                      <h3 class="mb-30">Login</h3>
                     </div>
+                    <div class="text-sm text-center mt-1">
+                      Enter the OTP sent to
+                      <span class="font-semibold">+91 <%= phone %></span>
+                    </div>
+                    <form>
+                      <div class="form-group">
+                        <input id="otp" name="otp" class="form-control" placeholder="Enter OTP" type="text">
+                        <div id="otp-error" class="invalid-feedback"></div>
+                      </div>
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-fill-out btn-block w-100 hover-up" name="verify" id="verify-button">VERIFY OTP</button>
+                      </div>
+                      <div class="text-muted text-center mt-4">
+                        <!-- <span id="timer"></span> -->
+                        <a onclick="resendOTP()" id="resend" name="submit">Resend OTP</a>
+                         <span id="otpError" class="text-sm text-red-500"></span>
+                        <!-- <p id="otp-msg"> Resend OTP in <span id="countdowntimer">30 </span> Seconds</p> -->
+                      </div>
+                    </form>
+                    <div class="text-muted text-center mt-15 mb-15">Don't have an account? <a href="/signup">Sign
+                        up</a></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
-    </main>
-    <%- include("../layouts/footer.ejs") %>
-        
-      <script>
-        const verifyBtn = document.getElementById("verify-button");
-        const otp = document.getElementById("otp");
-        const otpRegex = /^\d{6}$/;
-        const otpError = "<strong>Invalid OTP format. Please enter a 6-digit number.</strong>";
-        const invalidOtpError = "<strong>The OTP entered is incorrect. Please ensure you have entered the correct OTP and try again.</strong>";
-    
-        otp.addEventListener("input", () => {
-            let otpErrorText = "";
-            if (otp.value.trim() !== "" && !otpRegex.test(otp.value.trim())) {
-                otpErrorText = otpError;
-            }
-            document.getElementById("otp-error").innerHTML = otpErrorText;
-            otp.classList.toggle("is-invalid", otpErrorText !== "");
-        });
-    
-        verifyBtn.addEventListener("click", async (event) => {
-            event.preventDefault();
-            let isValid = true;
-            let otpErrorText = "";
-    
-            // Check if the OTP field is empty or invalid
-            if (otp.value.trim() === "") {
-                otpErrorText = "<strong>OTP is required.</strong>";
-                isValid = false;
-            } else if (!otpRegex.test(otp.value.trim())) {
-                otpErrorText = otpError;
-                isValid = false;
-            }
-    
-            // Display error message if any
-            if (!isValid) {
-                document.getElementById("otp-error").innerHTML = otpErrorText;
-                otp.classList.add("is-invalid");
-                return;
-            }
-    
-            const url = '/otp-verify';
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ otp: otp.value.trim() })
-            };
-    
-        fetch(url, requestOptions)
+      </div>
+    </section>
+  </main>
+  <%- include("../layouts/footer.ejs") %>
+
+  <script>
+
+    const verifyBtn = document.getElementById("verify-button");
+    const otp = document.getElementById("otp");
+    const otpRegex = /^\d{6}$/;
+    const otpError = "<strong>Invalid OTP format. Please enter a 6-digit number.</strong>";
+    const invalidOtpError = "<strong>The OTP entered is incorrect. Please ensure you have entered the correct OTP and try again.</strong>";
+
+    otp.addEventListener("input", () => {
+      let otpErrorText = "";
+      if (otp.value.trim() !== "" && !otpRegex.test(otp.value.trim())) {
+        otpErrorText = otpError;
+      }
+      document.getElementById("otp-error").innerHTML = otpErrorText;
+      otp.classList.toggle("is-invalid", otpErrorText !== "");
+    });
+
+    verifyBtn.addEventListener("click", async (event) => {
+      event.preventDefault();
+      let isValid = true;
+      let otpErrorText = "";
+
+      // Check if the OTP field is empty or invalid
+      if (otp.value.trim() === "") {
+        otpErrorText = "<strong>OTP is required.</strong>";
+        isValid = false;
+      } else if (!otpRegex.test(otp.value.trim())) {
+        otpErrorText = otpError;
+        isValid = false;
+      }
+
+      // Display error message if any
+      if (!isValid) {
+        document.getElementById("otp-error").innerHTML = otpErrorText;
+        otp.classList.add("is-invalid");
+        return;
+      }
+
+      const url = '/otp-verify';
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          otp: otp.value.trim()
+        })
+      };
+
+      fetch(url, requestOptions)
         .then(response => {
           if (!response.ok) {
             throw new Error('something wrong!verification failed');
@@ -111,29 +119,29 @@
         })
         .then(data => {
           if (data.status) {
-                     window.location.href = '/';
-                } else {
-                     otpErrorText = invalidOtpError;
-                     document.getElementById("otp-error").innerHTML = otpErrorText;
-                     otp.classList.add("is-invalid");
-                 }
+            window.location.href = '/';
+          } else {
+            otpErrorText = invalidOtpError;
+            document.getElementById("otp-error").innerHTML = otpErrorText;
+            otp.classList.add("is-invalid");
+          }
         })
         .catch(error => {
           otpErrorText = invalidOtpError;
-            document.getElementById("otp-error").innerHTML = otpErrorText;
+          document.getElementById("otp-error").innerHTML = otpErrorText;
           otp.classList.add("is-invalid");
         });
-    
-        });
-    
-        // Clear error message and class when input field is focused
-        otp.addEventListener("focus", () => {
-            document.getElementById("otp-error").innerHTML = "";
-            otp.classList.remove("is-invalid");
-        });
-    </script>
 
-<%- include("../script/script.ejs") %>
+    });
+
+    // Clear error message and class when input field is focused
+    otp.addEventListener("focus", () => {
+      document.getElementById("otp-error").innerHTML = "";
+      otp.classList.remove("is-invalid");
+    });
+  </script>
+  <%- include("./validation/phonenumber-validation.ejs") %>
+  <%- include("../script/script.ejs") %>
 
 
 </body>

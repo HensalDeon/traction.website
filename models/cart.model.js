@@ -15,6 +15,7 @@ async function addItemToCart(userId, productId, quantity) {
 
     let cart = await cartDatabase.findOne({ user: userId });
 
+    let productAlreadyExist = false;
     if (cart) {
       // If cart already exists, check if the product is already in the cart
       const itemIndex = cart.items.findIndex((item) => item.product.equals(productId));
@@ -22,6 +23,7 @@ async function addItemToCart(userId, productId, quantity) {
         // If product already in cart, update its quantity and price
         cart.items[itemIndex].quantity += quantity;
         cart.items[itemIndex].price = product.productPrice;
+        productAlreadyExist = true;
       } else {
         // If product not in cart, add new item to the items array
         cart.items.push({
@@ -36,7 +38,8 @@ async function addItemToCart(userId, productId, quantity) {
       return {
         status: true,
         message: 'product added to cart',
-        productData: product,
+        productData: product,productAlreadyExist
+
       };
     }
 

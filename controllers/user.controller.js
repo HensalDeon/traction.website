@@ -123,10 +123,11 @@ async function SignupOtpVerify(req, res) {
   try {
     const { phone } = req.body;
     const phoneExist = await sendVerificationSignup(phone);
+    console.log('phone exit'+ phoneExist);
     if (!phoneExist) {
-      res.send(false);
+      res.send({status: false});
     } else {
-      res.send(true);
+      res.send({status: true});
     }
   } catch (error) {
     handleError(res, error);

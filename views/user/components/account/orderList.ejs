@@ -1,244 +1,232 @@
-<div class="tab-pane fade" id="orders"  role="tabpanel" aria-labelledby="orders-tab">
-    <div class="card">
-        <div class="card-header">
-            <h5 class="mb-0">Your Orders</h5>
-        </div>
-        <div class="card-body ">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <% if (orders?.length>0) { %>
-                            <tr>
-                                <th>Transaction</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th>Total</th>
-                                <th>Actions</th>
-                                <th>Details</th>
-                            </tr>
-                            <% } %>
-
-                    </thead>
-                    <tbody>
-                        <% if (orders?.length>0) { %>
-
-                            <% orders.forEach(order=> { %>
-                                <tr>
-                                    <td>#<%= order.transactionId %>
-                                    </td>
-                                    <td>
-                                        <%= order.date %>
-                                    </td>
-                                    <td>
-                                        <% if (order.paymentStatus==='failed' ) { %>
-                                            <span class="badge rounded-pill alert-danger">
-                                                payment failed
-                                            </span>
-                                            <% } else if (order.status==='processing' ) { %>
-                                                <span class="badge rounded-pill alert-warning">
-                                                    <%= order.status %>
-                                                </span>
-                                                <% } else if (order.status==='shipped' ) { %>
-                                                    <span class="badge rounded-pill alert-info">
-                                                        <%= order.status %>
-                                                    </span>
-                                                    <% } else if (order.status==='delivered' ) { %>
-                                                        <span class="badge rounded-pill alert-success">
-                                                            <%= order.status %>
-                                                        </span>
-                                                        <% } else if (order.status==='cancelPending' ) { %>
-                                                            <span class="badge rounded-pill "
-                                                                style="background-color:rgb(253, 165, 0); color: rgb(255, 255, 255);">
-                                                                <%= order.status %>
-                                                            </span>
-                                                            <% } else if (order.status==='returnPending' ) { %>
-                                                                <span class="badge rounded-pill "
-                                                                    style="background-color:rgb(255, 212, 133); color: rgb(255, 255, 255);">
-                                                                    <%= order.status %>
-                                                                </span>
-                                                                <% } else if (order.status==='returned' ) { %>
-                                                                   <a href="/wallet"> <span class="badge rounded-pill "
-                                                                        style="background-color:rgb(106, 136, 255); color: rgb(255, 255, 255);">
-                                                                         Refunded credited
-                                                                    </span></a>
-                                                                    <% } else { %>
-                                                                        <span class="badge rounded-pill"
-                                                                            style="background-color:rgb(255, 0, 0); color: rgb(255, 255, 255);">
-                                                                            <%= order.status %>
-                                                                        </span>
-                                                                        <% } %>
-                                    </td>
-
-
-                                    <td>&#8377;<%= Math.floor(order.total) %> for <%= order.productCount %> items</td>
-                                    
-                                    <% if (order.status==='canceled' || order.status==='cancelPending' ||  order.status==='returnPending' ||  order.status==='returned'  ) { %>
-                                        <td></td>
-                                        <% } else if(order.paymentStatus==='failed' ){ %>
-                                            <td><a class=" d-block btn btn-sm"
-                                                    style="border: 0px; background-color: rgb(120, 120, 120); color: #ffffff;">Try
-                                                    again</a>
-                                                    
-                                            </td>
-                                            <% } else if(order.status==='delivered' ){ %>
-
-                                                <% const returnDaysLeft=Math.floor((new Date(order.returnDate) - new
-                                                    Date()) / (1000 * 60 * 60 * 24)); %>
-                                                        <% if (returnDaysLeft>0) { %>
-                                                    <td>
-                                                            <a class="d-block btn btn-sm"
-                                                                onclick="returnOrder('<%= order.id %>')"
-                                                                style="border: 0px; background-color: rgb(255, 238, 89); color: #000000;">
-                                                                Return- <span class="badge rounded-pill alert-danger">
-                                                                    <%= returnDaysLeft %> days left
-                                                                </span>
-                                                            </a>
-                                                           
-                                                    </td>
-
-                                                    
-                                                    <% } else { %>
-                                                        <td></td>
-                                                        <% } %>
-                                                          
-                                                                <% } else { %>
-                                                                    <td>
-                                                                        <a class="cancelBtn d-block btn btn-sm"
-                                                                            onclick="cancelOrder('<%= order.id %>')"
-                                                                            style="background-color: rgb(255, 0, 0); color: #ffffff;">cancel
-                                                                        </a>
-                                                                            
-                                                                    </td>
-
-                                                                    <% } %>
-
-                                                                        <td class="text-end">
-                                                                            <div class="dropdown">
-                                                                                <a href="#" data-bs-toggle="dropdown">
-                                                                                    <span> &#8230;</span>
-                                                                                </a>
-                                                                                <div class="dropdown-menu">
-                                                                                    <a  href="/order-details?id=<%= order.id %>" class="dropdown-item">View
-                                                                                        detail</a>
-                                                                                   
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                </tr>
-
-                                <% }) %>
-
-
-                                    <% } else { %>
-                                        <tr>
-                                            <td>
-                                                There is no orders yet....
-                                                <a href="/shop">shop now</a>
-                                            </td>
-                                        </tr>
-                                        <% } %>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0">Your Orders</h5>
     </div>
+    <div class="card-body ">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <% if (orders?.length>0) { %>
+            <tr>
+              <th>Transaction</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Total</th>
+              <th>Actions</th>
+              <th>Details</th>
+            </tr>
+            <% } %>
+
+          </thead>
+          <tbody>
+            <% if (orders?.length>0) { %>
+
+            <% orders.forEach(order=> { %>
+            <tr>
+              <td>#<%= order.transactionId %>
+              </td>
+              <td>
+                <%= order.date %>
+              </td>
+              <td>
+                <% if (order.paymentStatus==='failed' ) { %>
+                <span class="badge rounded-pill alert-danger">
+                  payment failed
+                </span>
+                <% } else if (order.status==='processing' ) { %>
+                <span class="badge rounded-pill alert-warning">
+                  <%= order.status %>
+                </span>
+                <% } else if (order.status==='shipped' ) { %>
+                <span class="badge rounded-pill alert-info">
+                  <%= order.status %>
+                </span>
+                <% } else if (order.status==='delivered' ) { %>
+                <span class="badge rounded-pill alert-success">
+                  <%= order.status %>
+                </span>
+                <% } else if (order.status==='cancelPending' ) { %>
+                <span class="badge rounded-pill " style="background-color:rgb(253, 165, 0); color: rgb(255, 255, 255);">
+                  <%= order.status %>
+                </span>
+                <% } else if (order.status==='returnPending' ) { %>
+                <span class="badge rounded-pill " style="background-color:rgb(255, 212, 133); color: rgb(255, 255, 255);">
+                  <%= order.status %>
+                </span>
+                <% } else if (order.status==='returned' ) { %>
+                <a href="/wallet"> <span class="badge rounded-pill " style="background-color:rgb(106, 136, 255); color: rgb(255, 255, 255);">
+                    Refunded credited
+                  </span></a>
+                <% } else { %>
+                <span class="badge rounded-pill" style="background-color:rgb(255, 0, 0); color: rgb(255, 255, 255);">
+                  <%= order.status %>
+                </span>
+                <% } %>
+              </td>
+
+
+              <td>&#8377;<%= Math.floor(order.total) %> for <%= order.productCount %> items</td>
+
+              <% if (order.status==='canceled' || order.status==='cancelPending' ||  order.status==='returnPending' ||  order.status==='returned'  ) { %>
+              <td></td>
+              <% } else if(order.paymentStatus==='failed' ){ %>
+              <td><a class=" d-block btn btn-sm" style="border: 0px; background-color: rgb(120, 120, 120); color: #ffffff;">Try
+                  again</a>
+
+              </td>
+              <% } else if(order.status==='delivered' ){ %>
+
+              <% const returnDaysLeft=Math.floor((new Date(order.returnDate) - new
+                                                    Date()) / (1000 * 60 * 60 * 24)); %>
+              <% if (returnDaysLeft>0) { %>
+              <td>
+                <a class="d-block btn btn-sm" onclick="returnOrder('<%= order.id %>')" style="border: 0px; background-color: rgb(255, 238, 89); color: #000000;">
+                  Return- <span class="badge rounded-pill alert-danger">
+                    <%= returnDaysLeft %> days left
+                  </span>
+                </a>
+
+              </td>
+
+
+              <% } else { %>
+              <td></td>
+              <% } %>
+
+              <% } else { %>
+              <td>
+                <a class="cancelBtn d-block btn btn-sm" onclick="cancelOrder('<%= order.id %>')" style="background-color: rgb(255, 0, 0); color: #ffffff;">cancel
+                </a>
+
+              </td>
+
+              <% } %>
+
+              <td class="text-end">
+
+                <a href="/order-details?id=<%= order.id %>" class="dropdown-item">View detail</a>
+
+
+              </td>
+            </tr>
+
+            <% }) %>
+
+
+            <% } else { %>
+            <tr>
+              <td>
+                There is no orders yet....
+                <a href="/shop">shop now</a>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 
 
 
 
 <script>
-
-
-    function cancelOrder(orderId) {
-        Swal.fire({
-            title: 'Cancellation',
-            text: 'Please provide a reason for cancellation:',
-            input: 'text',
-            showCancelButton: true,
-            confirmButtonText: 'ok',
-            cancelButtonText: 'cancel',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                var reason = result.value;
-                if (reason === "") {
-                    Swal.fire('No reason provided!', 'Please enter a reason for cancellation.', 'warning');
-                } else {
-                    const url = '/order-cancel'
-                    fetch(url, {
-                        method: 'POST',
-                        body: JSON.stringify({ id: orderId, cancelreason: reason }),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then((response) => {
-                        Swal.fire({
-                            title: 'cancelation pending!',
-                        }).then((res) => {
-                            location.reload()
-                        })
-
-
-                    }).catch(error => {
-                        console.error(error);
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'An error occurred while processing your return request. Please try again later.',
-                            icon: 'error'
-                        });
-                    })
-                }
-
-            } else {
-                Swal.fire('Product cancelation failed.', '', 'info');
+  function cancelOrder(orderId) {
+    Swal.fire({
+      title: 'Cancellation',
+      text: 'Please provide a reason for cancellation:',
+      input: 'text',
+      showCancelButton: true,
+      confirmButtonText: 'ok',
+      cancelButtonText: 'cancel',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        var reason = result.value;
+        if (reason === "") {
+          Swal.fire('No reason provided!', 'Please enter a reason for cancellation.', 'warning');
+        } else {
+          const url = '/order-cancel'
+          fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({
+              id: orderId,
+              cancelreason: reason
+            }),
+            headers: {
+              'Content-Type': 'application/json'
             }
-        });
+          }).then((response) => {
+            Swal.fire({
+              title: 'cancelation pending!',
+            }).then((res) => {
+              location.reload()
+            })
 
-    }
 
-    function returnOrder(orderId) {
-        Swal.fire({
-            title: 'Return Order',
-            text: 'Please provide a reason for the return:',
-            input: 'text',
-            showCancelButton: true,
-            confirmButtonText: 'Submit',
-            cancelButtonText: 'Cancel',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                var reason = result.value;
-                if (reason === "") {
-                    Swal.fire('No Return Reason', 'Please enter a reason for the return.', 'warning');
-                } else {
-                    const url = '/order-return';
-                    fetch(url, {
-                        method: 'POST',
-                        body: JSON.stringify({ id: orderId, returnReason: reason }),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }).then((response) => {
-                        Swal.fire({
-                            title: 'return pending!',
-                        }).then((res) => {
-                            location.reload()
-                        })
+          }).catch(error => {
+            console.error(error);
+            Swal.fire({
+              title: 'Error',
+              text: 'An error occurred while processing your return request. Please try again later.',
+              icon: 'error'
+            });
+          })
+        }
 
-                    }).catch(error => {
-                        console.error(error);
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'An error occurred while processing your return request. Please try again later.',
-                            icon: 'error'
-                        });
-                    });
-                }
-            } else {
-                Swal.fire('Return Cancelled', 'You have cancelled the return request.', 'info');
+      } else {
+        Swal.fire('Product cancelation failed.', '', 'info');
+      }
+    });
+
+  }
+
+  function returnOrder(orderId) {
+    Swal.fire({
+      title: 'Return Order',
+      text: 'Please provide a reason for the return:',
+      input: 'text',
+      showCancelButton: true,
+      confirmButtonText: 'Submit',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        var reason = result.value;
+        if (reason === "") {
+          Swal.fire('No Return Reason', 'Please enter a reason for the return.', 'warning');
+        } else {
+          const url = '/order-return';
+          fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({
+              id: orderId,
+              returnReason: reason
+            }),
+            headers: {
+              'Content-Type': 'application/json'
             }
-        });
-    }
+          }).then((response) => {
+            Swal.fire({
+              title: 'return pending!',
+            }).then((res) => {
+              location.reload()
+            })
 
+          }).catch(error => {
+            console.error(error);
+            Swal.fire({
+              title: 'Error',
+              text: 'An error occurred while processing your return request. Please try again later.',
+              icon: 'error'
+            });
+          });
+        }
+      } else {
+        Swal.fire('Return Cancelled', 'You have cancelled the return request.', 'info');
+      }
+    });
+  }
 </script>

@@ -71,7 +71,7 @@ async function PostToCart(req, res) {
     if (cartResult.status) {
       res
         .status(200)
-        .json({ success: cartResult.status, message: cartResult.message, product: cartResult.productData });
+        .json({ success: cartResult.status, message: cartResult.message, product: cartResult.productData ,productAlreadyExist:cartResult.productAlreadyExist});
     } else {
       res
         .status(404)
