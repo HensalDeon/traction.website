@@ -1,34 +1,28 @@
 <style>
     .card-row .card-body {
-        height: 200px;
-        overflow: auto;
+        height: 150px;
     }
   
     .my-custom-card-class :hover{
-        background-color: rgb(197, 193, 193);
+        background-color: rgb(232, 230, 230);
     }
 </style>
 
 <div class="mb-30">
-    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addAddressModal" style="float: right;">Add new address</button>
+    <button class="btn btn-primary btn-sm" id="addAddressBtn" style="float: right;">Add new address</button>
 </div>
 
 <div class="row card-row">
-    <!-- <div class="col-md-1"  >
-        <div class="card mb-3 dash my-custom-card-class">
-            <div class="card-body">
-                 <h4 class="card-title">Add new address</h4>
-            </div>
-        </div>
-    </div> -->
-    <% addresses.forEach((address, index) => { %>
-        <div id="cardBodyId" class="col-md-6">
+  <% let shIndex = 0, blIndex = 0; %>
+    <% addresses.forEach((address) => { %>
+      <% if(address.isShippingAddress) {%>
+        <div id="cardBodyId" class="col-md-6" style="width: 100% !important;">
           <div class="card mb-3 my-custom-card-class" addressId="<%= address._id %>">
             <div class="card-body">
-              <h4 class="card-title">Shipping address - <%= ++index %></h4>
+              <h4 class="card-title" style="color: brown;">Shipping address - <%= ++shIndex %></h4>
               <label>
                 <p>
-                  <strong>Name:</strong> <%= address.fname %> <%= address.lname %><br>
+                  <strong>Deliver to:</strong> <%= address.fname %> <%= address.lname %><br>
                   <strong>Phone:</strong> <%= address.phone %><br>
                   <strong>Email:</strong> <%= address.email %><br>
                   <strong>Street:</strong> <%= address.street_address %>, <%= address.city %>, <%= address.state %>, <%= address.country %>, <%= address.zipcode %><br>
@@ -38,9 +32,25 @@
             <button class="select-address-btn" onclick="selectAddress('<%= address._id %>')">Select Address</button>
           </div>
         </div>
+        <% } %>
+        <% if(address.isBillingAddress) {%>
+          <div id="cardBodyId" class="col-md-6" style="width: 100% !important;">
+            <div class="card mb-3 my-custom-card-class" addressId="<%= address._id %>">
+              <div class="card-body">
+                <h4 class="card-title">Billing Address - <%= ++blIndex %></h4>
+                <label>
+                  <p>
+                    <strong>Name:</strong> <%= address.fname %> <%= address.lname %><br>
+                    <strong>Phone:</strong> <%= address.phone %><br>
+                    <strong>Email:</strong> <%= address.email %><br>
+                    <strong>Street:</strong> <%= address.street_address %>, <%= address.city %>, <%= address.state %>, <%= address.country %>, <%= address.zipcode %><br>
+                  </p>
+                </label>
+              </div>
+              <button class="select-address-btn" onclick="selectAddress('<%= address._id %>')">Select Address</button>
+            </div>
+          </div>
+          <% } %>
       <% }) %>
-      
-    
-    
-
 </div>
+<%- include('../account/addAddressModal.ejs') %>

@@ -102,13 +102,14 @@ const addressSchema = Joi.object({
   zipcode: Joi.string().trim().pattern(/^\d+$/).required(),
   phone: Joi.string().trim().optional(),
   email: Joi.string().trim().email().optional(),
+  setAddressAs: Joi.string().trim().required(),
 });
 
 const updateUserSchema = Joi.object({
   profileimage: Joi.any().optional(),
   name: Joi.string().trim().min(2).max(100).optional(),
   email: Joi.string().trim().email().optional(),
-  password: Joi.string().trim().min(6).max(30).optional(),
+  password: Joi.string().trim().max(30).optional(),
   npassword: Joi.string().trim().min(6).max(30).allow('').optional(),
   cpassword: Joi.any().valid(Joi.ref('npassword')).allow('').optional(),
 });

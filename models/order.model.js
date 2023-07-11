@@ -36,7 +36,24 @@ async function addAdrress(addressData, userId, res) {
     if (!addressData || !userId) {
       throw new Error('Missing required input');
     }
-    const address = new addressDatabase({
+    let address;
+    if(addressData.setAddressAs === 'isBillingAddress'){
+      address = new addressDatabase({
+      fname: addressData.fname,
+      lname: addressData.lname,
+      street_address: addressData.street_address,
+      city: addressData.city,
+      state: addressData.state,
+      zipcode: addressData.zipcode,
+      country: addressData.country,
+      phone: addressData.phone,
+      email: addressData.email,
+      user: userId,
+      isBillingAddress: true,
+    });
+    }
+    if(addressData.setAddressAs === 'isShippingAddress'){
+      address = new addressDatabase({
       fname: addressData.fname,
       lname: addressData.lname,
       street_address: addressData.street_address,
@@ -49,8 +66,9 @@ async function addAdrress(addressData, userId, res) {
       user: userId,
       isShippingAddress: true,
     });
-
+    }
     const addressResult = await address.save();
+
     if (addressResult) {
       return { status: true, message: 'address added to the database' };
     } else {

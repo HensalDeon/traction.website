@@ -13,6 +13,11 @@
 @import url(plugins/perfect-scrollbar.css);
 
 /* CUSTOM */
+
+.secureContainer{
+  display: flex;
+  float: right;
+}
 .cartBg{
   background: linear-gradient(to left, rgba(0, 1, 1, 1), rgba(0, 0, 1, 0), rgba(0, 0, 0, 0), rgba(0, 1, 1, 1));
 }
@@ -23,6 +28,11 @@
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
+  width: 10em;
+  float: right;
+  position: absolute;
+  top: 38%;
+  left: 85%;
 }
 
 .select-address-btn:hover {
@@ -1450,7 +1460,6 @@ textarea:focus {
   padding-left: 0;
   border-top: 0;
   border-left: 0;
-  font-weight: bold;
 }
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
@@ -1458,7 +1467,7 @@ textarea:focus {
   font-size: 16px;
   padding: 0;
   letter-spacing: -0.5px;
-  color: #fff !important;
+  color: #adaeb0 !important;
 }
 
 .select2-container--default .select2-selection--single .select2-selection__arrow {
@@ -1488,7 +1497,7 @@ textarea:focus {
   border-radius: 4px;
   height: 45px;
   line-height: 45px;
-  padding-left: 20px;
+  padding: 0 20px;
   font-size: 13px;
   color: #1a1a1a;
 }
@@ -1499,6 +1508,11 @@ textarea:focus {
   color: #1a1a1a;
   padding-left: 0;
 }
+.custom_select .select2-container--default .select2-selection--single .select2-selection__rendered,
+.custom_select .select2-container--default .select2-selection--single .select2-selection__placeholder {
+  color: #000; /* Replace with your desired font color */
+}
+
 
 .custom_select .select2-container--default .select2-selection--single .select2-selection__arrow {
   top: 9px;
@@ -1592,7 +1606,7 @@ textarea:focus {
 }
 
 .form-group input {
-  background: #fff;
+  background: #f7f8f9;
   border: 1px solid #e2e9e1;
   height: 45px;
   -webkit-box-shadow: none;
@@ -1601,6 +1615,7 @@ textarea:focus {
   font-size: 13px;
   color: #1a1a1a;
   width: 100%;
+  border-radius: 4px;
 }
 
 .form-group input:focus {
@@ -2501,6 +2516,9 @@ label {
   background-clip: border-box;
   border: 1px solid #e2e9e1;
   border-radius: .25rem;
+  background: none;
+  background-color: #f0ffffb5;
+  backdrop-filter: blur(118px);
 }
 
 .card .card-header {
@@ -3176,7 +3194,7 @@ table {
 table td,
 table th {
   padding: 10px 20px;
-  border: 1px solid #666666;
+  border: 1px solid #eaebec;
   vertical-align: middle;
 }
 

@@ -182,7 +182,7 @@ async function UpdateUserdata(req, res) {
   try {
     const { error, value } = updateUserSchema.validate(req.body);
     if (error) {
-      throw new Error(error.details[0].message);
+      return res.status(400).json({ status: false, message: error.details[0].message });
     }
 
     const updateResult = await updateUserData(value, req.file, req.session.user._id);

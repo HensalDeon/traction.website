@@ -82,15 +82,15 @@ userRouter.post('/cart', isLoggedIn, PostToCart);
 userRouter.delete('/cart', isLoggedIn, RemoveFromCart);
 userRouter.patch('/cart', isLoggedIn, UpdateQuantity);
 userRouter.delete('/clear-cart', isLoggedIn, ClearCart);
-userRouter.get('/checkout', isLoggedIn, GetCheckout);
-userRouter.post('/checkout', isLoggedIn, PostCheckout);
 userRouter.post('/add-address', isLoggedIn, AddAddress);
 userRouter.delete('/delete-address', isLoggedIn, DeleteAddress);
 
+// checkout and payments
+userRouter.get('/checkout', isLoggedIn, GetCheckout);
+userRouter.post('/checkout', isLoggedIn, PostCheckout);
 userRouter.post('/verify-payment', isLoggedIn, VerifyPayment);
 userRouter.get('/order-successfull/:id', isLoggedIn, SuccessPage);
 userRouter.get('/order-failed/:id', isLoggedIn, FailedPage);
-
 userRouter.post('/order-cancel', isLoggedIn, CancelOrder);
 userRouter.post('/order-return', isLoggedIn, ReturnOrder);
 

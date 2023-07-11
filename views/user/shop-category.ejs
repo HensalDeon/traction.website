@@ -1,96 +1,96 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
+
 <head>
-    <%- include("../partials//user-header") %>
+  <%- include("../partials//user-header") %>
 
 </head>
+
 <body>
-    <%- include("./components/preloading.ejs") %>
-        <%- include("./layouts/navbar") %>
-            <main class="main">
-                <div class="page-header breadcrumb-wrap">
-                    <div class="container">
-                        <div class="breadcrumb">
-                            <a href="/" rel="nofollow">Home</a>
-                            <span></span> Shop
-                            <span></span> Category
-                        </div>
+  <%- include("./components/preloading.ejs") %>
+  <%- include("./layouts/navbar") %>
+  <main class="main">
+    <div class="page-header breadcrumb-wrap">
+      <div class="container">
+        <div class="breadcrumb">
+          <a href="/" rel="nofollow">Home</a>
+          <span></span> Shop
+          <span></span> Category
+        </div>
+      </div>
+    </div>
+    <section class="mt-50 mb-50">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="shop-product-fillter">
+              <div class="totall-product">
+                <p> We found <strong class="text-brand">
+                    <%= productCount %>
+                  </strong> items for you!</p>
+              </div>
+
+              <div class="sort-by-product-area">
+                <% if (productCount>50) { %>
+                <div class="sort-by-cover mr-10">
+                  <div class="sort-by-product-wrap">
+                    <div class="sort-by">
+                      <span><i class="fi-rs-apps"></i>Show:</span>
                     </div>
+                    <div class="sort-by-dropdown-wrap">
+                      <span> 50 <i class="fi-rs-angle-small-down"></i></span>
+                    </div>
+                  </div>
+
+                  <div class="sort-by-dropdown">
+                    <ul>
+                      <li><a class="active" href="#">50</a></li>
+                      <li><a href="#">100</a></li>
+                      <li><a href="#">150</a></li>
+                      <li><a href="#">200</a></li>
+                      <li><a href="#">All</a></li>
+                    </ul>
+                  </div>
+
                 </div>
-                <section class="mt-50 mb-50">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="shop-product-fillter">
-                                    <div class="totall-product">
-                                        <p> We found <strong class="text-brand">
-                                                <%= productCount %>
-                                            </strong> items for you!</p>
-                                    </div>
 
-                                    <div class="sort-by-product-area">
-                                        <% if (productCount>50) { %>
-                                            <div class="sort-by-cover mr-10">
-                                                <div class="sort-by-product-wrap">
-                                                    <div class="sort-by">
-                                                        <span><i class="fi-rs-apps"></i>Show:</span>
-                                                    </div>
-                                                    <div class="sort-by-dropdown-wrap">
-                                                        <span> 50 <i class="fi-rs-angle-small-down"></i></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="sort-by-dropdown">
-                                                    <ul>
-                                                        <li><a class="active" href="#">50</a></li>
-                                                        <li><a href="#">100</a></li>
-                                                        <li><a href="#">150</a></li>
-                                                        <li><a href="#">200</a></li>
-                                                        <li><a href="#">All</a></li>
-                                                    </ul>
-                                                </div>
-
-                                            </div>
-
-                                            <% } %>
+                <% } %>
 
 
-                                                <div class="sort-by-cover">
-                                                    <div class="sort-by-product-wrap">
-                                                        <div class="sort-by">
-                                                            <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
-                                                        </div>
-                                                        <div class="sort-by-dropdown-wrap">
+                <div class="sort-by-cover">
+                  <div class="sort-by-product-wrap">
+                    <div class="sort-by">
+                      <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
+                    </div>
+                    <div class="sort-by-dropdown-wrap">
 
-                                                            <select id="sortByDropdown" onchange="handleSortByChange()">
-                                                                <option value="featured">Featured</option>
-                                                                <option value="lowToHigh">Price: Low to High</option>
-                                                                <option value="highToLow">Price: High to Low</option>
-                                                                <option value="releaseDate">Release Date</option>
+                      <select id="sortByDropdown" onchange="handleSortByChange()">
+                        <option value="featured">Featured</option>
+                        <option value="lowToHigh">Price: Low to High</option>
+                        <option value="highToLow">Price: High to Low</option>
+                        <option value="releaseDate">Release Date</option>
 
-                                                            </select>
-                                                        </div>
-                                                    </div>
+                      </select>
+                    </div>
+                  </div>
 
-                                                </div>
-                                    </div>
-                                </div>
-                                <div class="row product-grid-3">
+                </div>
+              </div>
+            </div>
+            <div class="row product-grid-3">
 
-                                    <% products.forEach(product=> { %>
+              <% products.forEach(product=> { %>
 
-                                        <div class="col-lg-3 col-md-4">
-                                            <div class="product-cart-wrap mb-30">
-                                                <div class="product-img-action-wrap">
-                                                    <div class="product-img product-img-zoom">
-                                                        <a href="/product/<%= product.slug %>">
-                                                            <img class="default-img"
-                                                                src="<%= product.productImageUrls[0] %>" alt="">
-                                                            <img class="hover-img"
-                                                                src="<%= product.productImageUrls[1] %>" alt="">
-                                                        </a>
-                                                    </div>
-                                                    <!-- <div class="product-action-1">
+              <div class="col-lg-3 col-md-4">
+                <div class="product-cart-wrap mb-30">
+                  <div class="product-img-action-wrap">
+                    <div class="product-img product-img-zoom">
+                      <a href="/product/<%= product.slug %>">
+                        <img class="default-img" src="<%= product.productImageUrls[0] %>" alt="">
+                        <img class="hover-img" src="<%= product.productImageUrls[1] %>" alt="">
+                      </a>
+                    </div>
+                    <!-- <div class="product-action-1">
                                                         <a aria-label="Quick view" class="action-btn hover-up"
                                                             data-bs-toggle="modal" data-bs-target="#quickViewModal">
                                                             <i class="fi-rs-search"></i></a>
@@ -101,93 +101,86 @@
                                                                 class="fi-rs-shuffle"></i></a>
                                                     </div> -->
 
-                                                    <div
-                                                        class="product-badges product-badges-position product-badges-mrg">
-                                                        <% var availableBadges=["New", "Hot" , "Sale" , "Limited" ]; %>
-                                                            <% var randomBadgeIndex=Math.floor(Math.random() *
+                    <div class="product-badges product-badges-position product-badges-mrg">
+                      <% var availableBadges=["New", "Hot" , "Sale" , "Limited" ]; %>
+                      <% var randomBadgeIndex=Math.floor(Math.random() *
                                                                 availableBadges.length); %>
-                                                                <span
-                                                                    class="<%= availableBadges[randomBadgeIndex].toLowerCase() %>">
-                                                                    <%= availableBadges[randomBadgeIndex] %>
-                                                                </span>
-                                                    </div>
-
-                                                </div>
-                                                <div class="product-content-wrap">
-                                                    <div class="product-category">
-                                                        <a href="/shop">
-                                                            <%= product.productCategory.name %>
-                                                        </a>
-                                                    </div>
-                                                    <h2><a href="/product/<%= product.slug %>">
-                                                            <%= product.productName %>
-                                                        </a></h2>
-                                                    <div class="rating-result" title="90%">
-                                                        <span>
-                                                            <span>90%</span>
-                                                        </span>
-                                                    </div>
-                                                    <div class="product-price">
-                                                        <span>&#8377; <%= product.productPrice %> </span>
-                                                        <span class="old-price">&#8377; <%= product.productOldPrice %>
-                                                        </span>
-                                                    </div>
-                                                    <div class="product-action-1 show">
-                                                        <a aria-label="Add To Cart" data-product-id="<%= product._id %>"
-                                                            class="addTocartButton action-btn hover-up"><i
-                                                                class="fi-rs-shopping-bag-add"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <% }) %>
-
-
-                                </div>
-                                <!--pagination-->
-                                <div class="pagination-area mt-15 mb-50">
-                                    <nav aria-label="Page navigation example">
-                                        <ul class="pagination justify-content-start">
-                                                    <% for (let i=1; i<=totalPages; i++) { %>
-                                                        <% if (i===currentPage) { %>
-                                                            <li class="page-item active"><a class="page-link" href="#">
-                                                                    <%= i %>
-                                                                </a></li>
-                                                            <% } else { %>
-                                                                <li class="page-item"><a class="page-link"
-                                                                        href="/shop?page=<%=i%>&limit=<%=limit%>">
-                                                                        <%= i %>
-                                                                    </a></li>
-                                                                <% } %>
-                                                                    <% } %>
-                                                                        <% if (currentPage < totalPages) { %>
-                                                                            <li class="page-item"><a class="page-link"
-                                                                                    href="/shop?page=<%=currentPage+1%>&limit=<%=limit%>"><i
-                                                                                        class="material-icons md-chevron_right"></i></a>
-                                                                            </li>
-                                                                            <% } %>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
+                      <span class="<%= availableBadges[randomBadgeIndex].toLowerCase() %>">
+                        <%= availableBadges[randomBadgeIndex] %>
+                      </span>
                     </div>
-                </section>
-            </main>
-            <%- include("./layouts/footer.ejs")%>
-                <%- include("./script/script.ejs") %>
 
-                    <script>
-                        function handleSortByChange() {
-                            const sortBy = document.getElementById('sortByDropdown').value;
-                            const page = '<%= currentPage %>';
-                            const limit = '<%= limit %>';
-                            const categoryId = '<%= categoryId %>';
-                            console.log(categoryId);
-                            const url = `/shop/${categoryId}?page=${page}&limit=${limit}&sortBy=${sortBy}`;
-                            window.location.href = url;
-                        }
-                    </script>
+                  </div>
+                  <div class="product-content-wrap">
+                    <div class="product-category">
+                      <a href="/shop">
+                        <%= product.productCategory.name %>
+                      </a>
+                    </div>
+                    <h2><a href="/product/<%= product.slug %>">
+                        <%= product.productName %>
+                      </a></h2>
+                    <div class="rating-result" title="90%">
+                      <span>
+                        <span>90%</span>
+                      </span>
+                    </div>
+                    <div class="product-price">
+                      <span>&#8377; <%= product.productPrice %> </span>
+                      <span class="old-price">&#8377; <%= product.productOldPrice %>
+                      </span>
+                    </div>
+                    <div class="product-action-1 show">
+                      <a aria-label="Add To Cart" data-product-id="<%= product._id %>" class="addTocartButton action-btn hover-up"><i class="fi-rs-shopping-bag-add"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+
+
+            </div>
+            <!--pagination-->
+            <div class="pagination-area mt-15 mb-50">
+              <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-start">
+                  <% for (let i=1; i<=totalPages; i++) { %>
+                  <% if (i===currentPage) { %>
+                  <li class="page-item active"><a class="page-link" href="#">
+                      <%= i %>
+                    </a></li>
+                  <% } else { %>
+                  <li class="page-item"><a class="page-link" href="/shop?page=<%=i%>&limit=<%=limit%>">
+                      <%= i %>
+                    </a></li>
+                  <% } %>
+                  <% } %>
+                  <% if (currentPage < totalPages) { %>
+                  <li class="page-item"><a class="page-link" href="/shop?page=<%=currentPage+1%>&limit=<%=limit%>"><i class="material-icons md-chevron_right"></i></a>
+                  </li>
+                  <% } %>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <%- include("./layouts/footer.ejs")%>
+  <%- include("./script/script.ejs") %>
+
+  <script>
+    function handleSortByChange() {
+      const sortBy = document.getElementById('sortByDropdown').value;
+      const page = '<%= currentPage %>';
+      const limit = '<%= limit %>';
+      const categoryId = '<%= categoryId %>';
+      console.log(categoryId);
+      const url = `/shop/${categoryId}?page=${page}&limit=${limit}&sortBy=${sortBy}`;
+      window.location.href = url;
+    }
+  </script>
 </body>
 
 </html>

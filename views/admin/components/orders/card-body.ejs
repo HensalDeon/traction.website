@@ -1,164 +1,133 @@
-
 <div class="card-body">
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Transaction-ID</th>
-                    <th scope="col">Name</th>
-                    <!-- <th scope="col">Email</th> -->
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Transaction-ID</th>
+          <th scope="col">Name</th>
+          <!-- <th scope="col">Email</th> -->
 
-                    <th scope="col">Total</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Payment</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Order-ID</th>
-                    <th scope="col" class="text-end"> Action </th>
-                </tr>
-            </thead>
-            <tbody>
+          <th scope="col">Total</th>
+          <th scope="col">Status</th>
+          <th scope="col">Payment</th>
+          <th scope="col">Date</th>
+          <th scope="col">Order-ID</th>
+          <th scope="col" class="text-end"> Action </th>
+        </tr>
+      </thead>
+      <tbody>
 
-                <% orders.forEach(order=> { %>
+        <% orders.forEach(order=> { %>
 
-                    <tr>
-                        <td>
-                            <%= order.transactionId %>
-                        </td>
-                        <td><b>
-                                <%= order.user?.username %>
-                            </b></td>
-                        <!-- <td><template class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3">[email&#160;protected]</template></td> -->
-                        <td> &#8377; <%= order.total %>
-                        </td>
-                        <td>
-                            <% if (order.status==='cancelPending' ) { %>
-                                <span class="badge rounded-pill alert-warning">
-                                    cancelation pending
-                                </span>
-                                <% } else if (order?.paymentStatus==='failed' ) { %>
-                                    <span class="badge rounded-pill alert-danger">
-                                        payment failed
-                                    </span>
-                                    <% } else if (order.status==='canceled' ) { %>
-                                        <span class="badge rounded-pill "
-                                            style="background-color: rgb(255, 51, 0); color: rgb(255, 255, 255);"> 
-                                            order canceled
-                                        </span>
-                                        <% } else if (order.status==='shipped' ) { %>
-                                            <span class="badge rounded-pill alert-info">
-                                                shipped
-                                            </span>
-                                            <% } else if (order.status==='delivered' ) { %>
-                                                <span class="badge rounded-pill alert-success">
-                                                    delivered
-                                                </span>
-                                                <% } else if (order.status==='processing' ) { %>
-                                                    <span class="badge rounded-pill alert-dark">
-                                                        processing
-                                                    </span>
-                                                    <% } else if (order.status==='pending' ) { %>
-                                                        <span class="badge rounded-pill "
-                                                            style="background-color: rgb(104, 210, 255); color: rgb(0, 0, 0);">
-                                                            pending
-                                                        </span>
-                                                    <% } else if (order.status==='returned' ) { %>
-                                                        <span class="badge rounded-pill "
-                                                            style="background-color: rgb(249, 220, 0); color: rgb(0, 0, 0);">
-                                                            return completed
-                                                        </span>
-                                                    <% } else if (order.status==='returnPending' ) { %>
-                                                        <span class="badge rounded-pill "
-                                                            style="background-color:  rgb(227, 255, 202); color: rgb(0, 0, 0);">
-                                                            return pending
-                                                        </span>
-                                                        <% } %>
-                        </td>
-                        <% if (order.paymentmethod==='cashOnDelivery' ) { %>
-                            <td><b>COD</b></td>
-                            <% } else { %>
-                                <td><b>RAZORPAY</b></td>
-                                <% } %>
+        <tr>
+          <td>
+            <%= order.transactionId %>
+          </td>
+          <td><b>
+              <%= order.user?.username %>
+            </b></td>
+          <!-- <td><template class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3">[email&#160;protected]</template></td> -->
+          <td> &#8377; <%= order.total %>
+          </td>
+          <td>
+            <% if (order.status==='cancelPending' ) { %>
+            <span class="badge rounded-pill alert-warning">
+              cancelation pending
+            </span>
+            <% } else if (order?.paymentStatus==='failed' ) { %>
+            <span class="badge rounded-pill alert-danger">
+              payment failed
+            </span>
+            <% } else if (order.status==='canceled' ) { %>
+            <span class="badge rounded-pill " style="background-color: rgb(255, 51, 0); color: rgb(255, 255, 255);">
+              order canceled
+            </span>
+            <% } else if (order.status==='shipped' ) { %>
+            <span class="badge rounded-pill alert-info">
+              shipped
+            </span>
+            <% } else if (order.status==='delivered' ) { %>
+            <span class="badge rounded-pill alert-success">
+              delivered
+            </span>
+            <% } else if (order.status==='processing' ) { %>
+            <span class="badge rounded-pill alert-dark">
+              processing
+            </span>
+            <% } else if (order.status==='pending' ) { %>
+            <span class="badge rounded-pill " style="background-color: rgb(104, 210, 255); color: rgb(0, 0, 0);">
+              pending
+            </span>
+            <% } else if (order.status==='returned' ) { %>
+            <span class="badge rounded-pill " style="background-color: rgb(249, 220, 0); color: rgb(0, 0, 0);">
+              return completed
+            </span>
+            <% } else if (order.status==='returnPending' ) { %>
+            <span class="badge rounded-pill " style="background-color:  rgb(227, 255, 202); color: rgb(0, 0, 0);">
+              return pending
+            </span>
+            <% } %>
+          </td>
+          <% if (order.paymentmethod==='cashOnDelivery' ) { %>
+          <td><b>COD</b></td>
+          <% } else { %>
+          <td><b>RAZORPAY</b></td>
+          <% } %>
 
-                                    <td>
-                                        <%= new Date(order.date).toLocaleDateString('en-US') %>
-                                    </td>
-                                    <td>
-                                        <%= order.orderNumber %>
-                                    </td>
-                                    <td class="text-end">
+          <td>
+            <%= new Date(order.date).toLocaleDateString('en-US') %>
+          </td>
+          <td>
+            <%= order.orderNumber %>
+          </td>
+          <td class="text-end">
+            <div class="dropdown">
+              <a href="#" data-bs-toggle="dropdown" class="btn rounded btn-sm font-sm">
+                <span class="material-symbols-outlined">
+                    edit_square
+                    </span>
+              </a>
+              <div class="dropdown-menu">
+                <a href="/admin/order-details?id=<%= order._id %>&admin=true" class="dropdown-item" style="background-color: rgb(255, 180, 41);">View detail</a>
+                <% if (order.status === 'cancelPending') { %>
+                    <a onclick="changeStatus('<%= order._id %>','canceled')" data-orderid="<%= order._id %>" class="btn btn-sm btn-danger dropdown-item rounded font-sm">Approve cancel</a>
+                  <% } else if (order.status === 'processing') { %>
+                    <a onclick="changeStatus('<%= order._id %>','shipped')" data-shippedid="<%= order._id %>" class="btn rounded font-sm dropdown-item" style="background-color: rgb(2, 220, 100); color: rgb(0, 0, 0);">Shipping completed</a>
+                  <% } else if (order.status === 'returnPending') { %>
+                    <a onclick="changeStatus('<%= order._id %>','returned')" data-deliveredid="<%= order._id %>" class="btn btn-sm rounded dropdown-item font-sm" style="background-color: cadetblue;">Approve return</a>
+                  <% } else if (order.status === 'shipped') { %>
+                    <a onclick="changeStatus('<%= order._id %>','delivered')" data-deliveredid="<%= order._id %>" class="btn btn-sm btn-warning-light dropdown-item rounded font-sm" style="background-color: rgb(84, 203, 207);">Delivery completed</a>
+                  <% } %>
+              </div>
+            </div>  
+          </td>
+        </tr>
+        <% }) %>
 
-                                        <% if (order.status==='cancelPending' ) { %>
-                                            <a onclick="changeStatus('<%= order._id %>','canceled')"
-                                                data-orderid="<%= order._id %>"
-                                                class="btn btn-sm btn-danger rounded font-sm">Approve cancel</a>
-
-                                            <% } %>
-
-                                                <% if (order.status==='processing' ) { %>
-
-                                                    <a onclick="changeStatus('<%= order._id %>','shipped')"
-                                                        data-shippedid="<%= order._id %>"
-                                                        class="btn btn-success rounded font-sm"
-                                                        style="background-color: rgb(2, 220, 100); color: rgb(0, 0, 0);">Shipping
-                                                        completed</a>
-
-                                                  <% } else if (order.status==='returnPending' ) { %>
-                                                    <a onclick="changeStatus('<%= order._id %>','returned')"
-                                                        data-deliveredid="<%= order._id %>"
-                                                        class="btn btn-sm  rounded font-sm" style="background-color: cadetblue;">
-                                                        Approve return</a>
-
-                                                    <% } else if (order.status==='shipped' ) { %>
-
-                                                        <a onclick="changeStatus('<%= order._id %>','delivered')"
-                                                            data-deliveredid="<%= order._id %>"
-                                                            class="btn btn-sm btn-warning-light rounded font-sm">Delivery
-                                                            completed</a>
-
-                                                        <!-- <a class="btn btn-sm rounded font-sm"
-                                                                        style="background-color: rgb(0, 126, 69); color: aliceblue">Details</a> -->
-                                                        <% } %>
-
-                                                            <div class="dropdown">
-                                                                <a href="#" data-bs-toggle="dropdown"
-                                                                    class="btn btn-light rounded btn-sm font-sm">
-                                                                    <i class="material-icons md-more_horiz"></i>
-                                                                </a>
-                                                                <div class="dropdown-menu">
-                                                                    <a href="/admin/order-details?id=<%= order._id %>&admin=true" class="dropdown-item">View
-                                                                        detail</a>
-                                                                    <!-- <a class="dropdown-item text-danger"
-                                                                        href="#">Delete</a> -->
-                                                                </div>
-                                                            </div>
-                                    </td>
-                    </tr>
-                    <% }) %>
-
-            </tbody>
-        </table>
-    </div> <!-- table-responsive //end -->
+      </tbody>
+    </table>
+  </div> <!-- table-responsive //end -->
 </div> <!-- card-body end// -->
 
 
 
 <script>
-    function changeStatus(orderId, status) {
-        fetch('/admin/order-status', {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                orderId: orderId, status: status
-            })
-        }).then(async (res) => {
-            res = await res.json();
-            location.reload()
-            console.log(res);
-        }).catch(err => {
-            console.log(err);
-        })
-    }
-
+  function changeStatus(orderId, status) {
+    fetch('/admin/order-status', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        orderId: orderId,
+        status: status
+      })
+    }).then(async (res) => {
+      res = await res.json();
+      location.reload()
+      console.log(res);
+    }).catch(err => {
+      console.log(err);
+    })
+  }
 </script>
