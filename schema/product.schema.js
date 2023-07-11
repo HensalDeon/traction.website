@@ -41,6 +41,10 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    orderCount: {
+      type: Number,
+      default: 0,
+    },
     productNumber: { type: Number},
     slug: { type: String },
   },

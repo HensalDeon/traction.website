@@ -140,8 +140,8 @@ async function addOrderDetails(addressId, paymentMethod, userId, req, res) {
           { new: true },
         );
       }
+      // await cartDatabase.deleteOne({ user: userId });
       await order.save();
-      await cartDatabase.deleteOne({ user: userId });
       return { status: true, order: order ,cartResult };
     } else {
       return { status: false };
@@ -211,17 +211,12 @@ async function setSuccessStatus(orderId) {
   }
 }
 
-async function fetchUserOrderDetails(userId, res, page, limit) {
+async function fetchUserOrderDetails(userId, res) {
   try {
     const orders = await orderDatabase
       .find({ user: userId })
-      .skip((page - 1) * limit)
-      .limit(limit)
       .select('total status transactionId date items paymentStatus')
       .sort({ date: -1 });
-
-    const totalOrder = await orderDatabase.countDocuments();
-    const totalPages = Math.ceil(totalOrder / limit);
 
     const addresses = await addressDatabase.find({ user: userId });
 
@@ -253,9 +248,6 @@ async function fetchUserOrderDetails(userId, res, page, limit) {
     return {
       orderDetails: orderDetails,
       addresses: addresses,
-      totalPages: totalPages,
-      currentPage: page,
-      limit: limit,
     };
   } catch (error) {
     handleError(res, error);

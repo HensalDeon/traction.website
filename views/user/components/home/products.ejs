@@ -112,10 +112,9 @@
                 <div class="row product-grid-4">
 
                     <% const numProductsToShow2=8; %>
-                        <% const randomProducts2=products.filter(product=> product.productStatus && product.productCategory.active)
-                            .sort(() => Math.random() - 0.5)
-                            .slice(0, numProductsToShow2); %>
-                            <% randomProducts2.forEach(product=> { %>
+                        <% const popularProducts=products.filter(product=> product.productStatus && product.productCategory.active && product.orderCount > 0)
+                            .sort((a, b) => b.orderCount - a.orderCount).slice(0, numProductsToShow2); %>
+                            <% popularProducts.forEach(product=> { %>
                                 <div class="col-lg-3 col-md-4 col-12 col-sm-6">
                                     <div class="product-cart-wrap mb-30">
                                         <div class="product-img-action-wrap">

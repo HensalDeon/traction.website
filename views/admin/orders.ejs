@@ -10,55 +10,50 @@
   <div class="screen-overlay"></div>
   <!-- aside -->
   <%- include("./layouts/sidebar.ejs") %>
-    <main class="main-wrap">
-      <%- include("./layouts/header.ejs") %>
+  <main class="main-wrap">
+    <%- include("./layouts/header.ejs") %>
 
 
 
-        <section class="content-main">
-          <%- include('./components/orders/content-header.ejs') %>
-            <div class="card mb-4">
+    <section class="content-main">
+      <%- include('./components/orders/content-header.ejs') %>
+      <div class="card mb-4">
 
-              <%- include('./components/orders/card-header.ejs') %>
-                <%- include('./components/orders/card-body.ejs') %>
-
-
-            </div> <!-- card end// -->
-            <div class="pagination-area mt-15 mb-50">
-              <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-start">
-                  <% if(currentPage> 1) { %>
-                    <li class="page-item"><a class="page-link"
-                        href="/admin/orders?page=<%=currentPage-1%>&limit=<%=limit%>"><i
-                          class="material-icons md-chevron_left"></i></a></li>
-                    <% } %>
-                      <% for (let i=1; i<=totalPages; i++) { %>
-                        <% if (i===currentPage) { %>
-                          <li class="page-item active"><a class="page-link" href="#">
-                              <%= i %>
-                            </a></li>
-                          <% } else { %>
-                            <li class="page-item"><a class="page-link"
-                                href="/admin/orders?page=<%=i%>&limit=<%=limit%>">
-                                <%= i %>
-                              </a></li>
-                            <% } %>
-                              <% } %>
-                                <% if (currentPage < totalPages) { %>
-                                  <li class="page-item"><a class="page-link"
-                                      href="/admin/orders?page=<%=currentPage+1%>&limit=<%=limit%>"><i
-                                        class="material-icons md-chevron_right"></i></a></li>
-                                  <% } %>
-                </ul>
-              </nav>
-            </div>
-
-        </section> <!-- content-main end// -->
+        <%- include('./components/orders/card-header.ejs') %>
+        <%- include('./components/orders/card-body.ejs') %>
 
 
-        <%- include("./layouts/admin-footer.ejs") %>
-    </main>
-    <%- include("./components/script/script.ejs") %>
+      </div> <!-- card end// -->
+      <div class="pagination-area mt-15 mb-50">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-start">
+            <% if(currentPage> 1) { %>
+            <li class="page-item"><a class="page-link" href="/admin/orders?page=<%=currentPage-1%>&limit=<%=limit%>"><i class="material-icons md-chevron_left"></i></a></li>
+            <% } %>
+            <% for (let i=1; i<=totalPages; i++) { %>
+            <% if (i===currentPage) { %>
+            <li class="page-item active"><a class="page-link" href="#">
+                <%= i %>
+              </a></li>
+            <% } else { %>
+            <li class="page-item"><a class="page-link" href="/admin/orders?page=<%=i%>&limit=<%=limit%>">
+                <%= i %>
+              </a></li>
+            <% } %>
+            <% } %>
+            <% if (currentPage < totalPages) { %>
+            <li class="page-item"><a class="page-link" href="/admin/orders?page=<%=currentPage+1%>&limit=<%=limit%>"><i class="material-icons md-chevron_right"></i></a></li>
+            <% } %>
+          </ul>
+        </nav>
+      </div>
+
+    </section> <!-- content-main end// -->
+
+
+    <%- include("./layouts/admin-footer.ejs") %>
+  </main>
+  <%- include("./components/script/script.ejs") %>
 </body>
 
 </html>

@@ -2,211 +2,203 @@
 <html class="no-js" lang="en">
 
 <head>
-    <%- include("../partials/user-header") %>
-        <%- include("./components/preloading.ejs") %>
+  <%- include("../partials/user-header") %>
+  <%- include("./components/preloading.ejs") %>
 </head>
 
 <body>
-    <%- include("./layouts/navbar") %>
+  <%- include("./layouts/navbar") %>
 
 
 
-        <main class="main">
+  <main class="main">
 
-            <div class="page-header breadcrumb-wrap">
-                <div class="container">
-                    <div class="breadcrumb">
-                        <a href="/" rel="nofollow">Home</a>
-                        <span></span> Pages
-                        <span></span> order-details
-                    </div>
-                </div>
-            </div>
-            <section class="pt-50 mb-50 cartBg">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="order_review"
-                            style="background: linear-gradient(to right, rgba(0, 0, 0, 0), rgb(143 134 134 / 50%) 50%, rgba(0, 0, 0, 0)), linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0)); background-color: #f7f8f9b5;">
-                                <div class="mb-20">
-                                    <h4>Your Orders</h4>
-                                </div>
-                                <div class="table-responsive order_table text-center">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th colspan="2">Product</th>
-                                                <th>price</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="td">
-                                            <% (orderData?.items || []).forEach(item=> { %>
+    <div class="page-header breadcrumb-wrap">
+      <div class="container">
+        <div class="breadcrumb">
+          <a href="/" rel="nofollow">Home</a>
+          <span></span> Pages
+          <span></span> order-details
+        </div>
+      </div>
+    </div>
+    <section class="pt-50 mb-50 cartBg">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="order_review" style="background-color: #f0ffffb5;">
+              <div class="mb-20">
+                <h4>Your Orders</h4>
+              </div>
+              <div class="table-responsive order_table text-center">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th colspan="2">Product</th>
+                      <th>price</th>
+                    </tr>
+                  </thead>
+                  <tbody id="td">
+                    <% (orderData?.items || []).forEach(item=> { %>
 
-                                                <tr data-item-id="<%= item.product._id %>">
+                    <tr data-item-id="<%= item.product._id %>">
 
-                                                    <td class="image product-thumbnail"><img
-                                                            alt="<%= item.product.productName %>"
-                                                            src="<%= item.product.productImageUrls[0] %>">
-                                                    </td>
+                      <td class="image product-thumbnail"><img alt="<%= item.product.productName %>" src="<%= item.product.productImageUrls[0] %>">
+                      </td>
 
-                                                    <td>
-                                                        <h5 class="product-name"><a
-                                                                href="/product/<%= item.product.slug %>">
-                                                                <%= item.product.productName %>
-                                                            </a></h5> <span qty-navbar-<%=item.product._id %>"
-                                                            class="product-qty">x <%= item.quantity %> </span>
-                                                    </td>
+                      <td>
+                        <h5 class="product-name"><a href="/product/<%= item.product.slug %>">
+                            <%= item.product.productName %>
+                          </a></h5> <span qty-navbar-<%=item.product._id %>" class="product-qty">x <%= item.quantity %> </span>
+                      </td>
 
-                                                    <td class="price" data-title="Price" id="subtotal"
-                                                        data-price="<%= item.product.productPrice %>">₹<%= item.price %>
-                                                    </td>
+                      <td class="price" data-title="Price" id="subtotal" data-price="<%= item.product.productPrice %>">₹<%= item.price %>
+                      </td>
 
 
 
-                                                </tr>
-                                                <% }) %>
+                    </tr>
+                    <% }) %>
 
-                                                    <tr>
-                                                        <th>SubTotal</th>
-                                                        <td class="product-subtotal" colspan="2">₹<%=
+                    <tr>
+                      <th>SubTotal</th>
+                      <td class="product-subtotal" colspan="2">₹<%=
                                                                 (orderData?.subtotal|| 0) %>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Discount</th>
-                                                        <td class="product-subtotal" colspan="2">₹<%=
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Discount</th>
+                      <td class="product-subtotal" colspan="2">₹<%=
                                                               Math.floor((orderData?.discount|| 0))  %>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Wallet</th>
-                                                        <td class="product-subtotal" colspan="2">₹<%=
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Wallet</th>
+                      <td class="product-subtotal" colspan="2">₹<%=
                                                               Math.floor((orderData?.wallet|| 0))  %>
-                                                        </td>
-                                                    </tr>
+                      </td>
+                    </tr>
 
 
-                                                    <tr>
-                                                        <th>Shipping</th>
-                                                        <td colspan="2"><em>Free Shipping</em></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Total</th>
-                                                        <td colspan="2" class="product-subtotal"><span
-                                                                class="font-xl text-brand fw-900" id="totalAmountSpn">₹
-                                                                <%= Math.floor((orderData?.total || 0)) %>
-                                                            </span></td>
-                                                    </tr>
+                    <tr>
+                      <th>Shipping</th>
+                      <td colspan="2"><em>Free Shipping</em></td>
+                    </tr>
+                    <tr>
+                      <th>Total</th>
+                      <td colspan="2" class="product-subtotal"><span class="font-xl text-brand fw-900" id="totalAmountSpn">₹
+                          <%= Math.floor((orderData?.total || 0)) %>
+                        </span></td>
+                    </tr>
 
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                  </tbody>
+                </table>
+              </div>
+              <div class="bt-1 border-color-1 mt-30 mb-30"></div>
 
-                            </div>
-                        </div>
+            </div>
+          </div>
 
 
-                        <div class="col-md-6">
-                            <div class="order_review" style="background: linear-gradient(to right, rgba(0, 0, 0, 0), rgb(143 134 134 / 50%) 50%, rgba(0, 0, 0, 0)), linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0)); background-color: #f7f8f9b5;">
-                                <div class="mb-25">
-                                    <h4>SHIPPED TO</h4>
-                                </div>
-                                <div class="row card-row">
-                                    <div id="cardBodyId" class="col-md-6">
-                                        <div class="card mb-3 my-custom-card-class"
-                                            addressId="<%= orderData.shippingAddress._id %>">
+          <div class="col-md-6">
+            <div class="order_review" style="background-color: #f0ffffb5;">
+              <div class="mb-25">
+                <h4>SHIPPED TO</h4>
+              </div>
+              <div class="row card-row">
+                <div id="cardBodyId" class="col-md-6">
+                  <div class="card mb-3 my-custom-card-class" addressId="<%= orderData.shippingAddress._id %>">
 
-                                            <div class="card-body">
-                                                <label>
-                                                    <p>
-                                                        <strong>Name: </strong>
-                                                        <%=orderData.shippingAddress.fname %>
-                                                            <%=orderData.shippingAddress.lname %><br>
-                                                                <strong>Phone: </strong>
-                                                                <%=orderData.shippingAddress.phone %><br>
-                                                                    <strong>Email: </strong>
-                                                                    <%=orderData.shippingAddress.email %><br>
-                                                                        <strong>Street: </strong>
-                                                                        <%=orderData.shippingAddress.street_address %>,
-                                                                            <%=orderData.shippingAddress.city %>,
-                                                                                <%=orderData.shippingAddress.state %>,
-                                                                                    <%=orderData.shippingAddress.country
+                    <div class="card-body">
+                      <label>
+                        <p>
+                          <strong>Name: </strong>
+                          <%=orderData.shippingAddress.fname %>
+                          <%=orderData.shippingAddress.lname %><br>
+                          <strong>Phone: </strong>
+                          <%=orderData.shippingAddress.phone %><br>
+                          <strong>Email: </strong>
+                          <%=orderData.shippingAddress.email %><br>
+                          <strong>Street: </strong>
+                          <%=orderData.shippingAddress.street_address %>,
+                          <%=orderData.shippingAddress.city %>,
+                          <%=orderData.shippingAddress.state %>,
+                          <%=orderData.shippingAddress.country
                                                                                         %>,
-                                                                                        <%=orderData.shippingAddress.zipcode
+                          <%=orderData.shippingAddress.zipcode
                                                                                             %><br>
-                                                    </p>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                   
-                                        <div >
-
-                                            <h4 class="mb-1">PAYMENT METHOD</h4>
-                                                <strong> Payment method:
-                                                    
-                                                    <% if (orderData.paymentmethod ==='cashOnDelivery') { %>
-                                                        <span class="badge bg-danger">COD</span>
-                                                        <% } else if (orderData.paymentmethod ==='razorpay') { %>
-                                                         
-                                                            <span class="badge bg-danger">RAZORPAY</span>
-                                                    <% } %>
-                                                    </strong>
-                                                    <br>
-
-                                                    <strong>
-                                                        Payment status:
-                                                        <span class="badge  <%= orderData.paymentStatus === 'success'? 'bg-success':'bg-danger' %> "><%= orderData.paymentStatus %></span> 
-                                                    </strong>
-                                                    <br>
-
-                                                    <strong>Order Status:
-                                                        <% if (orderData.status === 'pending') { %>
-                                                            <span class="badge bg-primary">Pending Confirmation</span> - Your order is awaiting confirmation.
-                                                        <% } else if (orderData.status === 'processing') { %>
-                                                            <span class="badge bg-info">Processing</span> - Your order is being processed.
-                                                        <% } else if (orderData.status === 'shipped') { %>
-                                                            <span class="badge bg-success">Shipped</span> - Your order has been shipped.
-                                                        <% } else if (orderData.status === 'delivered') { %>
-                                                            <span class="badge bg-success">Delivered</span> - Your order has been delivered.
-                                                        <% } else if (orderData.status === 'canceled') { %>
-                                                            <span class="badge bg-danger">Canceled</span> - Your order has been canceled.
-                                                        <% } else if (orderData.status === 'cancelPending') { %>
-                                                            <span class="badge bg-warning">Cancellation Pending</span> - Your cancellation request is being processed.
-                                                        <% } else if (orderData.status === 'returnPending') { %>
-                                                            <span class="badge bg-warning">Return Pending</span> - Your return request is being processed.
-                                                        <% } else if (orderData.status === 'returned') { %>
-                                                            <span class="badge bg-secondary">Returned</span> - Your order has been returned.
-                                                        <% } else { %>
-                                                            <span class="badge bg-dark">Unknown</span> - The status of your order is unknown.
-                                                        <% } %>
-                                                        </strong><br><br>
-                                                        
-                                                        
-                                                        
-                                                   <strong> TransactionId:
-                                                    <span class="text-grey-5"> 
-                                                    <%= orderData.transactionId %></span>
-                                                   </strong><br>
-                                                   <strong> OrderId:
-                                                    <span class="text-grey-5"> 
-                                                    <%= orderData.orderNumber %></span>
-                                                   </strong><br>
-                                        </div>
-
-                                    
-                                </div>
-                            </div>
-                        </div>
+                        </p>
+                      </label>
                     </div>
-            </section>
-        </main>
+                  </div>
+                </div>
 
 
-        <%- include("./layouts/footer.ejs")%>
-            <%- include("./script/script.ejs") %>
+                <div>
+
+                  <h4 class="mb-1">PAYMENT METHOD</h4>
+                  <strong> Payment method:
+
+                    <% if (orderData.paymentmethod ==='cashOnDelivery') { %>
+                    <span class="badge bg-danger">COD</span>
+                    <% } else if (orderData.paymentmethod ==='razorpay') { %>
+
+                    <span class="badge bg-danger">RAZORPAY</span>
+                    <% } %>
+                  </strong>
+                  <br>
+
+                  <strong>
+                    Payment status:
+                    <span class="badge  <%= orderData.paymentStatus === 'success'? 'bg-success':'bg-danger' %> "><%= orderData.paymentStatus %></span>
+                  </strong>
+                  <br>
+
+                  <strong>Order Status:
+                    <% if (orderData.status === 'pending') { %>
+                    <span class="badge bg-primary">Pending Confirmation</span> - Your order is awaiting confirmation.
+                    <% } else if (orderData.status === 'processing') { %>
+                    <span class="badge bg-info">Processing</span> - Your order is being processed.
+                    <% } else if (orderData.status === 'shipped') { %>
+                    <span class="badge bg-success">Shipped</span> - Your order has been shipped.
+                    <% } else if (orderData.status === 'delivered') { %>
+                    <span class="badge bg-success">Delivered</span> - Your order has been delivered.
+                    <% } else if (orderData.status === 'canceled') { %>
+                    <span class="badge bg-danger">Canceled</span> - Your order has been canceled.
+                    <% } else if (orderData.status === 'cancelPending') { %>
+                    <span class="badge bg-warning">Cancellation Pending</span> - Your cancellation request is being processed.
+                    <% } else if (orderData.status === 'returnPending') { %>
+                    <span class="badge bg-warning">Return Pending</span> - Your return request is being processed.
+                    <% } else if (orderData.status === 'returned') { %>
+                    <span class="badge bg-secondary">Returned</span> - Your order has been returned.
+                    <% } else { %>
+                    <span class="badge bg-dark">Unknown</span> - The status of your order is unknown.
+                    <% } %>
+                  </strong><br><br>
+
+
+
+                  <strong> TransactionId:
+                    <span class="text-dark">
+                      <%= orderData.transactionId %></span>
+                  </strong><br>
+                  <strong> OrderId:
+                    <span class="text-dark">
+                      <%= orderData.orderNumber %></span>
+                  </strong><br>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+  </main>
+
+
+  <%- include("./layouts/footer.ejs")%>
+  <%- include("./script/script.ejs") %>
 </body>
 
 

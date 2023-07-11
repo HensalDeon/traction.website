@@ -37,7 +37,6 @@ submitButton.addEventListener('click', (event) => {
   }
   const url = '/admin/add-products';
   submitButton.disabled = true;
-call
 
   axios
     .post(url, formData, {

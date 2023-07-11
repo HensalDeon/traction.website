@@ -1,212 +1,198 @@
 <section class="content-main">
-    <div class="content-header">
-        <div>
-            <h2 class="content-title card-title">Products List</h2>
+  <div class="content-header">
+    <div>
+      <h2 class="content-title card-title">Products List</h2>
 
-        </div>
-        <div>
-            <a href="/admin/add-products" class="btn btn-primary btn-sm rounded">Create new</a>
-        </div>
     </div>
-    <div class="card mb-4">
-        <header class="card-header">
-            <div class="row align-items-center">
-                <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                    <select class="form-select" id="categorySelect">
-                        <option value="all">ALL CATEGORIES</option>
-                        <% categories.forEach(category=> { %>
-                            <% if(category.active) { %>
-                                <option value="<%= category.name %>">
-                                    <%= category.name %>
-                                </option>
-                            <% } %>
-                        <% }); %>
-                    </select>
-                </div>
-                <div class="col-md-2 col-6">
-                    <select class="form-select" id="statusSelect" onchange="filterProducts()">
-                        <option value="active">Active</option>
-                        <option value="disabled">Disabled</option>
-                        <option value="all">Show all</option>
-                    </select>
-                </div>
-            </div>
-        </header> <!-- card-header end// -->
-        <div class="card-body">
-            <% product.forEach((product,index)=> { %>     
-                <% console.log(product.productStatus); %>      
-                    <article class="itemlist" 
-                    data-product-status="<%= product.productStatus %>" 
-                    data-product-category="<%= product.productCategory.name %>">
-                        <div class="row align-items-center">
-                            <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
-                                <a class="itemside" href="#">
-                                    <div class="left">
-                                        <img src="<%= product.productImageUrls[0] %>" class="img-sm img-thumbnail"
-                                            alt="Item">
-                                    </div>
-                                    <div class="info">
-                                        <h6 class="mb-0">
-                                            <%= product.productName %>-<%=product.productNumber%>
-                                        </h6>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-2 col-sm-2 col-4 col-price"> <span> &#8377;<%= product.productPrice %>
-                                </span>
-                            </div>
-
-                            <div class="col-lg-2 col-sm-2 col-4 col-category">
-                                <span>
-                                    <%= product.productCategory.name %>
-                                </span>
-                            </div>
-
-                            <div class="col-lg-2 col-sm-2 col-4 col-stocks">
-                                <span
-                                    class="badge rounded-pill <%= product.stocks > 0 ? 'alert-success' : 'alert-danger' %>">
-                                    <%= product.stocks> 0 ? 'IN STOCK' : 'OUT OF STOCK' %>
-                                </span>
-                            </div>
-
-                            
-                            <div class="col-lg-2 col-sm-2 col-4 col-action text-end d-flex align-items-center justify-content-end">
-                                <% if (product.productStatus) { %>
-                                <a href="/admin/edit-product/<%- product.slug %>"
-                                    class="btn btn-edit me-2">
-                                    <i class="material-icons md-edit"></i> Edit
-                                </a>
-                                
-                                    <a id="deletbtn" onclick="deleteProduct('<%= product._id %>')"
-                                        data-product-id="<%= product._id %>"
-                                        class="btn btn-delete deleteProductclass">
-                                        <i class="material-icons md-delete_forever"></i> Delete
-                                    </a>
-                                <% } else { %>
-                                    <a id="deletbtn" onclick="enableProduct('<%= product._id %>')"
-                                        data-product-id="<%= product._id %>"
-                                        class="btn rounded btn-sms enableProductclass">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
-                                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                                          </svg> Enable
-                                    </a>
-                                <% } %>
-                                
-                            </div>
-                        </div> <!-- row .// -->
-                    </article> <!-- itemlist  .// -->
+    <div>
+      <a href="/admin/add-products" class="btn btn-primary btn-sm rounded">Create new</a>
+    </div>
+  </div>
+  <div class="card mb-4">
+    <header class="card-header">
+      <div class="row align-items-center">
+        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+          <select class="form-select" id="categorySelect">
+            <option value="all">ALL CATEGORIES</option>
+            <% categories.forEach(category=> { %>
+            <% if(category.active) { %>
+            <option value="<%= category.name %>">
+              <%= category.name %>
+            </option>
+            <% } %>
             <% }); %>
+          </select>
         </div>
-    </div> <!-- card end// -->
-    <div class="pagination-area mt-15 mb-50">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-start">
-                        <% for (let i=1; i<=totalPages; i++) { %>
-                            <% if (i===currentPage) { %>
-                                <li class="page-item active"><a class="page-link" href="#">
-                                        <%= i %>
-                                    </a></li>
-                                <% } else { %>
-                                    <li class="page-item"><a class="page-link"
-                                            href="/admin/products?page=<%=i%>&limit=<%=limit%>">
-                                            <%= i %>
-                                        </a></li>
-                                    <% } %>
-                                        <% } %>
-                                            <% if (currentPage < totalPages) { %>
-                                                <li class="page-item"><a class="page-link"
-                                                        href="/admin/products?page=<%=currentPage+1%>&limit=<%=limit%>"><i
-                                                            class="fi-rs-angle-double-small-right"></i></a></li>
-                                                <% } %>
-            </ul>
-        </nav>
+        <div class="col-md-2 col-6">
+          <select class="form-select" id="statusSelect" onchange="filterProducts()">
+            <option value="active">Active</option>
+            <option value="disabled">Disabled</option>
+            <option value="all">Show all</option>
+          </select>
+        </div>
+      </div>
+    </header> <!-- card-header end// -->
+    <div class="card-body">
+      <% product.forEach((product,index)=> { %>
+      <article class="itemlist" data-product-status="<%= product.productStatus %>" data-product-category="<%= product.productCategory.name %>">
+        <div class="row align-items-center">
+          <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
+            <a class="itemside" href="#">
+              <div class="left">
+                <img src="<%= product.productImageUrls[0] %>" class="img-sm img-thumbnail" alt="Item">
+              </div>
+              <div class="info">
+                <h6 class="mb-0">
+                  <%= product.productName %>-<%=product.productNumber%>
+                </h6>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-2 col-sm-2 col-4 col-price"> <span> &#8377;<%= product.productPrice %>
+            </span>
+          </div>
+
+          <div class="col-lg-2 col-sm-2 col-4 col-category">
+            <span>
+              <%= product.productCategory.name %>
+            </span>
+          </div>
+
+          <div class="col-lg-2 col-sm-2 col-4 col-stocks">
+            <span class="badge rounded-pill <%= product.stocks > 0 ? 'alert-success' : 'alert-danger' %>">
+              <%= product.stocks> 0 ? 'IN STOCK' : 'OUT OF STOCK' %>
+            </span>
+          </div>
+
+
+          <div class="col-lg-2 col-sm-2 col-4 col-action text-end d-flex align-items-center justify-content-end">
+            <% if (product.productStatus) { %>
+            <a href="/admin/edit-product/<%- product.slug %>" class="btn btn-edit me-2">
+              <i class="material-icons md-edit"></i> Edit
+            </a>
+
+            <a id="deletbtn" onclick="deleteProduct('<%= product._id %>')" data-product-id="<%= product._id %>" class="btn btn-delete deleteProductclass">
+              <i class="material-icons md-delete_forever"></i> Delete
+            </a>
+            <% } else { %>
+            <a id="deletbtn" onclick="enableProduct('<%= product._id %>')" data-product-id="<%= product._id %>" class="btn rounded btn-sms enableProductclass">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
+              </svg> Enable
+            </a>
+            <% } %>
+
+          </div>
+        </div> <!-- row .// -->
+      </article> <!-- itemlist  .// -->
+      <% }); %>
     </div>
+  </div> <!-- card end// -->
+  <div class="pagination-area mt-15 mb-50">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-start">
+        <% for (let i=1; i<=totalPages; i++) { %>
+        <% if (i===currentPage) { %>
+        <li class="page-item active"><a class="page-link" href="#">
+            <%= i %>
+          </a></li>
+        <% } else { %>
+        <li class="page-item"><a class="page-link" href="/admin/products?page=<%=i%>&limit=<%=limit%>">
+            <%= i %>
+          </a></li>
+        <% } %>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+        <li class="page-item"><a class="page-link" href="/admin/products?page=<%=currentPage+1%>&limit=<%=limit%>">
+            <span style="padding: 5px 0 5px 0;" class="material-symbols-outlined">arrow_circle_right</span></a></li>
+        <% } %>
+      </ul>
+    </nav>
+  </div>
 </section>
 <script>
-    function deleteProduct(productId) {
-        swal({
-            title: "Are you sure?",
-            text: "Once deleted, you will able to find it in Product disabled section!",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
+  function deleteProduct(productId) {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will able to find it in Product disabled section!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
 
-                fetch(`/admin/product-status/${productId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                })
-                    .then(response => {
-                        if (response.status === 200) {
-                            callAlertify('success', 'Product deleted successfully');
-                            window.location.reload();
-                        } else {
-                            throw new Error('Failed to delete product.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        callAlertify('error', error.message);
-                    });
+        fetch(`/admin/product-status/${productId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          })
+          .then(response => {
+            if (response.status === 200) {
+              callAlertify('success', 'Product deleted successfully');
+              window.location.reload();
+            } else {
+              throw new Error('Failed to delete product.');
             }
-        });
+          })
+          .catch(error => {
+            console.error(error);
+            callAlertify('error', error.message);
+          });
+      }
+    });
 
-    }
-    function enableProduct(productId) {
-                fetch(`/admin/product-enable/${productId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                })
-                .then(response => {
-                        if (response.status === 200) {
-                            callAlertify('success', 'Product enabled successfully');
-                            window.location.reload();
-                        } else {
-                            throw new Error('Failed to enable product.');
-                        }
-                })
-                .catch(error => {
-                    console.error(error);
-                    callAlertify('error', error.message);
-                });
-         
+  }
 
-    }
-
-    var categorySelect = document.getElementById('categorySelect');
-    var statusSelect = document.getElementById('statusSelect');
-
-    categorySelect.addEventListener('change', filterProducts);
-    statusSelect.addEventListener('change', filterProducts);
-
-    function filterProducts() {
-        var selectedCategory = categorySelect.value;
-        var selectedStatus = statusSelect.value;
-        var productList = document.querySelectorAll('.itemlist');
-        productList.forEach(function(product) {
-        var productStatus = product.getAttribute('data-product-status');
-        var productCategory = product.getAttribute('data-product-category')
-
-        console.log("status"+productStatus);
-
-        if (
-            (selectedCategory === 'all' || productCategory === selectedCategory) &&
-            (selectedStatus === 'all' || (selectedStatus === 'active' && productStatus === 'true') || (selectedStatus === 'disabled' && productStatus === 'false'))
-        ) {
-            product.style.display = 'block';
+  function enableProduct(productId) {
+    fetch(`/admin/product-enable/${productId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+      .then(response => {
+        if (response.status === 200) {
+          callAlertify('success', 'Product enabled successfully');
+          window.location.reload();
         } else {
-            product.style.display = 'none';
+          throw new Error('Failed to enable product.');
         }
-        
-        });
-    }
+      })
+      .catch(error => {
+        console.error(error);
+        callAlertify('error', error.message);
+      });
+
+
+  }
+
+  var categorySelect = document.getElementById('categorySelect');
+  var statusSelect = document.getElementById('statusSelect');
+
+  categorySelect.addEventListener('change', filterProducts);
+  statusSelect.addEventListener('change', filterProducts);
+
+  function filterProducts() {
+    var selectedCategory = categorySelect.value;
+    var selectedStatus = statusSelect.value;
+    var productList = document.querySelectorAll('.itemlist');
+    productList.forEach(function(product) {
+      var productStatus = product.getAttribute('data-product-status');
+      var productCategory = product.getAttribute('data-product-category')
+
+      if (
+        (selectedCategory === 'all' || productCategory === selectedCategory) &&
+        (selectedStatus === 'all' || (selectedStatus === 'active' && productStatus === 'true') || (selectedStatus === 'disabled' && productStatus === 'false'))
+      ) {
+        product.style.display = 'block';
+      } else {
+        product.style.display = 'none';
+      }
+
+    });
+  }
 
   filterProducts();
-
 </script>

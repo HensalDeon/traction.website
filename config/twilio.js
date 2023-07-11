@@ -4,7 +4,6 @@ const serviceSid = process.env.TWILIO_SERVICES_SID;
 const client = require('twilio')(accountSid, authToken);
 
 async function sendOtp(phoneNumber) {
-  console.log('enterred sent otp');
   const response = await   client.verify.v2.services(serviceSid).verifications.create({ to: '+91' + phoneNumber, channel: 'sms' })
   return response.status === 'pending'   
   

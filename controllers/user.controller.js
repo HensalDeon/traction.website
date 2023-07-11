@@ -123,7 +123,6 @@ async function SignupOtpVerify(req, res) {
   try {
     const { phone } = req.body;
     const phoneExist = await sendVerificationSignup(phone);
-    console.log('phone exit'+ phoneExist);
     if (!phoneExist) {
       res.send({status: false});
     } else {
@@ -157,19 +156,13 @@ async function PostSignup(req, res) {
 
 async function GetAccount(req, res) {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-
     const userData = req.session?.user;
     if (userData) {
-      const orders = await fetchUserOrderDetails(req.session.user._id, res,page,limit);
+      const orders = await fetchUserOrderDetails(req.session.user._id, res);
       return res.render('user/account', {
         userData: userData,
         orders: orders.orderDetails,
         addresses: orders.addresses,
-        totalPages:orders.totalPages,
-        currentPage:orders.currentPage,
-        limit: orders.limit,
       });
     }
     return res.render('user/account', { userData });
