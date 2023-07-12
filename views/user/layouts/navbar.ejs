@@ -1,41 +1,72 @@
 <script>
+  // window.addEventListener("DOMContentLoaded", () => {
+  //   const searchInput = document.getElementById('searchInput');
+
+  //   searchInput.addEventListener('keyup', (event) => {
+  //     event.preventDefault();
+
+  //     if (event.key === 'Enter') {
+  //       const searchTerm = searchInput.value.trim();
+  //       const data = {
+  //         searchInput: searchTerm
+  //       };
+  //       console.log("entered");
+
+  //       fetch('/search-products', {
+  //           method: 'POST',
+  //           headers: {
+  //             'Content-Type': 'application/json'
+  //           },
+  //           body: JSON.stringify(data)
+  //         })
+  //         .then(response => response.json())
+  //         .then(result => {
+  //           // Handle the search result as needed
+  //           if (result.success) {
+  //             // Redirect to the search results page
+  //             window.location.href = '/search';
+  //           } else {
+  //             // Handle unsuccessful search
+  //             console.log('Search failed:', result.error);
+  //           }
+  //         })
+  //         .catch(error => {
+  //           console.log('An error occurred:', error);
+  //         });
+  //     }
+  //   });
+  // });
   window.addEventListener("DOMContentLoaded", () => {
-    const searchInput = document.getElementById('searchInput');
+  const searchInput = document.getElementById('searchInput');
 
-    searchInput.addEventListener('keyup', (event) => {
-      event.preventDefault();
-
-      if (event.key === 'Enter') {
-        const searchTerm = searchInput.value.trim();
-        const data = {
-          searchInput: searchTerm
-        };
-        console.log("entered");
-
-        fetch('/search-products', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-          })
-          .then(response => response.json())
-          .then(result => {
-            // Handle the search result as needed
-            if (result.success) {
-              // Redirect to the search results page
-              window.location.href = '/search';
-            } else {
-              // Handle unsuccessful search
-              console.log('Search failed:', result.error);
-            }
-          })
-          .catch(error => {
-            console.log('An error occurred:', error);
-          });
-      }
-    });
+  searchInput.addEventListener('keyup', (event) => {
+    event.preventDefault();
+    if (event.key === 'Enter') {
+      const searchTerm = searchInput.value.trim();
+      const data = {
+        searchInput: searchTerm
+      };
+      console.log('//////1');
+      $.ajax({
+        url: '/search-products?searchInput='+data.searchInput, 
+        method: 'POST',
+        success:function(res){
+        },
+      })
+        .then(response => { console.log(response);
+          response.text() } )
+        .then(html => {
+          console.log(html);
+          console.log('////2');
+          const searchResultContainer = document.getElementById('searchResultContainer');
+          searchResultContainer.innerHTML = html;
+        })
+        .catch(error => {
+          console.log('An error occurred:', error);
+        });
+    }
   });
+});
 </script>
 <header class="header-area header-style-1 header-height-2">
   <% if (!locals.user) { %>

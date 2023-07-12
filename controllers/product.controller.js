@@ -15,6 +15,7 @@ const {
   searchProductsWithRegex,
   enableProductStatus,
 } = require('../models/product.model');
+const { json } = require('body-parser');
 
 async function GetProducts(req, res) {
   try {
@@ -239,37 +240,58 @@ async function CategoryProduct(req, res) {
   }
 }
 
+// async function ProductsBySearch(req, res) {
+//   try {
+//     const searchTerm = req.body.searchInput.trim();
+//     const searchRegex = new RegExp(`^${searchTerm}`, 'i');
+//     const products = await searchProductsWithRegex(searchRegex);
+
+//     req.session.searchProducts = products;
+
+//     if (products.length > 0) {
+//       return res.json({ success: true, productsCount: products.length });
+//     } else {
+//       return res.json({ success: false, productsCount: products.length });
+//     }
+//   } catch (error) {
+//     handleError(res, error);
+//   }
+// }
 async function ProductsBySearch(req, res) {
   try {
-    const searchTerm = req.body.searchInput.trim();
+    console.log('/////3',req.query.searchInput);
+    const searchTerm = req.query.searchInput;
     const searchRegex = new RegExp(`^${searchTerm}`, 'i');
-    // const searchRegex = new RegExp(searchTerm, 'i');
     const products = await searchProductsWithRegex(searchRegex);
-
-    if (products.length > 0) {
-      req.session.searchProducts = products;
-      return res.json({ success: true, productsCount: products.length });
-    } else {
-      return res.json({ success: false, productsCount: products.length });
-    }
+    console.log(products);
+    // res.render('user/search-result', { products });
+    res.status(200).json({ success: true, products });
   } catch (error) {
     handleError(res, error);
   }
 }
 
-async function SearchResult(req, res) {
-  try {
-    let products;
-    if (req.session.searchProducts) {
-      products = req.session.searchProducts;
-    } else {
-      products = [];
-    }
-    res.render('user/search-result', { products });
-  } catch (error) {
-    handleError(res, error);
-  }
-}
+
+
+// async function SearchResult(req, res) {
+//   try {
+//     let products;
+//     if (req.session.searchProducts) {
+//       // Use the existing search products from session
+//       products = req.session.searchProducts;
+//     } else {
+//       // Perform a fresh search and store the results in session
+//       const searchTerm = req.body.searchInput.trim();
+//       const searchRegex = new RegExp(`^${searchTerm}`, 'i');
+//       products = await searchProductsWithRegex(searchRegex);
+//       req.session.searchProducts = products;
+//     }
+//     delete req.session.searchProducts;
+//     res.render('user/search-result', { products });
+//   } catch (error) {
+//     handleError(res, error);
+//   }
+// }
 
 module.exports = {
   GetProducts,
@@ -284,5 +306,5 @@ module.exports = {
   GetProductImages,
   CategoryProduct,
   ProductsBySearch,
-  SearchResult,
+  // SearchResult,
 };

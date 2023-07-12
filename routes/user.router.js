@@ -29,7 +29,7 @@ const {
   GetAllProducts,
   CategoryProduct,
   ProductsBySearch, 
-  SearchResult,
+  // SearchResult,
   GetProductImages,
 } = require('../controllers/product.controller');
 
@@ -95,7 +95,7 @@ userRouter.post('/order-cancel', isLoggedIn, CancelOrder);
 userRouter.post('/order-return', isLoggedIn, ReturnOrder);
 
 // Product Search
-userRouter.get('/search', SearchResult);
+// userRouter.get('/search', SearchResult);
 userRouter.post('/search-products', ProductsBySearch);
 
 // Accnt details/LogOut

@@ -304,6 +304,5 @@ module.exports = {
   getProductsWithCategory,
   searchProductsWithRegex,
   enableProductStatus,
-
   setProductImage,
 };

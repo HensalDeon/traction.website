@@ -33,6 +33,6 @@
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {
-    "nodemon": "^1.14.9"
+    "nodemon": "^1.19.4"
   }
 }
