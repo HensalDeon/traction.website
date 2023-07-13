@@ -38,7 +38,6 @@
   // });
   window.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById('searchInput');
-
   searchInput.addEventListener('keyup', (event) => {
     event.preventDefault();
     if (event.key === 'Enter') {
@@ -46,27 +45,23 @@
       const data = {
         searchInput: searchTerm
       };
-      console.log('//////1');
       $.ajax({
-        url: '/search-products?searchInput='+data.searchInput, 
+        url: '/search-products',
         method: 'POST',
-        success:function(res){
+        data: data,  // Pass the data in the request body
+        success: function (res) {
+          window.location.href = '/search-result';
         },
-      })
-        .then(response => { console.log(response);
-          response.text() } )
-        .then(html => {
-          console.log(html);
-          console.log('////2');
-          const searchResultContainer = document.getElementById('searchResultContainer');
-          searchResultContainer.innerHTML = html;
-        })
-        .catch(error => {
+        error: function (error) {
           console.log('An error occurred:', error);
-        });
+        }
+      });
     }
   });
 });
+
+
+
 </script>
 <header class="header-area header-style-1 header-height-2">
   <% if (!locals.user) { %>

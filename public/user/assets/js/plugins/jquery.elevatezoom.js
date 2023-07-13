@@ -1718,9 +1718,6 @@ if ( typeof Object.create !== 'function' ) {
 
 	};
 
-
-
-
 	$.fn.elevateZoom = function( options ) {
 		return this.each(function() {
 			var elevate = Object.create( ElevateZoom );
