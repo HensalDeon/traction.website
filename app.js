@@ -12,6 +12,8 @@ const morgan = require('morgan');
 const cors = require('cors');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean')
+const nodemailer = require('nodemailer');
+
 
 //route middlewears
 const adminRouter = require('./routes/admin.router');

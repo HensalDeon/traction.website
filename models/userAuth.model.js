@@ -1,4 +1,6 @@
 const userDatabase = require('../schema/user.schema');
+const crypto = require('crypto');
+
 const { sendOtp, verifyOtp } = require('../config/twilio');
 const { hashPassword, comparePassword } = require('../config/security');
 const cloudinary = require('../config/cloudinary');
@@ -9,7 +11,6 @@ async function checkUserWithEmail(email, password) {
     if (!user || !(await comparePassword(password, user.password))) {
       return { status: false, message: 'Invalid credentials' };
     }
-
     // Password is valid, now check if the user is blocked
     if (!user.status) {
       return { status: false, message: 'User is blocked' };
@@ -20,19 +21,41 @@ async function checkUserWithEmail(email, password) {
     console.log(error);
   }
 }
-
+//forgot pass
+async function checkUserExist(email) {
+  try {
+    const user = await userDatabase.findOne({ email: email });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    if (!user.status) {
+      throw new Error('User is blocked');
+    }
+      // Generate a unique token or reset password code
+    const resetToken = generateResetToken();
+    user.resetToken = resetToken;
+    await user.save();
+    return user
+  } catch (error) {
+    console.error('Error checking user existence:', error);
+    throw new Error('Error checking user existence');
+  }
+}
+function generateResetToken() {
+  const token = crypto.randomBytes(20).toString('hex');
+  return token;
+}
 
 
 async function checkUserExistOrNot(phoneNumber) {
   try {
     const user = await userDatabase.findOne({ phone: phoneNumber });
     if (user) {
-     const sendotp = await  sendOtp(user.phone)
-      if(!sendotp)  return {status:false, message:"Unable to send otp sorry bruh"}
-      return {status:true,message:"Successfully send"}
-
+      const sendotp = await sendOtp(user.phone)
+      if (!sendotp) return { status: false, message: "Unable to send otp sorry bruh" }
+      return { status: true, message: "Successfully send" }
     } else {
-      return { status:false,message:"User not registered!"};
+      return { status: false, message: "User not registered!" };
     }
   } catch (error) {
     console.error(error);
@@ -42,7 +65,6 @@ async function checkUserExistOrNot(phoneNumber) {
 
 async function verifyPhoneNumber(phoneNumber, otp) {
   try {
-    console.log("hello world")
     const isVerified = await verifyOtp(phoneNumber, otp);
     if (isVerified) {
       const user = await userDatabase.findOne({ phone: phoneNumber });
@@ -59,7 +81,6 @@ async function verifyPhoneNumber(phoneNumber, otp) {
 async function sendVerificationSignup(phoneNumber) {
   try {
     const user = await userDatabase.findOne({ phone: phoneNumber });
-    return true
     if (!user) {
       sendOtp(phoneNumber);
       return true;
@@ -99,6 +120,32 @@ async function submitSignup({ username, email, phone, password, otp }) {
     } else {
       throw new Error('Error submitting signup');
     }
+  }
+}
+async function resetPassword(phone, password){
+  try {
+    const user = await userDatabase.findOne({phone})
+    if(!user){
+      throw new Error('user does not exist!')
+    }
+    if(!user.status){
+      return {status: false, message: 'User is blocked'}
+    }
+    const dataObj = {};
+    dataObj.password = await hashPassword(password);
+    const result = await userDatabase.findOneAndUpdate(
+      { phone: parseFloat(phone) },
+      { $set: { password: dataObj.password } },
+      { new: true }
+    );
+    if (result) {
+      return { status: true, message: 'Updated successfully'};
+    } else {
+      return { status: false, message: 'Not updated' };
+    }
+  } catch (error) {
+    console.error(error.message);
+    return { status: false, message: error.message };
   }
 }
 
@@ -142,10 +189,10 @@ async function updateUserData(userData, profilePicture, userId) {
     const update = { $set: dataObj };
     const result = await userDatabase.updateOne(filter, update);
     const updatedUser = await userDatabase.findById(userId)
-    
+
 
     if (result.modifiedCount > 0) {
-      return { status: true, message: 'Updated successfully',user:updatedUser};
+      return { status: true, message: 'Updated successfully', user: updatedUser };
     } else {
       throw new Error('Updation failed');
     }
@@ -165,4 +212,5 @@ module.exports = {
   sendVerificationSignup,
   submitSignup,
   updateUserData,
+  resetPassword,
 };

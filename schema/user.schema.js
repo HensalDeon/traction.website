@@ -45,6 +45,10 @@ const userSchema = new mongoose.Schema({
     }],
     default: [],
   },
+  resetToken: {
+    type: String,
+    default: null
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);

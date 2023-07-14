@@ -223,50 +223,14 @@
     });
     return true;
   };
-  // function resendOTP() {
-  //   console.log("///////2");
-  //   otpButton.disabled = true;
-  //   resendButton.disabled = true
-  //   setTimeout(() => {
-  //     resendButton.disabled = false;
-  //   }, 30000)
-  //   var phone = $('#phone').val();
-  //   $.ajax({
-  //     type: 'POST',
-  //     url: '/signup-otp',
-  //     data: {
-  //       phone: phone
-  //     },
-  //     success: function(response) {
-  //       // Handle successful response
-  //       console.log(response);
-  //       if (!response) {
-  //         document.getElementById('phone-error-verify').style.display = 'block';
-  //         document.getElementById('phone-error-verify').innerHTML = "Phone number already registered";
-  //         setTimeout(() => {
-  //           document.getElementById('phone-error-verify').style.display = 'none';
-  //         }, 5000)
-  //         resendButton.disabled = true; //changed
-
-  //       } else {
-  //         document.getElementById('phone-error-verify').style.display = 'none';
-  //       }
-  //     },
-  //     error: function(xhr, status, error) {
-  //       // Handle error response
-  //       console.log(error);
-  //     }
-  //   });
-  //   return true;
-  // };
   function resendOTP() {
-    console.log("///////2");
     otpButton.disabled = true;
     resendButton.disabled = true
-    var remainingTime = 30; // Set the initial remaining time in seconds
+    document.getElementById('timerdiv').style.display = 'block';
+    var remainingTime = 15; // Set the initial remaining time in seconds
     timer(remainingTime)
+    document.getElementById("resend-btn").style.display = "none";
     var phone = $('#phone').val();
-    return
     $.ajax({
       type: 'POST',
       url: '/signup-otp',
@@ -282,7 +246,7 @@
           setTimeout(() => {
             document.getElementById('phone-error-verify').style.display = 'none';
           }, 5000)
-          resendButton.disabled = false; //changed
+          resendButton.disabled = true; //changed
 
         } else {
           document.getElementById('phone-error-verify').style.display = 'none';
@@ -312,6 +276,8 @@
     return;
   }
   resendButton.disabled = false; // Enable the resend button after timeout
+  document.getElementById("resend-btn").style.display = "block";
+  document.getElementById('timerdiv').style.display = 'none';
 }
 
   function showAlert() {

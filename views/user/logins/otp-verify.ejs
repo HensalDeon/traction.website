@@ -42,10 +42,9 @@
                         <button type="submit" class="btn btn-fill-out btn-block w-100 hover-up" name="verify" id="verify-button">VERIFY OTP</button>
                       </div>
                       <div class="text-muted text-center mt-4">
-                        <!-- <span id="timer"></span> -->
-                        <a onclick="resendOTP()" id="resend" name="submit">Resend OTP</a>
                          <span id="otpError" class="text-sm text-red-500"></span>
-                        <!-- <p id="otp-msg"> Resend OTP in <span id="countdowntimer">30 </span> Seconds</p> -->
+                         <p id="resend-btn" style="display: none;">didn't recieved an otp? <button type="button" class="resbtn" id="resend-btn" onclick="resendOTP()">Resend</button></p>
+                         <span id="timerdiv" style="display: none;"> Resend otp in: <span id="timer"></span></span>
                       </div>
                     </form>
                     <div class="text-muted text-center mt-15 mb-15">Don't have an account? <a href="/signup">Sign
