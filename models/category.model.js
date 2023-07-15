@@ -15,7 +15,7 @@ async function fetchCategories() {
 
 async function addCategory(name) {
   try {
-    const isCategoryExist = await categoryDatabase.findOne({ name });
+    const isCategoryExist = await categoryDatabase.findOne({ name: { $regex: new RegExp(`^${name}$`, 'i') } });
     if (isCategoryExist) {
       return { status: false, message: 'Category name already exist!' };
     }
@@ -36,6 +36,10 @@ async function addCategory(name) {
 
 async function editCategory(categoryId, newName) {
   try {
+    const isCategoryExist = await categoryDatabase.findOne({ name: { $regex: new RegExp(`^${newName}$`, 'i') } });
+    if (isCategoryExist) {
+      return { status: false, message: 'Category name already exist!' };
+    }
     const category = await categoryDatabase.updateOne(
       { _id: categoryId },
       { $set: { name: newName } }
@@ -49,6 +53,7 @@ async function editCategory(categoryId, newName) {
     throw new Error(`Error editing category: ${error.message}`);
   }
 }
+
 
 async function updateCategory(categoryId, updateStatus) {
   try {
@@ -70,5 +75,5 @@ module.exports = {
   fetchCategories,
   addCategory,
   updateCategory,
-  editCategory
+  editCategory,
 };

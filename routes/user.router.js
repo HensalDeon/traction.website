@@ -55,8 +55,8 @@ const {
   CancelOrder,
   ReturnOrder,
   DeleteAddress,
-  // GetWallet,
-  // ApplyWallet,
+  GetWallet,
+  ApplyWallet,
   GetOrderDetails,
 } = require('../controllers/order.controller');
 

@@ -16,7 +16,6 @@ const {getAllBanners} = require('../models/banner.model')
 
 const { handleError } = require('../middlewares/error.handler');
 const { signupSchema, updateUserSchema, resetPasswordSchema } = require('../config/joi');
-// const transporter = require('../config/nodeMailer');
 
 async function GetHome(req, res) {
   try {
