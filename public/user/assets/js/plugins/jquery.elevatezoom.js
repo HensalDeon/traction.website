@@ -86,7 +86,6 @@ if ( typeof Object.create !== 'function' ) {
 
 			refresh: function( length ) {
 				var self = this;
-
 				setTimeout(function() {
 					self.fetch(self.imageSrc);
 
@@ -103,11 +102,15 @@ if ( typeof Object.create !== 'function' ) {
 					self.largeHeight = newImg.height;
 					//once image is loaded start the calls
 					self.startZoom();
-					self.currentImage = self.imageSrc;
+					self.getCurrentImage = self.imageSrc;
 					//let caller know image has been loaded
 					self.options.onZoomedImageLoaded(self.$elem);
 				}
-				newImg.src = imgsrc; // this must be done AFTER setting onload
+				if(imgsrc){
+					newImg.src= imgsrc; // this must be done AFTER setting onload
+				}else{
+					newImg.src='';
+				}
 
 				return;
 

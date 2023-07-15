@@ -85,7 +85,7 @@ async function PutCategoryName(req, res) {
     if (response.status) {
       res.status(200).json({ status: true, newName });
     } else {
-      res.status(400).json({ status: false });
+      res.status(400).json({ status: false, message: response.message });
     }
   } catch (error) {
     handleError(res, error);

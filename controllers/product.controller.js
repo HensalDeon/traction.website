@@ -187,14 +187,16 @@ async function GetAllProducts(req, res) {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 8;
     const sortBy = req.query.sortBy;
+    const sortOption = req.query.sortOption; 
 
-    const allProductsResult = await fetchAllProducts(page, limit, sortBy);
+    const allProductsResult = await fetchAllProducts(page, limit, sortBy, sortOption);
     res.render('user/all-products', {
       products: allProductsResult.products,
       totalPages: allProductsResult.totalPages,
       currentPage: allProductsResult.currentPage,
       limit: allProductsResult.limit,
       productCount: allProductsResult.productCount,
+      sortOption: sortOption,
     });
   } catch (error) {
     handleError(res, error);
@@ -216,12 +218,13 @@ async function CategoryProduct(req, res) {
     const limit = parseInt(req.query.limit) || 8;
     const sortBy = req.query.sortBy;
     const categoryId = req.params.id;
+    const sortOption = req.query.sortOption;
     
     if (categoryId === "undefined") {
       return res.redirect('/shop');
     }
 
-    const result = await getProductsWithCategory(categoryId, page, limit, sortBy);
+    const result = await getProductsWithCategory(categoryId, page, limit, sortBy, sortOption);
 
     if (result.products.length > 0) {
       return res.render('user/shop-category', {
@@ -230,6 +233,7 @@ async function CategoryProduct(req, res) {
         currentPage: result.currentPage,
         limit: result.limit,
         productCount: result.productCount,
+        sortOption: sortOption,
         categoryId,
       });
     } else {

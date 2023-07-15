@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
-
 <head>
   <%- include("../partials//user-header") %>
 
@@ -53,11 +52,11 @@
                     </div>
                     <div class="sort-by-dropdown-wrap">
                       <select id="sortByDropdown" onchange="handleSortByChange()">
-                        <option value="all" selected>All</option>
-                        <option value="featured">Featured</option>
-                        <option value="lowToHigh">Price: Low to High</option>
-                        <option value="highToLow">Price: High to Low</option>
-                        <option value="releaseDate">Release Date</option>
+                        <option value="all" <% if (sortOption === 'all') { %>selected<% } %>>All</option>
+                        <option value="featured" <% if (sortOption === 'featured') { %>selected<% } %>>Featured</option>
+                        <option value="lowToHigh" <% if (sortOption === 'lowToHigh') { %>selected<% } %>>Price: Low to High</option>
+                        <option value="highToLow" <% if (sortOption === 'highToLow') { %>selected<% } %>>Price: High to Low</option>
+                        <option value="releaseDate" <% if (sortOption === 'releaseDate') { %>selected<% } %>>Release Date</option>
                       </select>
                     </div>
                   </div>
@@ -172,7 +171,7 @@
       console.log(sortBy + "/////1");
       const page = '<%= currentPage %>';
       const limit = '<%= limit %>';
-      const url = `/shop?page=${page}&limit=${limit}&sortBy=${sortBy}`;
+      const url = `/shop?page=${page}&limit=${limit}&sortBy=${sortBy}&sortOption=${sortBy}`;
       window.location.href = url;
     }
 

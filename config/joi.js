@@ -114,6 +114,10 @@ const updateUserSchema = Joi.object({
   cpassword: Joi.any().valid(Joi.ref('npassword')).allow('').optional(),
 });
 
+//reset password
+const resetPasswordSchema = Joi.object({
+  password: Joi.string().trim().max(30).optional()
+})
 
 //add-coupon
 const couponValidationSchema = Joi.object({
@@ -158,5 +162,6 @@ module.exports = {
   addressSchema,
   updateUserSchema,
   updateProductSchema,
-  couponValidationSchema
+  couponValidationSchema,
+  resetPasswordSchema
 };

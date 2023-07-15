@@ -68,13 +68,13 @@
                                                     </td>
                                                     <% } %>
                                                             <td class="text-end">
-                                                                <% if(category.active) { %>
-                                                                    <button 
+                                                                <button 
                                                                         class="btn btn-success rounded btn-sm font-sm btncol"
                                                                         id="category-edit-<%= category._id %>"
                                                                         onclick="editCategory('<%= category._id %>' ,'<%= category.name %>')">
                                                                         Edit
                                                                     </button>
+                                                                <% if(category.active) { %>
                                                                     <button
                                                                         class="btn btn-danger rounded btn-sm font-sm"
                                                                         id="category-action-<%= category._id %>"
@@ -157,6 +157,7 @@
             }
             try {
             const response = await updateCategoryName(categoryId, newName);
+            console.log(response,'🚀🚀🚀');
             if (response.status) {
                 var categoryNameElement = document.getElementById('category-name-' + categoryId);
                 categoryNameElement.textContent = newName;
@@ -186,10 +187,17 @@
       body: JSON.stringify({ id: categoryId, newName: newName })
     });
     if (!response.ok) {
-      throw new Error('Failed to update category name on the server.');
+        if (response.status === 400) {
+        const data = await response.json();
+        callAlertify('error', data.message);
+      } else {
+        throw new Error('Failed to update category name on the server.');
+      }
+    }else {
+      const data = await response.json();
+      callAlertify('success', 'Category name updated successfully.');
+      return data;
     }
-    const data = await response.json();
-    return data;
   } catch (error) {
     throw new Error(`Error updating category name: ${error.message}`);
   }

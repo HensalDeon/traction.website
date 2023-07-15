@@ -19,71 +19,61 @@ async function setProductImage(productId, remainingImageUrls) {
     throw new Error('Failed to update product image');
   }
 }
-
-async function fetchAllProducts(page, limit, sortBy) {
+async function fetchAllProducts(page, limit, sortBy, sortOption) {
   try {
-    try {
-      if (sortBy) {
-        let filterOptions = {};
-        let sortOptions = {};
-        switch (sortBy) {
-          case 'featured':
-            filterOptions = { featured: true };
-            break;
-          case 'lowToHigh':
-            sortOptions = { productPrice: 1 }; // Sort by price: low to high
-            break;
-          case 'highToLow':
-            sortOptions = { productPrice: -1 }; // Sort by price: high to low
-            break;
-          case 'releaseDate':
-            sortOptions = { createdAt: -1 }; // Sort by release date (descending)
-            break;
-          default:
-            break;
-        }
+    let filterOptions = {};
+    let sortOptions = {};
 
-        var products = await productDatabase
-          .find({ $and: [{ productStatus: { $in: [true, false] } }, filterOptions] })
-          .populate('productCategory')
-          .sort(sortOptions)
-          .skip((page - 1) * limit)
-          .limit(limit);
-          console.log(products.length);
-          let totalProducts = products.length;
-          let totalPages = Math.ceil(totalProducts / limit);
-          console.log(totalProducts);
-          return {
-        status: true,
-        products: products,
-        totalPages: totalPages,
-        currentPage: page,
-        limit: limit,
-        productCount: totalProducts,
-      };
-      } else {
-        var products = await productDatabase
-          .find({ productStatus: { $in: [true, false] } })
-          .populate('productCategory')
-          .skip((page - 1) * limit)
-          .limit(limit);
+    if (sortBy) {
+      switch (sortBy) {
+        case 'featured':
+          filterOptions = { featured: true };
+          break;
+        case 'lowToHigh':
+          sortOptions = { productPrice: 1 }; // Sort by price: low to high
+          break;
+        case 'highToLow':
+          sortOptions = { productPrice: -1 }; // Sort by price: high to low
+          break;
+        case 'releaseDate':
+          sortOptions = { createdAt: -1 }; // Sort by release date (descending)
+          break;
+        default:
+          break;
       }
-      let totalProducts = await productDatabase.countDocuments();
-      let totalPages = Math.ceil(totalProducts / limit);
-      return {
-        status: true,
-        products: products,
-        totalPages: totalPages,
-        currentPage: page,
-        limit: limit,
-        productCount: totalProducts,
-      };
-    } catch (error) {
-      console.log(error);
-      return { status: false, message: error.message };
     }
+
+    let query = productDatabase.find({ productStatus: { $in: [true, false] } });
+
+    if (Object.keys(filterOptions).length > 0) {
+      query = query.find(filterOptions);
+    }
+
+    let products = await query
+      .populate('productCategory')
+      .sort(sortOptions)
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    let totalProducts = await productDatabase.countDocuments({
+      productStatus: { $in: [true, false] },
+      ...filterOptions,
+    });
+
+    let totalPages = Math.ceil(totalProducts / limit);
+
+    return {
+      status: true,
+      products: products,
+      totalPages: totalPages,
+      currentPage: page,
+      limit: limit,
+      productCount: totalProducts,
+      sortOption: sortOption,
+    };
   } catch (error) {
-    throw new Error(`Error finding products: ${error.message}`);
+    console.log(error);
+    return { status: false, message: error.message };
   }
 }
 
@@ -238,13 +228,14 @@ async function updateProduct(productId, productData, productImages,deletedImages
   }
 }
 
-async function getProductsWithCategory(categoryId, page, limit, sortBy) {
+async function getProductsWithCategory(categoryId, page, limit, sortBy, sortOption) {
   try {
     if (sortBy) {
       let sortOptions = {};
-
+      let filterOptions = {};
       switch (sortBy) {
         case 'featured':
+          filterOptions = { featured: true };
           break;
         case 'lowToHigh':
           sortOptions = { productPrice: 1 }; // Sort by price: low to high
@@ -259,7 +250,7 @@ async function getProductsWithCategory(categoryId, page, limit, sortBy) {
           break;
       }
       var products = await productDatabase
-        .find({ productCategory: categoryId })
+        .find({$and:[{ productCategory: categoryId },filterOptions]})
         .sort(sortOptions) // Apply the sorting options
         .skip((page - 1) * limit)
         .limit(limit);
@@ -279,6 +270,7 @@ async function getProductsWithCategory(categoryId, page, limit, sortBy) {
       currentPage: page,
       limit: limit,
       productCount: totalProducts,
+      sortOption: sortOption,
     };
   } catch (error) {
     throw new Error(`Error searching products with category: ${error.message}`);

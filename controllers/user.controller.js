@@ -1,3 +1,4 @@
+
 const {
   checkUserWithEmail,
   checkUserExistOrNot,
@@ -5,14 +6,16 @@ const {
   sendVerificationSignup,
   submitSignup,
   updateUserData,
+  resetPassword,
 } = require('../models/userAuth.model');
 
 const { fetchAllProducts } = require('../models/product.model');
 const { fetchUserOrderDetails } = require('../models/order.model');
+
 const {getAllBanners} = require('../models/banner.model')
 
 const { handleError } = require('../middlewares/error.handler');
-const { signupSchema, updateUserSchema } = require('../config/joi');
+const { signupSchema, updateUserSchema, resetPasswordSchema } = require('../config/joi');
 
 async function GetHome(req, res) {
   try {
@@ -83,6 +86,21 @@ async function LoginVerifyPhone(req, res) {
   }
 }
 
+async function VerifyPhone(req, res) {
+  const { phone } = req.body;
+  console.log(phone + '📞');
+  try {
+    const  result = await checkUserExistOrNot(phone)
+    if(result.status) {
+      return res.status(200).json(result)
+    }else{
+      return res.status(400).json(result)
+    }
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
 async function GetOtpVerify(req, res) {
   try {
     const phone = req.session.phone;
@@ -101,6 +119,20 @@ async function PostVerifyOtp(req, res) {
     if (response.status) {
       req.session.userloggedIn = true;
       req.session.user = response.user;
+      return res.json({ status: true });
+    } else {  
+      return res.json({ status: false });
+    }
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
+async function VerifyOtp(req, res) {
+  try {
+    const { otp, phone } = req.body;
+    const response = await verifyPhoneNumber(phone, otp);
+    if (response.status) {
       return res.json({ status: true });
     } else {  
       return res.json({ status: false });
@@ -171,6 +203,25 @@ async function GetAccount(req, res) {
   }
 }
 
+async function PostResetPassword(req, res) {
+  try {
+    const { phone, password } = req.body;
+    const { error } = resetPasswordSchema.validate({password});
+    if (error) {
+      return res.status(400).json({ status: false, message: error.details[0].message });
+    }
+    const updatePassword = await resetPassword(phone, password);
+    if (updatePassword.status) {
+      // Handle successful password reset scenario
+      return res.json({ status: true, message: 'Password reset successfully' });
+    } else {
+      return res.json({ status: false, message: 'Failed to reset password' });
+    }
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
 async function UpdateUserdata(req, res) {
   try {
     const { error, value } = updateUserSchema.validate(req.body);
@@ -208,20 +259,31 @@ function Get404(req, res) {
     handleError(res, error);
   }
 }
+async function  GetForgotPassword(req, res) {
+  try {
+    res.render('user/logins/forgot-password');
+  } catch (error) {
+    handleError(res, error);
+  }
+}
 
 module.exports = {
   GetHome,
   GetSignup,
   GetLogin,
   PostLoginVerify,
+  VerifyPhone,
   GetOtpLogin,
   LoginVerifyPhone,
   GetOtpVerify,
   PostVerifyOtp,
+  VerifyOtp,
   SignupOtpVerify,
   PostSignup,
   UpdateUserdata,
   GetAccount,
   GetLogout,
   Get404,
+  GetForgotPassword,
+  PostResetPassword
 };

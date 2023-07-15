@@ -225,14 +225,6 @@ async function FailedPage(req, res) {
   res.render('user/failed-page');
 }
 
-/**
- * This is an asynchronous function that cancels an order and returns a success or failure message in
- * JSON format.
- * @param req - The request object containing information about the incoming  request.
- * @param res - The `res` parameter in the `CancelOrder` function is an object representing the
- *  response that will be sent back to the client. It contains methods and properties that allow
- * the server to send data, headers, and status codes back to the client.
- */
 async function CancelOrder(req, res) {
   try {
     const { id, cancelreason } = req.body;

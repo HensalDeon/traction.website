@@ -3,123 +3,90 @@
     <div class="card-header">
       <h5 class="mb-0">Your Orders</h5>
     </div>
-      <div class="card-body ">
-        <div class="table-responsive" style="text-align: center;height: 400px; overflow-y: auto;">
-          <table class="table">
-            <thead style="background-color: #f7f8f9;">
-              <% if (orders?.length>0) { %>
-              <tr>
-                <th scope="col">Transaction</th>
-                <th scope="col">Date</th>
-                <th scope="col">Status</th>
-                <th scope="col">Total</th>
-                <th scope="col">Actions</th>
-                <th scope="col">Details</th>
-              </tr>
-              <% } %>
-
-            </thead>
-            <tbody>
-              <% if (orders?.length>0) { %>
-              <% orders.forEach(order=> { %>
-              <tr>
-                <td>#<%= order.transactionId %>
-                </td>
-                <td>
-                  <%= order.date %>
-                </td>
-                <td>
-                  <% if (order.paymentStatus==='failed' ) { %>
-                  <span class="badge rounded-pill alert-danger">
-                    payment failed
+    <div class="card-body ">
+      <div class="table-responsive" style="text-align: center;height: 400px; overflow-y: auto;">
+        <table class="table">
+          <thead style="background-color: #f7f8f9;">
+            <% if (orders?.length > 0) { %>
+            <tr>
+              <th scope="col">Transaction</th>
+              <th scope="col">Date</th>
+              <th scope="col">Status</th>
+              <th scope="col">Total</th>
+              <th scope="col">Actions</th>
+              <th scope="col">Details</th>
+            </tr>
+            <% } %>
+          </thead>
+          <tbody>
+            <% if (orders?.length > 0) { %>
+            <% orders.forEach(order => { %>
+            <% if (order.paymentStatus !== 'failed') { %> <!-- Exclude orders with paymentStatus 'failed' -->
+            <tr>
+              <td>#<%= order.transactionId %></td>
+              <td><%= order.date %></td>
+              <td>
+                <% if (order.status === 'processing') { %>
+                <span class="badge rounded-pill alert-warning"><%= order.status %></span>
+                <% } else if (order.status === 'shipped') { %>
+                <span class="badge rounded-pill alert-info"><%= order.status %></span>
+                <% } else if (order.status === 'delivered') { %>
+                <span class="badge rounded-pill alert-success"><%= order.status %></span>
+                <% } else if (order.status === 'cancelPending') { %>
+                <span class="badge rounded-pill" style="background-color:rgb(253, 165, 0); color: rgb(255, 255, 255);"><%= order.status %></span>
+                <% } else if (order.status === 'returnPending') { %>
+                <span class="badge rounded-pill" style="background-color:rgb(255, 212, 133); color: rgb(255, 255, 255);"><%= order.status %></span>
+                <% } else if (order.status === 'returned') { %>
+                <a href="/wallet">
+                  <span class="badge rounded-pill" style="background-color:rgb(106, 136, 255); color: rgb(255, 255, 255);">
+                    Refunded credited
                   </span>
-                  <% } else if (order.status==='processing' ) { %>
-                  <span class="badge rounded-pill alert-warning">
-                    <%= order.status %>
-                  </span>
-                  <% } else if (order.status==='shipped' ) { %>
-                  <span class="badge rounded-pill alert-info">
-                    <%= order.status %>
-                  </span>
-                  <% } else if (order.status==='delivered' ) { %>
-                  <span class="badge rounded-pill alert-success">
-                    <%= order.status %>
-                  </span>
-                  <% } else if (order.status==='cancelPending' ) { %>
-                  <span class="badge rounded-pill " style="background-color:rgb(253, 165, 0); color: rgb(255, 255, 255);">
-                    <%= order.status %>
-                  </span>
-                  <% } else if (order.status==='returnPending' ) { %>
-                  <span class="badge rounded-pill " style="background-color:rgb(255, 212, 133); color: rgb(255, 255, 255);">
-                    <%= order.status %>
-                  </span>
-                  <% } else if (order.status==='returned' ) { %>
-                  <a href="/wallet"> <span class="badge rounded-pill " style="background-color:rgb(106, 136, 255); color: rgb(255, 255, 255);">
-                      Refunded credited
-                    </span></a>
-                  <% } else { %>
-                  <span class="badge rounded-pill" style="background-color:rgb(255, 0, 0); color: rgb(255, 255, 255);">
-                    <%= order.status %>
-                  </span>
-                  <% } %>
-                </td>
-
-
-                <td>&#8377;<%= Math.floor(order.total) %> for <%= order.productCount %> items</td>
-
-                <% if (order.status==='canceled' || order.status==='cancelPending' || order.status==='returnPending'
-                    || order.status==='returned' ) { %>
-                <td></td>
-                <% } else if(order.paymentStatus==='failed' ){ %>
-                <td><a href="/cart" class=" d-block btn btn-sm" style="border: 0px; background-color: rgb(120, 120, 120); color: #ffffff;">Try
-                    again</a>
-
-                </td>
-                <% } else if(order.status==='delivered' ){ %>
-
-                <% const returnDaysLeft=Math.floor((new Date(order.returnDate) - new Date()) / (1000 * 60 * 60 *
-                          24)); %>
-                <% if (returnDaysLeft>0) { %>
-                <td>
-                  <a class="d-block btn btn-sm" onclick="returnOrder('<%= order.id %>')" style="border: 0px; background-color: rgb(255, 238, 89); color: #000000;">
-                    Return- <span class="badge rounded-pill alert-danger">
-                      <%= returnDaysLeft %> days left
-                    </span>
-                  </a>
-                </td>
+                </a>
                 <% } else { %>
-                <td></td>
+                <span class="badge rounded-pill" style="background-color:rgb(255, 0, 0); color: rgb(255, 255, 255);"><%= order.status %></span>
                 <% } %>
-                <% } else { %>
-                <td>
-                  <a class="cancelBtn d-block btn btn-sm" onclick="cancelOrder('<%= order.id %>')" style="background-color: rgb(255, 0, 0); color: #ffffff;">cancel
-                  </a>
-                </td>
-                <% } %>
-                <td class="text">
-                  <a href="/order-details?id=<%= order.id %>"><span class="material-symbols-outlined">
-                      info
-                    </span></a>
-                </td>
-              </tr>
-
-              <% }) %>
-
-
+              </td>
+              <td>&#8377;<%= Math.floor(order.total) %> for <%= order.productCount %> items</td>
+              <% if (order.status === 'canceled' || order.status === 'cancelPending' || order.status === 'returnPending' || order.status === 'returned') { %>
+              <td></td>
+              <% } else if(order.paymentStatus === 'failed') { %>
+              <td>
+                <a href="/cart" class="d-block btn btn-sm" style="border: 0px; background-color: rgb(120, 120, 120); color: #ffffff;">Try again</a>
+              </td>
+              <% } else if(order.status === 'delivered') { %>
+              <% const returnDaysLeft = Math.floor((new Date(order.returnDate) - new Date()) / (1000 * 60 * 60 * 24)); %>
+              <% if (returnDaysLeft > 0) { %>
+              <td>
+                <a class="d-block btn btn-sm" onclick="returnOrder('<%= order.id %>')" style="border: 0px; background-color: rgb(255, 238, 89); color: #000000;">Return- <span class="badge rounded-pill alert-danger"><%= returnDaysLeft %> days left</span></a>
+              </td>
               <% } else { %>
-              <tr>
-                <td>
-                  There is no orders yet....
-                  <a href="/shop">shop now</a>
-                </td>
-              </tr>
+              <td></td>
               <% } %>
-            </tbody>
-          </table>
-        </div>
+              <% } else { %>
+              <td>
+                <a class="cancelBtn d-block btn btn-sm" onclick="cancelOrder('<%= order.id %>')" style="background-color: rgb(255, 0, 0); color: #ffffff;">cancel</a>
+              </td>
+              <% } %>
+              <td class="text">
+                <a href="/order-details?id=<%= order.id %>"><span class="material-symbols-outlined">info</span></a>
+              </td>
+            </tr>
+            <% } %>
+            <% }) %>
+            <% } else { %>
+            <tr>
+              <td>
+                There are no orders yet.... <a href="/shop">Shop now</a>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
+</div>
+
 
   <script>
     function cancelOrder(orderId) {

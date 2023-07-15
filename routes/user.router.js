@@ -14,14 +14,18 @@ const {
   PostLoginVerify,
   GetOtpLogin,
   LoginVerifyPhone,
+  VerifyPhone,
   GetOtpVerify,
   PostVerifyOtp,
+  VerifyOtp,
   SignupOtpVerify,
   PostSignup,
   GetAccount,
   UpdateUserdata,
   GetLogout,
   Get404,
+  GetForgotPassword,
+  PostResetPassword,
 } = require('../controllers/user.controller');
 
 const {
@@ -51,8 +55,8 @@ const {
   CancelOrder,
   ReturnOrder,
   DeleteAddress,
-  // GetWallet,
-  // ApplyWallet,
+  GetWallet,
+  ApplyWallet,
   GetOrderDetails,
 } = require('../controllers/order.controller');
 
@@ -69,6 +73,11 @@ userRouter.post('/otp-verify', isLoggedOut, PostVerifyOtp);
 userRouter.get('/signup', isLoggedOut, GetSignup);
 userRouter.post('/signup', isLoggedOut, PostSignup);
 userRouter.post('/signup-otp', isLoggedOut, SignupOtpVerify);
+
+userRouter.get('/forgot-password', GetForgotPassword);
+userRouter.post('/forgot-password/otp', VerifyPhone);
+userRouter.post('/forgot-password/otp-verify', VerifyOtp);
+userRouter.post('/reset-password', PostResetPassword);
 
 // Product/Catogery List
 userRouter.get('/product/:slug', GetProduct);
@@ -109,5 +118,8 @@ userRouter.get('/learn-more', GetLearnMore)
 userRouter.get('/about', GetAbout);
 userRouter.get('/contact', GetContact);
 userRouter.get('/*', Get404);
+
+
+
 
 module.exports = userRouter;
