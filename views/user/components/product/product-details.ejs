@@ -3,8 +3,8 @@
         <h2 class="title-detail h2cl"><%= product.productName %></h2>
         <div class="product-detail-rating">
             <div class="pro-details-brand">
-                <span style="color: black;"> Brands: <a
-                        href="user-grid-right.html"><span style="color: #0b3823;">Tamiya</span></a></span>
+                <span style="color: black;"> Brand: <a
+                        href="/shop"><span style="color: #0b3823;">Traction</span></a></span>
             </div>
             <div class="product-rate-cover text-end">
                 <div class="product-rate d-inline-block">
@@ -39,23 +39,23 @@
        
         <div class="bt-1 border-color-1 mt-30 mb-30"></div>
         <div class="detail-extralink">
-            <div class="detail-qty border radius">
+            <!-- <div class="detail-qty border radius">
                 <a href="#" class="qty-down"><i
                         class="fi-rs-angle-small-down"></i></a>
                 <span class="qty-val">1</span>
                 <a href="#" class="qty-up"><i
                         class="fi-rs-angle-small-up"></i></a>
-            </div>
+            </div> -->
             <div class="product-extra-link2">
                     <% if (product.stocks > 0) { %>
                         <button type="submit" id="addToCartButton" class="addTocartButton button button-add-to-cart" data-product-id="<%= product._id %>">Add to Cart</button>
                     <% } else { %>
                         <button class="button notify-me-btn">Notify Me</button>
                     <% } %>
-                <a aria-label="Add To Wishlist" class="action-btn hover-up"
+                <!-- <a aria-label="Add To Wishlist" class="action-btn hover-up"
                     href="/wishlist"><i class="fi-rs-heart"></i></a>
                 <a aria-label="Compare" class="action-btn hover-up"
-                    href="/"><i class="fi-rs-shuffle"></i></a>
+                    href="/"><i class="fi-rs-shuffle"></i></a> -->
             </div>
         </div>
         <ul class="product-meta font-xs color-grey mt-50">

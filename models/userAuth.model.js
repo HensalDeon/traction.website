@@ -59,6 +59,7 @@ async function verifyPhoneNumber(phoneNumber, otp) {
 async function sendVerificationSignup(phoneNumber) {
   try {
     const user = await userDatabase.findOne({ phone: phoneNumber });
+    return true
     if (!user) {
       sendOtp(phoneNumber);
       return true;

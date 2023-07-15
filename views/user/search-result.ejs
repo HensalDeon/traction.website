@@ -1,131 +1,119 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
+
 <head>
-    <%- include("../partials//user-header") %>
+  <%- include("../partials//user-header") %>
 
 </head>
+
 <body>
-    <%- include("./components/preloading.ejs") %>
-        <%- include("./layouts/navbar") %>
-            <main class="main">
-                <div class="page-header breadcrumb-wrap">
-                    <div class="container">
-                        <div class="breadcrumb">
-                            <a href="/" rel="nofollow">Home</a>
-                            <span></span> Shop
-                            <span></span> search result
-                        </div>
+  <%- include("./components/preloading.ejs") %>
+  <%- include("./layouts/navbar") %>
+  <main class="main">
+    <div class="page-header breadcrumb-wrap">
+      <div class="container">
+        <div class="breadcrumb">
+          <a href="/" rel="nofollow">Home</a>
+          <span></span> Shop
+          <span></span> search result
+        </div>
+      </div>
+    </div>
+    <section class="mt-50 mb-50">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="shop-product-fillter">
+              <div class="totall-product">
+                <p> We found <strong class="text-brand">
+                    <%= products.length %>
+                  </strong> items for you!</p>
+              </div>
+
+              <div class="sort-by-product-area">
+                <% if (products>50) { %>
+                <div class="sort-by-cover mr-10">
+                  <div class="sort-by-product-wrap">
+                    <div class="sort-by">
+                      <span><i class="fi-rs-apps"></i>Show:</span>
                     </div>
+                    <div class="sort-by-dropdown-wrap">
+                      <span> 50 <i class="fi-rs-angle-small-down"></i></span>
+                    </div>
+                  </div>
+
+                  <div class="sort-by-dropdown">
+                    <ul>
+                      <li><a class="active" href="#">50</a></li>
+                      <li><a href="#">100</a></li>
+                      <li><a href="#">150</a></li>
+                      <li><a href="#">200</a></li>
+                      <li><a href="#">All</a></li>
+                    </ul>
+                  </div>
+
                 </div>
-                <section class="mt-50 mb-50">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="shop-product-fillter">
-                                    <div class="totall-product">
-                                        <p> We found <strong class="text-brand">
-                                                <%= products.length %>
-                                            </strong> items for you!</p>
-                                    </div>
-
-                                    <div class="sort-by-product-area">
-                                        <% if (products>50) { %>
-                                            <div class="sort-by-cover mr-10">
-                                                <div class="sort-by-product-wrap">
-                                                    <div class="sort-by">
-                                                        <span><i class="fi-rs-apps"></i>Show:</span>
-                                                    </div>
-                                                    <div class="sort-by-dropdown-wrap">
-                                                        <span> 50 <i class="fi-rs-angle-small-down"></i></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="sort-by-dropdown">
-                                                    <ul>
-                                                        <li><a class="active" href="#">50</a></li>
-                                                        <li><a href="#">100</a></li>
-                                                        <li><a href="#">150</a></li>
-                                                        <li><a href="#">200</a></li>
-                                                        <li><a href="#">All</a></li>
-                                                    </ul>
-                                                </div>
-
-                                            </div>
-
-                                            <% } %>
-
-
-                                                
-                                    </div>
-                                </div>
-                                <div id="searchResultContainer" class="row product-grid-3">
-
-                                    <% products.forEach(product=> { %>
-
-                                        <div class="col-lg-3 col-md-4">
-                                            <div class="product-cart-wrap mb-30">
-                                                <div class="product-img-action-wrap">
-                                                    <div class="product-img product-img-zoom">
-                                                        <a href="/product/<%= product.slug %>">
-                                                            <img class="default-img"
-                                                                src="<%= product.productImageUrls[0] %>" alt="">
-                                                            <img class="hover-img"
-                                                                src="<%= product.productImageUrls[1] %>" alt="">
-                                                        </a>
-                                                    </div>
-
-                                                    <div
-                                                        class="product-badges product-badges-position product-badges-mrg">
-                                                        <% var availableBadges=["New", "Hot" , "Sale" , "Best" ]; %>
-                                                            <% var randomBadgeIndex=Math.floor(Math.random() *
-                                                                availableBadges.length); %>
-                                                                <span
-                                                                    class="<%= availableBadges[randomBadgeIndex].toLowerCase() %>">
-                                                                    <%= availableBadges[randomBadgeIndex] %>
-                                                                </span>
-                                                    </div>
-
-                                                </div>
-                                                <div class="product-content-wrap">
-                                                    <div class="product-category">
-                                                        <a href="/shop">
-                                                            <%= product.productCategory.name %>
-                                                        </a>
-                                                    </div>
-                                                    <h2><a href="/product/<%= product.slug %>">
-                                                            <%= product.productName %>
-                                                        </a></h2>
-                                                    <div class="rating-result" title="90%">
-                                                        <span>
-                                                            <span>90%</span>
-                                                        </span>
-                                                    </div>
-                                                    <div class="product-price">
-                                                        <span>&#8377; <%= product.productPrice %> </span>
-                                                        <span class="old-price">&#8377; <%= product.productOldPrice %>
-                                                        </span>
-                                                    </div>
-                                                    <div class="product-action-1 show">
-                                                        <a aria-label="Add To Cart" data-product-id="<%= product._id %>"
-                                                            class="addTocartButton action-btn hover-up"><i
-                                                                class="fi-rs-shopping-bag-add"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <% }) %>
-
-
-                                </div>
-                                <!--pagination-->
-                                
-                            </div>
-                        </div>
+                <% } %>
+              </div>
+            </div>
+            <div id="searchResultContainer" class="row product-grid-3">
+              <% products.forEach(product=> { %>
+              <div class="col-lg-3 col-md-4">
+                <div class="product-cart-wrap mb-30">
+                  <div class="product-img-action-wrap">
+                    <div class="product-img product-img-zoom">
+                      <a href="/product/<%= product.slug %>">
+                        <img class="default-img" src="<%= product.productImageUrls[0] %>" alt="">
+                        <img class="hover-img" src="<%= product.productImageUrls[1] %>" alt="">
+                      </a>
                     </div>
-                </section>
-            </main>
-            <%- include("./layouts/footer.ejs")%>
-                <%- include("./script/script.ejs") %>
+
+                    <div class="product-badges product-badges-position product-badges-mrg">
+                      <% var availableBadges=["New", "Hot" , "Sale" , "Best" ]; %>
+                      <% var randomBadgeIndex=Math.floor(Math.random() *
+                                                                availableBadges.length); %>
+                      <span class="<%= availableBadges[randomBadgeIndex].toLowerCase() %>">
+                        <%= availableBadges[randomBadgeIndex] %>
+                      </span>
+                    </div>
+
+                  </div>
+                  <div class="product-content-wrap">
+                    <div class="product-category">
+                      <a href="/shop">
+                        <%= product.productCategory.name %>
+                      </a>
+                    </div>
+                    <h2><a href="/product/<%= product.slug %>">
+                        <%= product.productName %>
+                      </a></h2>
+                    <div class="rating-result" title="90%">
+                      <span>
+                        <span>90%</span>
+                      </span>
+                    </div>
+                    <div class="product-price">
+                      <span>&#8377; <%= product.productPrice %> </span>
+                      <span class="old-price">&#8377; <%= product.productOldPrice %>
+                      </span>
+                    </div>
+                    <div class="product-action-1 show">
+                      <a aria-label="Add To Cart" data-product-id="<%= product._id %>" class="addTocartButton action-btn hover-up"><i class="fi-rs-shopping-bag-add"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+            <!--pagination-->
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <%- include("./layouts/footer.ejs")%>
+  <%- include("./script/script.ejs") %>
 
 </body>
 

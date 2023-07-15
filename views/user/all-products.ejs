@@ -1,217 +1,202 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
+
 <head>
-    <%- include("../partials//user-header") %>
+  <%- include("../partials//user-header") %>
 
 </head>
+
 <body>
-    <%- include("./components/preloading.ejs") %>
-        <%- include("./layouts/navbar") %>
-            <main class="main">
-                <div class="page-header breadcrumb-wrap">
-                    <div class="container">
-                        <div class="breadcrumb">
-                            <a href="/" rel="nofollow">Home</a>
-                            <span></span> Shop
-                        </div>
+  <%- include("./components/preloading.ejs") %>
+  <%- include("./layouts/navbar") %>
+  <main class="main">
+    <div class="page-header breadcrumb-wrap">
+      <div class="container">
+        <div class="breadcrumb">
+          <a href="/" rel="nofollow">Home</a>
+          <span></span> Shop
+        </div>
+      </div>
+    </div>
+    <section class="mt-50 mb-50">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="shop-product-fillter">
+              <div class="totall-product">
+                <p> We found <strong class="text-brand"><%= productCount %></strong> items for you!</p>
+              </div>
+              <div class="sort-by-product-area">
+                <% if (productCount>50) { %>
+                <div class="sort-by-cover mr-10">
+                  <div class="sort-by-product-wrap">
+                    <div class="sort-by">
+                      <span><i class="fi-rs-apps"></i>Show:</span>
                     </div>
+                    <div class="sort-by-dropdown-wrap">
+                      <select id="">
+                        <option value="featured">50</option>
+                        <option value="lowToHigh">100</option>
+                        <option value="highToLow">150</option>
+                        <option value="releaseDate">200</option>
+                      </select>
+                    </div>
+                  </div>
+
                 </div>
-                <section class="mt-50 mb-50">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="shop-product-fillter">
-                                    <div class="totall-product">
-                                        <p> We found <strong class="text-brand"><%= productCount %></strong> items for you!</p>
-                                    </div>
-                                    <div class="sort-by-product-area">
-                                        <% if (productCount>50) { %>
-                                        <div class="sort-by-cover mr-10">
-                                            <div class="sort-by-product-wrap">
-                                                <div class="sort-by">
-                                                    <span><i class="fi-rs-apps"></i>Show:</span>
-                                                </div>
-                                                <div class="sort-by-dropdown-wrap">
-                                                        <select id="">
-                                                            <option value="featured">50</option>
-                                                            <option  value="lowToHigh">100</option>
-                                                            <option value="highToLow">150</option>
-                                                            <option value="releaseDate">200</option>
-                                                        </select>
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                        <% } %>
+                <% } %>
 
-                                        <div class="sort-by-cover">
-                                            <div class="sort-by-product-wrap">
-                                                <div class="sort-by">
-                                                    <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
-                                                </div>
-                                                <div class="sort-by-dropdown-wrap">
-                                                    <select id="sortByDropdown" onchange="handleSortByChange()">
-                                                        <option value="all"selected>All</option>
-                                                        <option value="featured">Featured</option>
-                                                        <option value="lowToHigh">Price: Low to High</option>
-                                                        <option value="highToLow">Price: High to Low</option>
-                                                        <option value="releaseDate">Release Date</option>
-                                                      </select>
-                                                </div>
-                                            </div>
-                                           
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row product-grid-3">
-                                    <!-- Quick view -->
-                                    <div class="modal fade custom-modal" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">              
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>       
-                                                <div class="modal-body">
-                                                    <div class="row">
-                                                        <div class="col-md-6 col-sm-12 col-xs-12">
-                                                            <div class="detail-gallery">
-                                                                <span class="zoom-icon"><i class="fi-rs-search"></i></span>
-                                                                <!-- MAIN SLIDES -->
-                                                                <div class="product-image-slider">
-                                                                        <figure class="border-radius-10">
-                                                                            <img alt="product image" class="quick-view-image">
-                                                                        </figure>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <% products.forEach((product)=> {%> 
-                                        <div class="col-lg-3 col-md-4">
-                                            <div class="product-cart-wrap mb-30">
-                                                <div class="product-img-action-wrap">
-                                                    <div class="product-img product-img-zoom">
-                                                        <a href="/product/<%= product.slug %>">
-                                                            <img class="default-img"
-                                                                src="<%= product.productImageUrls[0] %>" alt="">
-                                                            <img class="hover-img"
-                                                                src="<%= product.productImageUrls[1] %>" alt="">
-                                                        </a>
-                                                    </div>
-                                                    <!-- <div class="product-action-1">
-                                                        <a aria-label="Quick view" class="action-btn hover-up"
-                                                            data-bs-toggle="modal" data-bs-target="#quickViewModal" onclick="loadFromBackEnd('<%= product._id %>')">
-                                                            <i class="fi-rs-search"></i></a>
-                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                            href="/wishlist/<%#= product.slug %>"><i
-                                                                class="fi-rs-heart"></i></a>
-                                                    </div> -->
-                                                    <div
-                                                        class="product-badges product-badges-position product-badges-mrg">
-                                                        <% var availableBadges=["New", "Hot" , "Sale" , "Limited" ]; %>
-                                                            <% var randomBadgeIndex=Math.floor(Math.random() *
-                                                                availableBadges.length); %>
-                                                                <span
-                                                                    class="<%= availableBadges[randomBadgeIndex].toLowerCase() %>">
-                                                                    <%= availableBadges[randomBadgeIndex] %>
-                                                                </span>
-                                                    </div>
-
-                                                </div>
-                                                <div class="product-content-wrap">
-                                                    <div class="product-category">
-                                                        <a href="/shop">
-                                                            <%= product.productCategory.name %>
-                                                        </a>
-                                                    </div>
-                                                    <h2><a href="/product/<%= product.slug %>">
-                                                            <%= product.productName %>
-                                                        </a></h2>
-                                                    <div class="rating-result" title="90%">
-                                                        <span>
-                                                            <span>90%</span>
-                                                        </span>
-                                                    </div>
-                                                    <div class="product-price">
-                                                        <span>&#8377; <%= product.productPrice %> </span>
-                                                        <span class="old-price">&#8377; <%= product.productOldPrice %>
-                                                                </span>
-                                                    </div>
-                                                    <div class="product-action-1 show">
-                                                        <a aria-label="Add To Cart" data-product-id="<%= product._id %>"
-                                                            class="addTocartButton action-btn hover-up"><i
-                                                            class="fi-rs-shopping-bag-add"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <% }) %>
-
-
-                                </div>
-                                <!--pagination-->
-                                <div class="pagination-area mt-15 mb-50">
-                                    <nav aria-label="Page navigation example">
-                                        <ul class="pagination justify-content-start">
-                                                <% for (let i=1; i<=totalPages; i++) { %>
-                                                    <% if (i===currentPage) { %>
-                                                        <li class="page-item active"><a class="page-link" href="#">
-                                                            <%= i %>
-                                                        </a></li>
-                                                    <% } else { %>
-                                                            <li class="page-item"><a class="page-link"
-                                                                href="/shop?page=<%=i%>&limit=<%=limit%>">
-                                                                <%= i %>
-                                                            </a></li>
-                                                    <% } %>
-                                                <% } %>
-                                                    <% if (currentPage < totalPages) { %>
-                                                            <li class="page-item"><a class="page-link"
-                                                                href="/shop?page=<%=currentPage+1%>&limit=<%=limit%>"><i
-                                                                class="fi-rs-angle-double-small-right"></i></a>
-                                                            </li>
-                                                <% } %>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
+                <div class="sort-by-cover">
+                  <div class="sort-by-product-wrap">
+                    <div class="sort-by">
+                      <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
                     </div>
-                </section>
-            </main>
-            <%- include("./layouts/footer.ejs")%>
-            <script>
-                function handleSortByChange() {
-                    const sortBy = document.getElementById('sortByDropdown').value;
-                    console.log(sortBy+"/////1");
-                    const page = '<%= currentPage %>';
-                    const limit = '<%= limit %>';
-                    const url = `/shop?page=${page}&limit=${limit}&sortBy=${sortBy}`;
-                    window.location.href = url;
-                }
-                function loadFromBackEnd(productId) {
-                    fetch(`/product/images/${productId}`)
-                        .then(response => response.json())
-                        .then(data => {
-                        const productImages = data.productImageUrls;
+                    <div class="sort-by-dropdown-wrap">
+                      <select id="sortByDropdown" onchange="handleSortByChange()">
+                        <option value="all" selected>All</option>
+                        <option value="featured">Featured</option>
+                        <option value="lowToHigh">Price: Low to High</option>
+                        <option value="highToLow">Price: High to Low</option>
+                        <option value="releaseDate">Release Date</option>
+                      </select>
+                    </div>
+                  </div>
 
-                        // Update the quick view modal with the new images
-                        const quickViewImages = document.querySelectorAll('.quick-view-image');
-                        quickViewImages.forEach((image, index) => {
-                            if (productImages[index]) {
-                            image.src = productImages[index];
-                            }
-                        });
-                        })
-                        .catch(error => {
-                        console.error('Error:', error);
-                        });
-                    }
+                </div>
+              </div>
+            </div>
+            <div id="searchResultContainer" class="row product-grid-3">
+              <!-- Quick view -->
+              <div class="modal fade custom-modal" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                          <div class="detail-gallery">
+                            <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+                            <!-- MAIN SLIDES -->
+                            <div class="product-image-slider">
+                              <figure class="border-radius-10">
+                                <img alt="product image" class="quick-view-image">
+                              </figure>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% products.forEach((product)=> {%>
+              <div class="col-lg-3 col-md-4">
+                <div class="product-cart-wrap mb-30">
+                  <div class="product-img-action-wrap">
+                    <div class="product-img product-img-zoom">
+                      <a href="/product/<%= product.slug %>">
+                        <img class="default-img" src="<%= product.productImageUrls[0] %>" alt="">
+                        <img class="hover-img" src="<%= product.productImageUrls[1] %>" alt="">
+                      </a>
+                    </div>
+                    <div class="product-badges product-badges-position product-badges-mrg">
+                      <% var availableBadges=["New", "Hot" , "Sale" , "Limited" ]; %>
+                      <% var randomBadgeIndex=Math.floor(Math.random() *
+                                                                availableBadges.length); %>
+                      <span class="<%= availableBadges[randomBadgeIndex].toLowerCase() %>">
+                        <%= availableBadges[randomBadgeIndex] %>
+                      </span>
+                    </div>
 
-            </script>
-                <%- include("./script/script.ejs") %>
-        </body>
-        
-        
+                  </div>
+                  <div class="product-content-wrap">
+                    <div class="product-category">
+                      <a href="/shop">
+                        <%= product.productCategory.name %>
+                      </a>
+                    </div>
+                    <h2><a href="/product/<%= product.slug %>">
+                        <%= product.productName %>
+                      </a></h2>
+                    <div class="rating-result" title="90%">
+                      <span>
+                        <span>90%</span>
+                      </span>
+                    </div>
+                    <div class="product-price">
+                      <span>&#8377; <%= product.productPrice %> </span>
+                      <span class="old-price">&#8377; <%= product.productOldPrice %>
+                      </span>
+                    </div>
+                    <div class="product-action-1 show">
+                      <a aria-label="Add To Cart" data-product-id="<%= product._id %>" class="addTocartButton action-btn hover-up"><i class="fi-rs-shopping-bag-add"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+
+
+            </div>
+            <!--pagination-->
+            <div class="pagination-area mt-15 mb-50">
+              <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-start">
+                  <% for (let i=1; i<=totalPages; i++) { %>
+                  <% if (i===currentPage) { %>
+                  <li class="page-item active"><a class="page-link" href="#">
+                      <%= i %>
+                    </a></li>
+                  <% } else { %>
+                  <li class="page-item"><a class="page-link" href="/shop?page=<%=i%>&limit=<%=limit%>">
+                      <%= i %>
+                    </a></li>
+                  <% } %>
+                  <% } %>
+                  <% if (currentPage < totalPages) { %>
+                  <li class="page-item"><a class="page-link" href="/shop?page=<%=currentPage+1%>&limit=<%=limit%>"><i class="fi-rs-angle-double-small-right"></i></a>
+                  </li>
+                  <% } %>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <%- include("./layouts/footer.ejs")%>
+  <script>
+    function handleSortByChange() {
+      const sortBy = document.getElementById('sortByDropdown').value;
+      console.log(sortBy + "/////1");
+      const page = '<%= currentPage %>';
+      const limit = '<%= limit %>';
+      const url = `/shop?page=${page}&limit=${limit}&sortBy=${sortBy}`;
+      window.location.href = url;
+    }
+
+    function loadFromBackEnd(productId) {
+      fetch(`/product/images/${productId}`)
+        .then(response => response.json())
+        .then(data => {
+          const productImages = data.productImageUrls;
+
+          // Update the quick view modal with the new images
+          const quickViewImages = document.querySelectorAll('.quick-view-image');
+          quickViewImages.forEach((image, index) => {
+            if (productImages[index]) {
+              image.src = productImages[index];
+            }
+          });
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  </script>
+  <%- include("./script/script.ejs") %>
+</body>
+
+
 </html>
