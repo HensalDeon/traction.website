@@ -100,7 +100,7 @@ const addressSchema = Joi.object({
   city: Joi.string().trim().required(),
   state: Joi.string().trim().required(),
   zipcode: Joi.string().trim().pattern(/^\d+$/).required(),
-  phone: Joi.string().trim().optional(),
+  phone: Joi.string().trim().length(10).optional(),
   email: Joi.string().trim().email().optional(),
   setAddressAs: Joi.string().trim().required(),
 });

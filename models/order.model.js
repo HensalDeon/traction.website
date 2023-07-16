@@ -22,6 +22,48 @@ async function getAddresses(userId, res) {
   }
 }
 
+async function getAddress(addressId, userId){
+  try {
+    const address = await addressDatabase.findOne({ _id: addressId, user: userId });
+    if (address) {
+      return { success: true, message:'Address found', address };
+    } else {
+      return { success: false, message: 'Address not found' };    }
+  } catch (error) {
+    handleError(res, error)
+  }
+}
+
+async function updateAddress(addressId, userId, updatedAddressData) {
+  try {
+    const validation = addressSchema.validate(updatedAddressData, {
+      abortEarly: false,
+    });
+    if (validation.error) {
+      return { status: false, message: validation.error.details[0].message };
+    }
+
+    const updateAddressRes = await addressDatabase.updateOne(
+      { _id: addressId, user: userId },
+      { $set: updatedAddressData }
+    );
+
+    if (updateAddressRes.modifiedCount > 0) {
+      const updatedAddress = await getAddress(addressId, userId);
+      if (updatedAddress.success) {
+        return { status: true, message: 'Address updated', address: updatedAddress.address };
+      } else {
+        return { status: false, message: 'Address not found' };
+      }
+    } else {
+      return { status: false, message: 'Address not updated' };
+    }
+  } catch (error) {
+    console.error(error);
+    throw error; // Propagate the error to the caller
+  }
+}
+
 async function addAdrress(addressData, userId, res) {
   try {
     const validation = addressSchema.validate(addressData, {
@@ -509,7 +551,9 @@ async function  orderStatus(orderId){
 module.exports = {
   addOrderDetails,
   getAddresses,
+  getAddress,
   addAdrress,
+  updateAddress,
   verifyPayment,
   changePaymentStatus,
   fetchUserOrderDetails,

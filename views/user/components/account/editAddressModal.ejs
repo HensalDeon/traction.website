@@ -1,34 +1,34 @@
-<div id="addAddressModal" class="modal">
+<div id="editAddressModal" class="modal">
     <div>
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Add Address</h5>
+          <h5 class="modal-title">Update Address</h5>
           <span class="close">&times;</span>
         </div>
         <div class="modal-body">
           <!-- Your form goes here -->
-          <form id="addNewAddress">
+          <form id="editAddressForm">
             <div class="form-group">
               <input type="text" name="fname" placeholder="First name *">
-              <div class="error" id="fnameError"></div>
+              <div class="error" id="fnameErrors"></div>
   
             </div>
             <div class="form-group">
               <input type="text" name="lname" placeholder="Last name *">
-              <div class="error" id="lnameError"></div>
+              <div class="error" id="lnameErrors"></div>
             </div>
             <div class="form-group">
               <div class="custom_select">
-                <select class="form-control select-active" name="country">
+                <select class="form-control select-active" name="country" id="countrySelect">
                   <option value="">Select an option...</option>
-                  <option value="AX">Aland Islands</option>
-                  <option value="AF">Afghanistan</option>
-                  <option value="AL">Albania</option>
-                  <option value="DZ">Algeria</option>
-                  <option value="AD">Andorra</option>
-                  <option value="AO">Angola</option>
-                  <option value="AI">Anguilla</option>
-                  <option value="AQ">Antarctica</option>
+                  <option value="Aland Islands">Aland Islands</option>
+                  <option value="Afghanistan">Afghanistan</option>
+                  <option value="Albania">Albania</option>
+                  <option value="Algeria">Algeria</option>
+                  <option value="Andorra">Andorra</option>
+                  <option value="Angola">Angola</option>
+                  <option value="Anguilla">Anguilla</option>
+                  <option value="Antarctica">Antarctica</option>
                   <option value="AG">Antigua and Barbuda</option>
                   <option value="AR">Argentina</option>
                   <option value="AM">Armenia</option>
@@ -59,10 +59,10 @@
                   <option value="BG">Bulgaria</option>
                   <option value="BF">Burkina Faso</option>
                   <option value="BI">Burundi</option>
-                  <option value="KH">Cambodia</option>
-                  <option value="CM">Cameroon</option>
-                  <option value="CA">Canada</option>
-                  <option value="CV">Cape Verde</option>
+                  <option value="Cambodia">Cambodia</option>
+                  <option value="Cameroon">Cameroon</option>
+                  <option value="Canada">Canada</option>
+                  <option value="CapeVerde">CapeVerde</option>
                   <option value="KY">Cayman Islands</option>
                   <option value="CF">Central African Republic</option>
                   <option value="TD">Chad</option>
@@ -120,11 +120,11 @@
                   <option value="HN">Honduras</option>
                   <option value="HK">Hong Kong</option>
                   <option value="HU">Hungary</option>
-                  <option value="Iceland">Iceland</option>
+                  <option value="IS">Iceland</option>
                   <option value="India">India</option>
-                  <option value="Indonesia">Indonesia</option>
-                  <option value="Iran">Iran</option>
-                  <option value="Iraq">Iraq</option>
+                  <option value="ID">Indonesia</option>
+                  <option value="IR">Iran</option>
+                  <option value="IQ">Iraq</option>
                   <option value="IM">Isle of Man</option>
                   <option value="IL">Israel</option>
                   <option value="IT">Italy</option>
@@ -266,50 +266,50 @@
                   <option value="ZM">Zambia</option>
                   <option value="ZW">Zimbabwe</option>
                 </select>
-                <div class="error" id="countryError"></div>
+                <div class="error" id="countryErrors"></div>
               </div>
             </div>
             <div class="form-group">
               <input type="text" name="street_address" placeholder="Address *">
-              <div class="error" id="billingAddressError"></div>
+              <div class="error" id="billingAddressErrors"></div>
   
             </div>
   
             <div class="form-group">
               <input type="text" name="city" placeholder="City / Town *">
-              <div class="error" id="cityError"></div>
+              <div class="error" id="cityErrors"></div>
   
             </div>
             <div class="form-group">
               <input type="text" name="state" placeholder="State *">
-              <div class="error" id="stateError"></div>
+              <div class="error" id="stateErrors"></div>
   
             </div>
             <div class="form-group">
               <input type="text" name="zipcode" placeholder="Postcode / ZIP *">
-              <div class="error" id="postError"></div>
+              <div class="error" id="postErrors"></div>
   
             </div>
             <div class="form-group">
               <input type="text" name="phone" placeholder="Phone *">
-              <div class="error" id="phoneError"></div>
+              <div class="error" id="phoneErrors"></div>
   
             </div>
             <div class="form-group">
               <input type="text" name="email" placeholder="Email address *">
-              <div class="error" id="emailError"></div>
+              <div class="error" id="emailErrors"></div>
             </div>
             <div class="form-group">
               <div class="custom_select">
-                <select class="form-control select-active" name="setAddressAs">
+                <select class="form-control select-active" name="setAddressAs" id="addressType">
                   <option >set as</option>
                   <option value="isBillingAddress">Billing Address</option>
                   <option value="isShippingAddress">Shipping Address</option>
                 </select>
-                <div class="error" id="addressError"></div>
+                <div class="error" id="addressErrors"></div>
               </div>
             </div>
-            <button type="submit" class="btn">Add address</button>
+            <button type="submit" class="btn">Update address</button>
           </form>
         </div>
       </div>

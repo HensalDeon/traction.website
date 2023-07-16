@@ -1,9 +1,14 @@
-
+<style>
+  address p {
+    background-color: #aed4d4;
+    margin: 3px;
+    padding-left: 2px;
+    border-radius: 8px;
+  }
+</style>
 <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
   <div class="card card-body">
     <div class="row cardRow">
-      
-
       <% if (addresses?.length > 0) { %>
       <% addresses.forEach(address => { %>
       <div class="col-lg-6 mb-20">
@@ -15,19 +20,18 @@
             <h5 class="mb-0">Shipping Address</h5>
             <% } %>
           </div>
-          <div class="card-body">
-            <address>
-              <%= address.street_address %><br>
-              <%= address.city %><br>
-              <%= address.state %> <br>
-              <%= address.zipcode %><br>
-              <%= address.phone %>
+          <div style="padding: 6px 4px;">
+            <address style="padding-bottom: 10px;">
+              <p>Name: <%= address.fname %> <%= address.lname %></p>
+              <p>Address: <%= address.street_address %></p>
+              <p>City: <%= address.city %></p>
+              <p>State: <%= address.state %></p>
+              <p>Zip Code: <%= address.zipcode %></p>
+              <p>Phone: <%= address.phone %></p>
+              <p><%= address.country %></p>
             </address>
-            <p>
-              <%= address.country %>
-            </p>
+            <button onclick="editAddress('<%= address._id %>')" class="btn-primary" style="border: none; border-radius: 3px;">Edit</button>
             <button onclick="deleteAddress('<%= address._id %>')" class="btn-danger" style="border: none; border-radius: 3px;">Delete</button>
-            <!-- <a onclick="editAddress('<%= address._id %>')" class="btn-small">Delete</a> -->
           </div>
         </div>
       </div>
@@ -40,284 +44,5 @@
   </div>
 </div>
 <%- include('./addAddressModal') %>
-<script>
-  // Get the modal element
-var modal = document.getElementById('addAddressModal');
-
-// Get the button that opens the modal
-var addAddressBtn = document.getElementById('addAddressBtn');
-
-// Get the <span> element that closes the modal
-var closeBtn = modal.querySelector('.close');
-
-// Open the modal when the button is clicked
-addAddressBtn.addEventListener('click', function() {
-modal.style.display = 'block';
-});
-
-// Close the modal when the close button or outside the modal is clicked
-closeBtn.addEventListener('click', closeModal);
-window.addEventListener('click', outsideClick);
-
-function closeModal() {
-modal.style.display = 'none';
-}
-
-function outsideClick(e) {
-if (e.target === modal) {
-  modal.style.display = 'none';
-}
-}
-
-function deleteAddress(addressId) {
-
-  Swal.fire({
-    title: 'Delete your address!Are you sure?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, Delete!'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      const url = "/delete-address"
-      fetch(url, {
-        body: JSON.stringify({
-          id: addressId
-        }),
-        method: 'delete',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then((res) => {
-        console.log(res);
-        location.reload()
-      }).catch((error) => {
-        console.error(error);
-      })
-    }
-  })
-
-
-}
-
-const form = document.querySelector('#addNewAddress');
-form.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  const fnameError = document.querySelector('#fnameError');
-  const lnameError = document.querySelector('#lnameError');
-  const countryError = document.querySelector('#countryError');
-  const billingAddressError = document.querySelector('#billingAddressError');
-  const cityError = document.querySelector('#cityError');
-  const stateError = document.querySelector('#stateError');
-  const postError = document.querySelector('#postError');
-  const phoneError = document.querySelector('#phoneError');
-  const emailError = document.querySelector('#emailError');
-  const addressError = document.querySelector('#addressError');
-
-
-
-  fnameError.innerHTML = ''
-  lnameError.innerHTML = ''
-  countryError.innerHTML = ''
-  billingAddressError.innerHTML = ''
-  cityError.innerHTML = ''
-  stateError.innerHTML = ''
-  postError.innerHTML = ''
-  phoneError.innerHTML = ''
-  emailError.innerHTML = ''
-
-  const formData = new FormData(form);
-
-  let hasError = false;
-
-  if (formData.get('fname').trim() === '') {
-    hasError = true;
-    fnameError.innerHTML += '<p style="color:red">Please enter your first name.</p>';
-    setTimeout(() => {
-      fnameError.innerHTML = ''
-    }, 5000);
-    return;
-  }
-
-  if (formData.get('lname').trim() === '') {
-    hasError = true;
-    lnameError.innerHTML += '<p style="color:red">Please enter your last name.</p>';
-    setTimeout(() => {
-      lnameError.innerHTML = ''
-    }, 5000);
-    return;
-
-  }
-  if (formData.get('country').trim() === '') {
-    hasError = true;
-    countryError.innerHTML += '<p style="color:red">Please select any country.</p>';
-    setTimeout(() => {
-      countryError.innerHTML = ''
-
-    }, 5000);
-    return;
-
-  }
-
-  if (formData.get('street_address').trim() === '') {
-    hasError = true;
-    billingAddressError.innerHTML += '<p style="color:red">Please enter your billing address.</p>';
-    setTimeout(() => {
-      billingAddressError.innerHTML = '';
-    }, 5000);
-    return;
-
-  }
-
-
-  if (formData.get('city').trim() === '') {
-    hasError = true;
-    cityError.innerHTML = '<p style="color:red">Please enter your city/town.</p>';
-    setTimeout(() => {
-      cityError.innerHTML = '';
-    }, 5000);
-    return;
-
-  }
-
-  if (formData.get('state').trim() === '') {
-    hasError = true;
-    stateError.innerHTML += '<p style="color:red">Please enter your state/province.</p>';
-    setTimeout(() => {
-      stateError.innerHTML = '';
-    }, 5000);
-    return;
-
-  }
-
-  if (formData.get('zipcode').trim() === '') {
-    hasError = true;
-    postError.innerHTML += '<p style="color:red">Please enter your postcode/ZIP code.</p>';
-    setTimeout(() => {
-
-      postError.innerHTML = '';
-    }, 5000);
-    return;
-
-  }
-
-  if (formData.get('phone').trim() === '') {
-    hasError = true;
-    phoneError.innerHTML += '<p style="color:red">Please enter your phone number.</p>';
-    setTimeout(() => {
-      phoneError.innerHTML = '';
-    }, 5000);
-    return;
-  }
-
-  if (formData.get('setAddressAs').trim() === '') {
-    hasError = true;
-    addressError.innerHTML += '<p style="color:red">Please select the adress type.</p>';
-    setTimeout(() => {
-      addressError.innerHTML = ''
-
-    }, 5000);
-    return;
-
-  }
-
-  if (formData.get('email').trim() === '') {
-    hasError = true;
-    emailError.innerHTML += '<p style="color:red">Please enter your email address.</p>';
-    setTimeout(() => {
-      emailError.innerHTML = '';
-    }, 5000);
-    return;
-
-  }
-
-  if (!hasError) {
-
-    const formObject = {};
-    formData.forEach(function(value, key) {
-      formObject[key] = value;
-    });
-
-    const url = '/add-address';
-    fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(formObject),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(async (response) => {
-        console.log(response);
-        const msg = await response.json()
-        console.log(msg);
-        if (msg.message) {
-          if (msg.message.includes('fname')) {
-            msg.error = 'Please enter a first name';
-            callAlert(msg.error)
-            return;
-          }
-          if (msg.message.includes('lname')) {
-            msg.error = 'Please enter a last name';
-            callAlert(msg.error)
-            return;
-          }
-          if (msg.message.includes('street_address')) {
-            msg.error = 'Please enter a street address';
-            callAlert(msg.error)
-            return;
-          }
-          if (msg.message.includes('city')) {
-            msg.error = 'Please enter a city';
-            callAlert(msg.error)
-            return;
-          }
-          if (msg.message.includes('state')) {
-            msg.error = 'Please enter  a state';
-            callAlert(msg.error)
-            return;
-          }
-          if (msg.message.includes('zipcode')) {
-            msg.error = 'Please enter a valid  zip code';
-            callAlert(msg.error)
-            return;
-          }
-          if (msg.message.includes('country')) {
-            msg.error = 'Please select a valid country';
-            callAlert(msg.error)
-            return;
-          }
-          if (msg.message.includes('phone')) {
-            msg.error = 'Please enter a valid phone number';
-            callAlert(msg.error)
-            return;
-          }
-          if (msg.message.includes('email')) {
-            msg.error = 'Please enter a valid email address';
-            callAlert(msg.error)
-            return;
-          }
-          if (msg.message.includes('setAddressAs')) {
-            msg.error = 'Please select a valid address type';
-            callAlert(msg.error)
-            return;
-          }
-
-        }
-        function callAlert(errorMessage) {
-          Swal.fire({
-            title: 'Oops!',
-            icon: 'error',
-            text: 'Something went wrong!' + errorMessage,
-            showCloseButton: true,
-          })
-        }
-        window.location.reload();
-      })
-      .catch(error => {
-        console.error(error);
-      });
-
-  }
-});
-</script>
+<%- include('./editAddressModal') %>
+<%- include('./script.ejs') %>

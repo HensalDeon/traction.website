@@ -46,8 +46,15 @@ const {
   AddBanner,
 } = require('../controllers/banner.controller');
 
+const {
+  GetCoupons,
+  AddCoupons,
+  ChangeCouponStatus,
+} = require('../controllers/coupon.controller');
+
 // session handler
 const { isAdminLoggedIn, isAdminLoggedOut } = require('../middlewares/auth.handler');
+
 
 // Login/Logout
 adminRouter.get('/', isAdminLoggedIn, GetDashBoard);
@@ -84,6 +91,11 @@ adminRouter.get('/order-details', isAdminLoggedIn, GetOrderDetails);
 adminRouter.get('/banners', isAdminLoggedIn, GetBannerPage);
 adminRouter.post('/add-banner', upload.single('bannerImage'), isAdminLoggedIn, AddBanner);
 adminRouter.post('/edit-banner', upload.single('bannerImage'), isAdminLoggedIn, EditBanner);
+
+// coupon management
+adminRouter.get('/coupons', isAdminLoggedIn, GetCoupons);
+adminRouter.post('/coupons', isAdminLoggedIn, AddCoupons);
+adminRouter.put('/coupon-status', isAdminLoggedIn, ChangeCouponStatus);
 
 //Dashboard
 adminRouter.get('/graph', isAdminLoggedIn, GetGraphData);

@@ -49,6 +49,8 @@ const {
   GetCheckout,
   PostCheckout,
   AddAddress,
+  EditAddress,
+  UpdateAddress,
   VerifyPayment,
   SuccessPage,
   FailedPage,
@@ -59,6 +61,8 @@ const {
   ApplyWallet,
   GetOrderDetails,
 } = require('../controllers/order.controller');
+
+const { Applycoupon, RemoveCoupon } = require('../controllers/coupon.controller');
 
 // User Login/Home
 userRouter.get('/', GetHome);
@@ -74,6 +78,7 @@ userRouter.get('/signup', isLoggedOut, GetSignup);
 userRouter.post('/signup', isLoggedOut, PostSignup);
 userRouter.post('/signup-otp', isLoggedOut, SignupOtpVerify);
 
+// forgot password
 userRouter.get('/forgot-password', GetForgotPassword);
 userRouter.post('/forgot-password/otp', VerifyPhone);
 userRouter.post('/forgot-password/otp-verify', VerifyOtp);
@@ -103,6 +108,14 @@ userRouter.get('/order-failed/:id', isLoggedIn, FailedPage);
 userRouter.post('/order-cancel', isLoggedIn, CancelOrder);
 userRouter.post('/order-return', isLoggedIn, ReturnOrder);
 
+// coupon
+userRouter.post('/apply-coupon', isLoggedIn, Applycoupon);
+userRouter.put('/remove-coupon', isLoggedIn, RemoveCoupon);
+
+// wallet
+userRouter.get('/wallet', isLoggedIn, GetWallet);
+userRouter.post('/apply-wallet', isLoggedIn, ApplyWallet);
+
 // Product Search
 userRouter.get('/search-result', SearchResult);
 userRouter.post('/search-products', ProductsBySearch);
@@ -111,6 +124,8 @@ userRouter.post('/search-products', ProductsBySearch);
 userRouter.get('/account', isLoggedIn, GetAccount);
 userRouter.get('/order-details', isLoggedIn, GetOrderDetails);
 userRouter.post('/update-userdata', upload.single('profileimage'), isLoggedIn, UpdateUserdata);
+userRouter.post('/get-address', isLoggedIn, EditAddress)
+userRouter.post('/update-address', isLoggedIn, UpdateAddress)
 userRouter.get('/logout', GetLogout);
 
 //others

@@ -1,7 +1,9 @@
 const {
   addOrderDetails,
   getAddresses,
+  getAddress,
   addAdrress,
+  updateAddress,
   verifyPayment,
   changePaymentStatus,
   cancelOrder,
@@ -53,7 +55,7 @@ async function GetCheckout(req, res) {
         }
 
         let appliedWallet;
-        if(req.session.appliedWallet){
+        if (req.session.appliedWallet) {
           appliedWallet = req.session.appliedWallet
         }
 
@@ -63,7 +65,7 @@ async function GetCheckout(req, res) {
           coupons: coupons,
           couponDiscount: discountAmount,
           couponcode: couponcode,
-          appliedWallet:appliedWallet
+          appliedWallet: appliedWallet
         });
       } else {
         return res.render('user/checkout', {
@@ -77,6 +79,49 @@ async function GetCheckout(req, res) {
     }
   } catch (error) {
     handleError(res, error);
+  }
+}
+
+async function EditAddress(req, res) {
+  try {
+    const addressId = req.body.id;
+    const userId = req.session.user._id;
+
+    // Validate input
+    if (!addressId || !userId) {
+      throw new Error('Missing required input');
+    }
+    const getAddressRes = await getAddress(addressId, userId);
+    console.log(getAddressRes.address);
+    if (getAddressRes.success) {
+      return res.json({ success: true, message: getAddressRes.message, address: getAddressRes.address });
+    } else {
+      return res.json({ success: false, message: getAddressRes.message });
+    }
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
+async function UpdateAddress(req, res) {
+  try {
+    console.log(req.body);
+    const addressId = req.body.id;
+    const userId = req.session.user._id;
+    const updatedAddressData = req.body.addressData;
+    
+    if (!addressId || !userId || !updatedAddressData) { 
+      return res.status(400).json({success:false, maessage:'Missing required input'});
+    }
+    const updateResult = await updateAddress(addressId, userId, updatedAddressData);
+    if (updateResult.status) {
+      return res.json({ success: true, message: updateResult.message, address: updateResult.address });
+    } else {
+      return res.json({ success: false, message: updateResult.message });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.json({ success: false, message: 'An error occurred' });
   }
 }
 
@@ -106,17 +151,17 @@ async function PostCheckout(req, res) {
 
 
     let cartTotal = checkoutResult.cartResult.total;
-    if(req.session.coupon){
+    if (req.session.coupon) {
       let coupon = req.session.coupon;
       const discountAmount = (coupon.discount / 100) * cartTotal;
       cartTotal = cartTotal - discountAmount;
     }
 
-    if(req.session.appliedWallet){
+    if (req.session.appliedWallet) {
       cartTotal = cartTotal - req.session.appliedWallet;
     }
 
-    if(cartTotal<1){
+    if (cartTotal < 1) {
       await orderStatus(checkoutResult.order._id);
       return res.json({
         success: true,
@@ -203,8 +248,8 @@ async function SuccessPage(req, res) {
       delete req.session.coupon;
     }
 
-    if(req.session.appliedWallet){
-      await updateWalletData(req.session.appliedWallet,req.session.user._id,id);
+    if (req.session.appliedWallet) {
+      await updateWalletData(req.session.appliedWallet, req.session.user._id, id);
       delete req.session.appliedWallet;
     }
 
@@ -218,8 +263,8 @@ async function FailedPage(req, res) {
   if (req.session.coupon) {
     delete req.session.coupon;
   }
-  
-  if(req.session.appliedWallet){
+
+  if (req.session.appliedWallet) {
     delete req.session.appliedWallet;
   }
   res.render('user/failed-page');
@@ -395,7 +440,9 @@ async function ApplyWallet(req, res) {
 module.exports = {
   GetCheckout,
   PostCheckout,
+  EditAddress,
   AddAddress,
+  UpdateAddress,
   VerifyPayment,
   SuccessPage,
   FailedPage,

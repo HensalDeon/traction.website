@@ -2,10 +2,6 @@
     .card-row .card-body {
         height: 150px;
     }
-  
-    .my-custom-card-class :hover{
-        background-color: rgb(232, 230, 230);
-    }
 </style>
 
 <div class="mb-30">
@@ -30,6 +26,12 @@
               </label>
             </div>
             <button class="select-address-btn" onclick="selectAddress('<%= address._id %>')">Select Address</button>
+            <div style="padding: 10px 16px;">
+              <span id="spanbtn-<%= address._id %>" style="display: none;">
+                <button onclick="editAddress('<%= address._id %>')"  class="btn-primary" style="border: none; border-radius: 3px; width: 5%;">Edit</button>
+                <button onclick="deleteAddress('<%= address._id %>')"  class="btn-danger" style="border: none; border-radius: 3px; width: 5%;">Delete</button>
+              </span>
+          </div>
           </div>
         </div>
         <% } %>
@@ -48,9 +50,15 @@
                 </label>
               </div>
               <button class="select-address-btn" onclick="selectAddress('<%= address._id %>')">Select Address</button>
+              <span id="spanbtn-<%= address._id %>" style="display: none;">
+                <button onclick="editAddress('<%= address._id %>')"  class="btn-primary" style="border: none; border-radius: 3px;">Edit</button>
+                <button onclick="deleteAddress('<%= address._id %>')" class="btn-danger" style="border: none; border-radius: 3px;">Delete</button>
+              </span>
             </div>
           </div>
           <% } %>
       <% }) %>
 </div>
-<%- include('../account/addAddressModal.ejs') %>
+
+<%- include('./addAddressModal.ejs') %>
+<%- include('./editAddressModal.ejs') %>

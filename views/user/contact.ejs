@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
+  
+  <head>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
 
-<head>
   <%- include("../partials/user-header") %>
 
 </head>
@@ -14,7 +17,6 @@
       <div class="container">
         <div class="breadcrumb">
           <a href="index.html" rel="nofollow">Home</a>
-          <span></span> Pages
           <span></span> Contact us
         </div>
       </div>
@@ -35,36 +37,6 @@
         </div>
       </div>
     </section>
-    <!-- <section class="section-border pt-50 pb-50">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4 mb-4 mb-md-0">
-            <h4 class="mb-15 text-brand">Office</h4>
-            <span style="color: orange;">205 North Michigan Avenue, Suite 810</span><br>
-            <span style="color: orange;">Chicago, 60601, USA</span><br>
-            <span style="color: orange;"><abbr title="Phone">Phone:</abbr> (123) 456-7890<br></span>
-            <span style="color: orange;"><abbr title="Email">Email: </abbr><br></span>
-            <a class="btn btn-outline btn-sm btn-brand-outline font-weight-bold text-brand bg-white text-hover-white mt-20 border-radius-5 btn-shadow-brand hover-up"><i class="fi-rs-marker mr-10"></i>View map</a>
-          </div>
-          <div class="col-md-4 mb-4 mb-md-0">
-            <h4 class="mb-15 text-brand">Studio</h4>
-            <span style="color: orange;">205 North Michigan Avenue, Suite 810</span><br>
-            <span style="color: orange;">Chicago, 60601, USA</span><br>
-            <span style="color: orange;"><abbr title="Phone">Phone:</abbr> (123) 456-7890<br></span>
-            <span style="color: orange;"><abbr title="Email">Email: </abbr><br></span>
-            <a class="btn btn-outline btn-sm btn-brand-outline font-weight-bold text-brand bg-white text-hover-white mt-20 border-radius-5 btn-shadow-brand hover-up"><i class="fi-rs-marker mr-10"></i>View map</a>
-          </div>
-          <div class="col-md-4">
-            <h4 class="mb-15 text-brand">Shop</h4>
-            <span style="color: orange;">205 North Michigan Avenue, Suite 810</span><br>
-            <span style="color: orange;">Chicago, 60601, USA</span><br>
-            <span style="color: orange;"><abbr title="Phone">Phone:</abbr> (123) 456-7890<br></span>
-            <span style="color: orange;"><abbr title="Email">Email: </abbr><br></span>
-            <a class="btn btn-outline btn-sm btn-brand-outline font-weight-bold text-brand bg-white text-hover-white mt-20 border-radius-5 btn-shadow-brand hover-up"> <i class="fi-rs-marker mr-10"></i> View map</a>
-          </div>
-        </div>
-      </div>
-    </section> -->
     <section class="pt-50 pb-50">
       <div class="container">
         <div class="row">
@@ -110,6 +82,7 @@
     </section>
   </main>
   <%- include("./layouts/footer.ejs")%>
+
   <script>
     
 function btnClick(){
@@ -117,18 +90,38 @@ function btnClick(){
     var nameField = document.getElementById('NAME').value.trim();
     var emailField = document.getElementById('eMAIL').value.trim();
     var phoneField = document.getElementById('PHONE').value.trim();
+    var subjectField = document.getElementById('SUBJECT').value.trim();
     var msgField = document.getElementById('MESSAGE').value.trim();
 
-    if(nameField === "" || emailField === "" || phoneField === "" || msgField === ""){
+    if(nameField === "" || emailField === "" || phoneField === "" || msgField === "" || subjectField === ""){
         btn = false;
-        alert('All fields are mandatory !');
+        // alert('All fields are mandatory !');
+        swal.fire({
+          title: 'Not today!',
+          text: 'Fields cannot be empty!',
+          icon: 'error',
+          showConfirmButton: false,
+          timer: 1300
+        });
     }
     else if (!/^\d+$/.test(phoneField)) {
-        alert('Phone number can only contain numbers');
+      swal.fire({
+          title: 'Invalid input',
+          text: 'Phone number can only contain numbers',
+          icon: 'error',
+          showConfirmButton: false,
+          timer: 1300
+        });
         btn = false;
     }
     else if (!/^([a-zA-Z0-9\._]+)@([a-zA-Z0-9]+).([a-z]+).([a-z]+)?$/.test(emailField)) {
-        alert('Please enter a valid email address');
+      swal.fire({
+          title: 'Invalid input',
+          text: 'Please enter a valid email address',
+          icon: 'error',
+          showConfirmButton: false,
+          timer: 1300
+        });
         btn = false;
     }
 
@@ -142,12 +135,24 @@ function btnClick(){
         data: $("#googleform").serialize(),
         method: "post",
         success: function(response) {
-          alert("Details submitted successfully")
+          swal.fire({
+            title:'success',
+            text:'Detail submitted successfully',
+            icon: 'success',
+            showConfirmButton:false,
+            timer:1300
+          })
           window.location.href="/";
 
         },
         error: function(err) {
-          alert("Something Error")
+          swal.fire({
+            title:'Error',
+            text: 'Something Error!!',
+            icon: error,
+            showConfirmButton: false,
+            timer: 1300
+          })
 
         }
       })
