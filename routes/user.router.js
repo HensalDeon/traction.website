@@ -26,14 +26,14 @@ const {
   Get404,
   GetForgotPassword,
   PostResetPassword,
+  Particle,
 } = require('../controllers/user.controller');
 
 const {
   GetProduct,
   GetAllProducts,
   CategoryProduct,
-  ProductsBySearch, 
-  // SearchResult,
+  ProductsBySearch,
   GetProductImages,
 } = require('../controllers/product.controller');
 
@@ -63,6 +63,7 @@ const {
 } = require('../controllers/order.controller');
 
 const { Applycoupon, RemoveCoupon } = require('../controllers/coupon.controller');
+const { handleError } = require('../middlewares/error.handler');
 
 // User Login/Home
 userRouter.get('/', GetHome);
@@ -73,6 +74,7 @@ userRouter.post('/otp-login', LoginVerifyPhone);
 userRouter.get('/otp-verify', isLoggedOut, GetOtpVerify);
 userRouter.post('/otp-verify', isLoggedOut, PostVerifyOtp);
 
+userRouter.get('/particle', Particle);
 // User SignUp
 userRouter.get('/signup', isLoggedOut, GetSignup);
 userRouter.post('/signup', isLoggedOut, PostSignup);
@@ -118,7 +120,6 @@ userRouter.post('/apply-wallet', isLoggedIn, ApplyWallet);
 
 // Product Search
 userRouter.get('/search-result', ProductsBySearch);
-// userRouter.post('/search-products', ProductsBySearch);
 
 // Accnt details/LogOut
 userRouter.get('/account', isLoggedIn, GetAccount);
@@ -133,8 +134,5 @@ userRouter.get('/learn-more', GetLearnMore)
 userRouter.get('/about', GetAbout);
 userRouter.get('/contact', GetContact);
 userRouter.get('/*', Get404);
-
-
-
 
 module.exports = userRouter;

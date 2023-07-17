@@ -4015,6 +4015,10 @@ table .product-thumbnail img {
   background-color: #a1cae2;
 }
 
+.product-cart-wrap .product-badges span.limited {
+  background-color: #ff8150;
+}
+
 .product-cart-wrap .product-badges span.best {
   background-color: #ffab73;
 }

@@ -4,84 +4,225 @@
 <head>
   <%- include("../../partials/user-header") %>
   <%- include("../components/preloading.ejs") %>
-
+<style>
+        #particles-js {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background-color: #00000080;
+      
+        }
+      </style>
+</style>
 </head>
 
 <body>
   <%- include("../layouts/navbar.ejs") %>
-  
-  <main class="main">
-      <div class="page-header breadcrumb-wrap">
-        <div class="container">
-          <div class="breadcrumb">
-            <a href="/" rel="nofollow">Home</a>
-            <span></span> Pages
-            <span></span> Login / Register
-          </div>
+
+  <div id="particles-js"></div>
+  <div class="div" style="display: block;">
+    <div class="page-header breadcrumb-wrap">
+      <div class="container">
+        <div class="breadcrumb">
+          <a href="/" rel="nofollow">Home</a>
+          <span></span> Pages
+          <span></span> Login / Register
         </div>
       </div>
-      <section class="pt-50 pb-50">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-10 m-auto">
-              <div class="row">
-                <div class="col-lg-5 offset-lg-2 mx-auto">
-                  <div
-                    class="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5">
-                    <div class="padding_eight_all bg-white">
-                      <div class="heading_s1">
-                        <h3 class="mb-30">Login</h3>
-                        <div id="invalid-credentials" class="invalid-feedback"></div>
-                        <span id="invalidCredentials"></span>
-                      </div>
-                      
-                      <form action="/login" id="login-form" method="post">
-                        <div class="form-group">
-                          <input id="email" class="form-control" placeholder="Email" type="text" name="email">
-                          <div id="email-error" class="invalid-feedback"></div>
-                          <span id="emailError" ></span>
-                        </div>
-                        <div class="form-group">
-                          <input id="password" class="form-control" placeholder="Password" type="password"
-                            name="password">
-                          <div id="password-error" class="invalid-feedback"></div>
-                          <span id="passwordError"></span>
-                        </div>
-                        <div class="login_footer form-group">
-                          <div class="chek-form">
-                            <div class="custome-checkbox">
-                              <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1"
-                                value="">
-                              <label class="form-check-label" for="exampleCheckbox1"><span>Remember me</span></label>
-                            </div>
-                          </div>
-                          <a class="text-muted" href="/forgot-password">Forgot password?</a>
-                        </div>
-                        <div class="form-group">
-                          <button type="submit" class="btn btn-fill-out btn-block w-100 hover-up" name="login"
-                            id="login-button">LOG IN</button>
-                        </div>
-                        <div class="form-group">
-                          <a class="btn btn-fill-out btn-block w-100 hover-up" name="otp" id="otp-button"
-                            href="/otp-login">LOG IN WITH OTP</a>
-                        </div>
-                      </form>
-
-                      <div class="text-muted text-center mt-15 mb-15">Don't have an account? <a href="/signup">Sign
-                          up</a></div>
+    </div>
+    <section class="pt-50 pb-50">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-10 m-auto">
+            <div class="row">
+              <div class="col-lg-5 offset-lg-2 mx-auto">
+                <div class="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5">
+                  <div class="padding_eight_all bg-white">
+                    <div class="heading_s1">
+                      <h3 class="mb-30">Login</h3>
+                      <div id="invalid-credentials" class="invalid-feedback"></div>
+                      <span id="invalidCredentials"></span>
                     </div>
+
+                    <form action="/login" id="login-form" method="post">
+                      <div class="form-group">
+                        <input id="email" class="form-control" placeholder="Email" type="text" name="email">
+                        <div id="email-error" class="invalid-feedback"></div>
+                        <span id="emailError"></span>
+                      </div>
+                      <div class="form-group">
+                        <input id="password" class="form-control" placeholder="Password" type="password" name="password">
+                        <div id="password-error" class="invalid-feedback"></div>
+                        <span id="passwordError"></span>
+                      </div>
+                      <div class="login_footer form-group">
+                        <div class="chek-form">
+                          <div class="custome-checkbox">
+                            <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="">
+                            <label class="form-check-label" for="exampleCheckbox1"><span>Remember me</span></label>
+                          </div>
+                        </div>
+                        <a class="text-muted" href="/forgot-password">Forgot password?</a>
+                      </div>
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-fill-out btn-block w-100 hover-up" name="login" id="login-button">LOG IN</button>
+                      </div>
+                      <div class="form-group">
+                        <a class="btn btn-fill-out btn-block w-100 hover-up" name="otp" id="otp-button" href="/otp-login">LOG IN WITH OTP</a>
+                      </div>
+                    </form>
+
+                    <div class="text-muted text-center mt-15 mb-15">Don't have an account? <a href="/signup">Sign
+                        up</a></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
-    </main>
-      <%- include("../layouts/footer.ejs") %>
-      <%- include("./validation/login-validation.ejs") %>
-      <%- include("../script/script.ejs") %>
+      </div>
+    </section>
+  </div>
+  <script src='https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js'></script>
+  <!-- <script src='https://threejs.org/examples/js/libs/stats.min.js'></script> -->
+  <%- include("../layouts/footer.ejs") %>
+  <%- include("./validation/login-validation.ejs") %>
+  <%- include("../script/script.ejs") %>
+  <script>
+    /* ---- particles.js config ---- */
 
+    particlesJS("particles-js", {
+  "particles": {
+    "number": {
+      "value": 120,
+      "density": {
+        "enable": true,
+        "value_area": 700
+      }
+    },
+    "color": {
+      "value": "#ffffff"
+    },
+    "shape": {
+      "type": "circle",
+      "stroke": {
+        "width": 3,
+        "color": "#000000"
+      },
+      "polygon": {
+        "nb_sides": 5
+      },
+      "image": {
+        "src": "img/github.svg",
+        "width": 100,
+        "height": 100
+      }
+    },
+    "opacity": {
+      "value": 0.5,
+      "random": false,
+      "anim": {
+        "enable": false,
+        "speed": 1,
+        "opacity_min": 0.1,
+        "sync": false
+      }
+    },
+    "size": {
+      "value": 5,
+      "random": true,
+      "anim": {
+        "enable": false,
+        "speed": 40,
+        "size_min": 0.1,
+        "sync": false
+      }
+    },
+    "line_linked": {
+      "enable": true,
+      "distance": 170,
+      "color": "#ffffff",
+      "opacity": 0.4,
+      "width": 1
+    },
+    "move": {
+      "enable": true,
+      "speed": 3,
+      "direction": "none",
+      "random": false,
+      "straight": false,
+      "out_mode": "out",
+      "bounce": false,
+      "attract": {
+        "enable": false,
+        "rotateX": 600,
+        "rotateY": 1200
+      }
+    }
+  },
+  "interactivity": {
+    "detect_on": "canvas",
+    "events": {
+      "onhover": {
+        "enable": true,
+        "mode": "grab"
+      },
+      "onclick": {
+        "enable": true,
+        "mode": "push"
+      },
+      "resize": true
+    },
+    "modes": {
+      "grab": {
+        "distance": 340,
+        "line_linked": {
+          "opacity": 1
+        }
+      },
+      "bubble": {
+        "distance": 400,
+        "size": 40,
+        "duration": 2,
+        "opacity": 8,
+        "speed": 1
+      },
+      "repulse": {
+        "distance": 150,
+        "duration": 0.4
+      },
+      "push": {
+        "particles_nb": 4
+      },
+      "remove": {
+        "particles_nb": 2
+      }
+    }
+  },
+  "retina_detect": true
+});
+
+
+/* ---- stats.js config ---- */
+
+var count_particles, stats, update;
+stats = new Stats;
+stats.setMode(0);
+stats.domElement.style.position = 'absolute';
+stats.domElement.style.left = '0px';
+stats.domElement.style.top = '0px';
+document.body.appendChild(stats.domElement);
+count_particles = document.querySelector('.js-count-particles');
+update = function() {
+  stats.begin();
+  stats.end();
+  if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) {
+    count_particles.innerText = window.pJSDom[0].pJS.particles.array.length;
+  }
+  requestAnimationFrame(update);
+};
+requestAnimationFrame(update);
+  </script>
 </body>
 
 </html>

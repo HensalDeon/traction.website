@@ -3,7 +3,6 @@
 
 <head>
   <%- include("../partials//user-header") %>
-
 </head>
 
 <body>
@@ -29,7 +28,6 @@
                     <%= productCount %>
                   </strong> items for you!</p>
               </div>
-
               <div class="sort-by-product-area">
                 <% if (productCount>50) { %>
                 <div class="sort-by-cover mr-10">
@@ -41,7 +39,6 @@
                       <span> 50 <i class="fi-rs-angle-small-down"></i></span>
                     </div>
                   </div>
-
                   <div class="sort-by-dropdown">
                     <ul>
                       <li><a class="active" href="#">50</a></li>
@@ -51,21 +48,15 @@
                       <li><a href="#">All</a></li>
                     </ul>
                   </div>
-
                 </div>
-
                 <% } %>
-
-
                 <div class="sort-by-cover">
                   <div class="sort-by-product-wrap">
                     <div class="sort-by">
                       <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
                     </div>
                     <div class="sort-by-dropdown-wrap">
-
                       <select id="sortByDropdown" onchange="handleSortByChange()">
-                        <!-- <option ></option> -->
                         <option value="all" <% if (sortOption === 'all') { %>selected<% } %>>All</option>
                         <option value="featured" <% if (sortOption === 'featured') { %>selected<% } %>>Featured</option>
                         <option value="lowToHigh" <% if (sortOption === 'lowToHigh') { %>selected<% } %>>Price: Low to High</option>
@@ -74,14 +65,11 @@
                       </select>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
             <div class="row product-grid-3">
-
               <% products.forEach(product=> { %>
-
               <div class="col-lg-3 col-md-4">
                 <div class="product-cart-wrap mb-30">
                   <div class="product-img-action-wrap">
@@ -104,8 +92,7 @@
 
                     <div class="product-badges product-badges-position product-badges-mrg">
                       <% var availableBadges=["New", "Hot" , "Sale" , "Limited" ]; %>
-                      <% var randomBadgeIndex=Math.floor(Math.random() *
-                                                                availableBadges.length); %>
+                      <% var randomBadgeIndex=Math.floor(Math.random() * availableBadges.length); %>
                       <span class="<%= availableBadges[randomBadgeIndex].toLowerCase() %>">
                         <%= availableBadges[randomBadgeIndex] %>
                       </span>
@@ -138,8 +125,6 @@
                 </div>
               </div>
               <% }) %>
-
-
             </div>
             <!--pagination-->
             <div class="pagination-area mt-15 mb-50">

@@ -92,7 +92,6 @@ async function EditAddress(req, res) {
       throw new Error('Missing required input');
     }
     const getAddressRes = await getAddress(addressId, userId);
-    console.log(getAddressRes.address);
     if (getAddressRes.success) {
       return res.json({ success: true, message: getAddressRes.message, address: getAddressRes.address });
     } else {

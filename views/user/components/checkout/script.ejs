@@ -271,6 +271,7 @@
   });
 
   function editAddress(addressId) {
+    console.log('/////');
     // Get the modal element
     var editModal = document.getElementById('editAddressModal');
 
@@ -305,6 +306,7 @@
         return response.json()
       })
       .then(addressData => {
+        console.log(addressData);
         // Populate the edit form fields with the address data
         const editForm = document.getElementById('editAddressForm');
 
@@ -488,7 +490,7 @@
         formData.forEach(function(value, key) {
           formObject[key] = value;
         });
-
+        console.log(formObject,'//////');
         const url = "/update-address";
         fetch(url, {
             method: 'POST',

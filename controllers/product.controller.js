@@ -268,5 +268,4 @@ module.exports = {
   GetProductImages,
   CategoryProduct,
   ProductsBySearch,
-  // SearchResult,
 };

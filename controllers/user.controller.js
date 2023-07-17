@@ -267,6 +267,14 @@ async function  GetForgotPassword(req, res) {
   }
 }
 
+async function Particle(req, res){
+  try {
+    res.render('user/particle')
+  } catch (error) {
+    handleError(res, error)
+  }
+}
+
 module.exports = {
   GetHome,
   GetSignup,
@@ -285,5 +293,6 @@ module.exports = {
   GetLogout,
   Get404,
   GetForgotPassword,
-  PostResetPassword
+  PostResetPassword,
+  Particle
 };
