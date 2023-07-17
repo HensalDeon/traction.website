@@ -244,40 +244,12 @@ async function CategoryProduct(req, res) {
   }
 }
 
-// async function ProductsBySearch(req, res) {
-//   try {
-//     const searchTerm = req.body.searchInput.trim();
-//     const searchRegex = new RegExp(`^${searchTerm}`, 'i');
-//     const products = await searchProductsWithRegex(searchRegex);
-
-//     req.session.searchProducts = products;
-
-//     if (products.length > 0) {
-//       return res.json({ success: true, productsCount: products.length });
-//     } else {
-//       return res.json({ success: false, productsCount: products.length });
-//     }
-//   } catch (error) {
-//     handleError(res, error);
-//   }
-// }
-let searchResults=[]
 async function ProductsBySearch(req, res) {
   try {
-    const searchTerm = req.body.searchInput;
-    const searchRegex = new RegExp(`^${searchTerm}`, 'i');
+    const searchTerm = req.query.keyword;
+    const searchRegex = new RegExp(searchTerm, 'gi');
     const searchedProducts = await searchProductsWithRegex(searchRegex);
-    searchResults = searchedProducts
-    res.status(200).json({ success: true, searchResults });
-  } catch (error) {
-    handleError(res, error);
-  }
-}
-
-
-async function SearchResult(req, res) {
-  try {
-    res.render('user/search-result', { products: searchResults }); 
+    res.render('user/search-result', { products: searchedProducts }); 
   } catch (error) {
     handleError(res, error);
   }
@@ -296,5 +268,5 @@ module.exports = {
   GetProductImages,
   CategoryProduct,
   ProductsBySearch,
-  SearchResult,
+  // SearchResult,
 };

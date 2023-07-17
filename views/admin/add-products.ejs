@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
     <%- include("../partials/admin-header") %>
 </head>
 <body>
@@ -13,10 +14,11 @@
     <%- include("./components/products/add-new-products.ejs") %>
     <%- include("./layouts/admin-footer.ejs") %>
     </main>
-
-<%- include("./components/script/script.ejs") %>
-<!-- ajax/axios -->
-<script src="/admins/assets/js/vendors/ajax/productAdd.js"></script>
+    <%- include("./components/script/script.ejs") %>
+    <!-- ajax/axios -->
+    <script src="/admins/assets/js/vendors/ajax/productAdd.js"></script>
+    <script src="/user/assets/js/custom/cropper.js"></script>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
 </html>

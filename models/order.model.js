@@ -24,7 +24,7 @@ async function getAddresses(userId, res) {
 
 async function getAddress(addressId, userId){
   try {
-    const address = await addressDatabase.findOne({ _id: addressId, user: userId });
+    const address = await addressDatabase.findOne({ _id: addressId, user: userId, deleted: false });
     if (address) {
       return { success: true, message:'Address found', address };
     } else {
@@ -123,7 +123,9 @@ async function addAdrress(addressData, userId, res) {
 
 async function deleteAddress(addressId) {
   try {
-    const result = await addressDatabase.findByIdAndDelete(addressId);
+    // const result = await addressDatabase.findByIdAndDelete(addressId);
+    const result = await addressDatabase.findByIdAndUpdate(addressId, { deleted: true }, { new: true } );
+    
     if (result) {
       return true;
     } else {
@@ -507,6 +509,7 @@ async function getOrderdetails(orderId) {
     throw new Error('Error finding order!');
   }
 }
+
 
 async function updateWalletData(walletAmount, userId, orderId) {
   try {

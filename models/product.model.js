@@ -297,4 +297,5 @@ module.exports = {
   searchProductsWithRegex,
   enableProductStatus,
   setProductImage,
+  
 };

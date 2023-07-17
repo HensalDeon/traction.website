@@ -33,7 +33,7 @@ const {
   GetAllProducts,
   CategoryProduct,
   ProductsBySearch, 
-  SearchResult,
+  // SearchResult,
   GetProductImages,
 } = require('../controllers/product.controller');
 
@@ -117,8 +117,8 @@ userRouter.get('/wallet', isLoggedIn, GetWallet);
 userRouter.post('/apply-wallet', isLoggedIn, ApplyWallet);
 
 // Product Search
-userRouter.get('/search-result', SearchResult);
-userRouter.post('/search-products', ProductsBySearch);
+userRouter.get('/search-result', ProductsBySearch);
+// userRouter.post('/search-products', ProductsBySearch);
 
 // Accnt details/LogOut
 userRouter.get('/account', isLoggedIn, GetAccount);

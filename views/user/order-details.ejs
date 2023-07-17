@@ -107,26 +107,24 @@
               </div>
               <div class="row card-row">
                 <div id="cardBodyId" class="col-md-6">
-                  <div class="card mb-3 my-custom-card-class" addressId="<%= orderData.shippingAddress._id %>">
+                  <div class="card mb-3 my-custom-card-class" addressId="<%= orderData.shippingAddress ? orderData.shippingAddress._id : '' %>">
 
                     <div class="card-body">
                       <label>
                         <p>
                           <strong>Name: </strong>
-                          <%=orderData.shippingAddress.fname %>
-                          <%=orderData.shippingAddress.lname %><br>
+                          <%=orderData.shippingAddress ? orderData.shippingAddress.fname : ''%>
+                          <%=orderData.shippingAddress ? orderData.shippingAddress.lname : ''%><br>
                           <strong>Phone: </strong>
-                          <%=orderData.shippingAddress.phone %><br>
+                          <%=orderData.shippingAddress ? orderData.shippingAddress.phone : ''%><br>
                           <strong>Email: </strong>
-                          <%=orderData.shippingAddress.email %><br>
+                          <%=orderData.shippingAddress ? orderData.shippingAddress.email : ''%><br>
                           <strong>Street: </strong>
-                          <%=orderData.shippingAddress.street_address %>,
-                          <%=orderData.shippingAddress.city %>,
-                          <%=orderData.shippingAddress.state %>,
-                          <%=orderData.shippingAddress.country
-                                                                                        %>,
-                          <%=orderData.shippingAddress.zipcode
-                                                                                            %><br>
+                          <%=orderData.shippingAddress ? orderData.shippingAddress.street_address : ''%>,
+                          <%=orderData.shippingAddress ? orderData.shippingAddress.city : ''%>,
+                          <%=orderData.shippingAddress ? orderData.shippingAddress.state : ''%>,
+                          <%=orderData.shippingAddress ? orderData.shippingAddress.country : ''%>,
+                          <%=orderData.shippingAddress ? orderData.shippingAddress.zipcode : ''%><br>
                         </p>
                       </label>
                     </div>

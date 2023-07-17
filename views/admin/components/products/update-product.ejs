@@ -300,27 +300,6 @@
     fileInput.click();
   }
 
-
-/* 
-function getRemainingImageUrls() {
-  const originalImages = Array.from(document.querySelectorAll('.image_container'));
-  const remainingImageUrls = [];
-
-  for (let i = 0; i < originalImages.length; i++) {
-    const image = originalImages[i];
-    const imageUrl = image.querySelector('img').src;
-    const hasParent = image.parentNode !== null;
-    console.log("img urls", imageUrl);
-
-    if (hasParent) {
-      remainingImageUrls.push(imageUrl);
-      console.log("remain url",remainingImageUrls);
-    }
-  }
-
-  return remainingImageUrls;
-} */
-
   const productId = document.getElementById('productId');
   let product = productId.getAttribute('data-productId');
   loadImagesFromBackend(product);

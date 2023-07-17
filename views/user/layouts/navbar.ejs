@@ -1,27 +1,27 @@
 <script>
-  window.addEventListener("DOMContentLoaded", () => {
-  const searchInput = document.getElementById('searchInput');
-  searchInput.addEventListener('keyup', (event) => {
-    event.preventDefault();
-    if (event.key === 'Enter') {
-      const searchTerm = searchInput.value.trim();
-      const data = {
-        searchInput: searchTerm
-      };
-      $.ajax({
-        url: '/search-products',
-        method: 'POST',
-        data: data,  // Pass the data in the request body
-        success: function (res) {
-          window.location.href = '/search-result';
-        },
-        error: function (error) {
-          console.log('An error occurred:', error);
-        }
-      });
-    }
-  });
-});
+//   window.addEventListener("DOMContentLoaded", () => {
+//   const searchInput = document.getElementById('searchInput');
+//   searchInput.addEventListener('keyup', (event) => {
+//     event.preventDefault();
+//     if (event.key === 'Enter') {
+//       const searchTerm = searchInput.value.trim();
+//       const data = {
+//         searchInput: searchTerm
+//       };
+//       $.ajax({
+//         url: '/search-products',
+//         method: 'POST',
+//         data: data,  // Pass the data in the request body
+//         success: function (res) {
+//           window.location.href = '/search-result';
+//         },
+//         error: function (error) {
+//           console.log('An error occurred:', error);
+//         }
+//       });
+//     }
+//   });
+// });
 
 
 
@@ -72,8 +72,8 @@
           </div>
           <div class="header-right">
             <div class="search-style-2">
-              <form>
-                <input class="custom-input" type="text" id="searchInput" placeholder="Search for items...">
+              <form action="/search-result" method="GET">
+                <input class="custom-input" type="text" name="keyword" id="searchInput" placeholder="Search for items...">
               </form>
             </div>
             <div class="header-action-right">
