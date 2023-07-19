@@ -1,98 +1,127 @@
-<section class="home-slider position-relative pt-25 pb-20">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-9 ">
+<section class="home-slider position-relative pt-25 pb-20" style="min-height: 580px;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9 ">
 
-                <form id="myForm" action="/admin/edit-banner" method="post" enctype="multipart/form-data">
-                    <div class="mb-4 d-flex gap-3">
-                        <img id="bannerImagePreview1" src="<%= banners[0]?.imageURL %>" alt="Preview"
-                            class="banner-image-preview" style="display: none;" />
-                        <img id="bannerImagePreview2" src="<%= banners[1]?.imageURL %>" alt="Preview"
-                            class="banner-image-preview" style="display: none;" />
-                    </div>
-
-                    <!-- <div class="mb-4">
-                        <label for="title" class="form-label">Title</label>
-                        <input type="text" name="title" placeholder="Type here" class="form-control" id="bannerTitle" />
-                    </div> -->
-
-                    <div class="mb-4">
-                        <select required class="form-select" name="bannerId" onchange="handleBannerSelection(event)">
-                            <option value="<%= banners[0]._id.toHexString() %>">
-                                B1
-                            </option>
-                            <option value="<%= banners[1]._id.toHexString() %>">
-                               B2
-                            </option>
-                        </select>
-                    </div>
-<!-- 
-                    <div class="mb-4">
-                        <label for="bannerNumber" class="form-label">Banner number</label>
-                        <input type="number" name="bannerNumber" placeholder="2" class="form-control"
-                            id="bannerNumber" />
-                    </div> -->
-
-                    <div class="mb-4">
-                        <label for="bannerImage" class="form-label">Banner image</label>
-                        <input type="file" name="bannerImage" class="form-control" id="bannerImage"
-                            onchange="previewImage(event)" />
-                    </div>
-
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Change</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+        <form id="myForm" action="/admin/add-banner" method="post" enctype="multipart/form-data">
+          <div class="mb-4">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" name="title" placeholder="Type here" class="form-control" id="bannerTitle" />
+          </div>
+          <div class="mb-4">
+            <label for="bannerId" class="form-label">Banner number</label>
+            <select required class="form-select" name="bannerNumber">
+              <option value="1">Banner 1</option>
+              <option value="2">Banner 2</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label for="bannerImage" class="form-label">Banner image</label>
+            <input type="file" name="bannerImage" class="form-control" id="bannerImage" onchange="previewImage(event)" accept="image/*" required />
+          </div>
+          <div class="mb-4">
+            <img id="preview" src="#" alt="Preview" style="max-width: 100%; height: auto; display: none;">
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Add banner</button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </section>
 
 <style>
-    .banner-image-preview {
-        max-width: 500px;
-        max-height: 250px;
-        width: 100%;
-        /* Add this line to ensure consistent width */
-        border-radius: 20px;
-        object-fit: cover;
-    }
+  #bannerImage {
+    max-width: 500px;
+    max-height: 250px;
+    width: 100%;
+    /* Add this line to ensure consistent width */
+    border-radius: 20px;
+    object-fit: cover;
+  }
 </style>
-
 <script>
-    window.addEventListener("DOMContentLoaded", function () {
-        var selectedOption = document.querySelector('select[name="bannerId"]').value;
-        handleBannerSelection({ target: { value: selectedOption } });
-    });
+  function previewImage(event) {
+    const input = event.target;
+    const preview = document.getElementById('preview');
 
-    function handleBannerSelection(event) {
-        var selectedOption = event.target.value;
-        var bannerImagePreview1 = document.getElementById("bannerImagePreview1");
-        var bannerImagePreview2 = document.getElementById("bannerImagePreview2");
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(input.files[0]);
+    } else {
+      preview.src = '#';
+      preview.style.display = 'none';
+    }
+  }
+</script>
+<script>
+  document.getElementById("myForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    handleFormSubmission();
+  });
 
-        if (selectedOption === "<%= banners[0]._id.toHexString() %>") {
-            bannerImagePreview1.style.display = "block";
-            bannerImagePreview2.style.display = "none";
-        } else if (selectedOption === "<%= banners[1]._id.toHexString() %>") {
-            bannerImagePreview1.style.display = "none";
-            bannerImagePreview2.style.display = "block";
-        }
+  function validateImage(file) {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    const maxSize = 2 * 1024 * 1024; // 2MB
+    if (!allowedTypes.includes(file.type)) {
+      swal('Error', 'Only JPEG and PNG images are allowed', 'error');
+      return false;
+    }
+    if (file.size > maxSize) {
+      swal('Error', 'The image size should be within 5MB', 'error');
+      return false;
+    }
+    return true;
+  }
+  function handleFormSubmission() {
+    var form = document.getElementById("myForm");
+    var fileInput = document.getElementById("bannerImage");
+    var file = fileInput.files[0];
+    if (!validateImage(file)) {
+      return;
     }
 
-    function previewImage(event) {
-        var selectedOption = document.querySelector('select[name="bannerId"]').value;
-        var file = event.target.files[0];
+    var formData = new FormData(form);
 
-        // Update the corresponding image preview based on the selected option
-        if (selectedOption === "<%= banners[0]._id.toHexString() %>") {
-            var bannerImagePreview1 = document.getElementById("bannerImagePreview1");
-            bannerImagePreview1.style.display = "block";
-            bannerImagePreview1.src = URL.createObjectURL(file);
-        } else if (selectedOption === "<%= banners[1]._id.toHexString() %>") {
-            var bannerImagePreview2 = document.getElementById("bannerImagePreview2");
-            bannerImagePreview2.style.display = "block";
-            bannerImagePreview2.src = URL.createObjectURL(file);
-        }
+    var formFields = form.querySelectorAll("input[type='text'], select");
+  var isEmpty = false;
+  formFields.forEach(function(field) {
+    if (field.value.trim() === "") {
+      isEmpty = true;
+      field.classList.add("is-invalid");
+    } else {
+      field.classList.remove("is-invalid");
     }
+  });
 
+ 
+  if (isEmpty || file === undefined) {
+    swal("Error", "Please fill in all required fields and select an image", "error");
+    return;
+  }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/admin/add-banner");
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        var response = JSON.parse(xhr.responseText);
+
+        if (response.status) {
+          swal("Success", response.message, "success").then(function() {
+            window.location.href = "/admin/banners";
+          });
+        } else {
+          swal("Error", response.message, "error");
+        }
+      } else {
+        swal("Error", "An error occurred during form submission", "error");
+      }
+    };
+    xhr.send(formData);
+  }
 </script>

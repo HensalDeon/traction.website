@@ -123,9 +123,7 @@ userRouter.get('/search-result', ProductsBySearch);
 // Accnt details/LogOut
 userRouter.get('/account', isLoggedIn, GetAccount);
 userRouter.get('/order-details', isLoggedIn, GetOrderDetails);
-// 
 userRouter.get('/download-invoice', isLoggedIn, GetInvoice )
-// 
 userRouter.post('/update-userdata', upload.single('profileimage'), isLoggedIn, UpdateUserdata);
 userRouter.post('/get-address', isLoggedIn, EditAddress)
 userRouter.post('/update-address', isLoggedIn, UpdateAddress)

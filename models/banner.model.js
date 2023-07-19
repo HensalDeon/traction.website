@@ -3,8 +3,8 @@ const cloudinary = require('../config/cloudinary');
 
 async function getAllBanners() {
   try {
-    const banners = await bannerDatabase.find({bannerNumber:1}).select('imageURL').exec();
-    return banners;
+    const banners = await bannerDatabase.find().select('imageURL').exec();
+    return banners || [];
   } catch (error) {
     throw new Error('Oops! Something went wrong while fetching banner images');
   }
@@ -12,13 +12,20 @@ async function getAllBanners() {
 
 async function addNewBanner(bannerData, bannerImage) {
   try {
-    const { title, startDate, endDate, bannerNumber } = bannerData;
-    const banner = new bannerDatabase({
-      title: title,
-      // startDate: startDate,
-      // endDate: endDate,
-      bannerNumber: bannerNumber,
-    });
+    const { bannerNumber, title } = bannerData;
+    let banner = await bannerDatabase.findOne({ bannerNumber: bannerNumber });
+
+    if (!banner) {
+      banner = new bannerDatabase({
+        title: title,
+        bannerNumber: bannerNumber,
+      });
+    } else {
+      banner.title = title;
+      // Delete the existing image from Cloudinary
+      const existingImagePublicId = banner.imageURL.split('/').pop().split('.')[0];
+      await cloudinary.uploader.destroy(existingImagePublicId);
+    }
 
     const path = bannerImage.path;
 
@@ -30,15 +37,17 @@ async function addNewBanner(bannerData, bannerImage) {
 
     banner.imageURL = response.url;
     const result = await banner.save();
+
     if (result) {
-      return { status: true, message: 'banner added successfully' };
+      return { status: true, message: 'Banner added/updated successfully' };
     } else {
-      return { status: false, message: 'banner failed to save' };
+      return { status: false, message: 'Failed to save the banner' };
     }
   } catch (error) {
-    throw new Error('Oops! Something went wrong adding banner image');
+    throw new Error('Oops! Something went wrong adding/updating the banner image');
   }
 }
+
 
 
 async function updateBanner(bannerData, bannerImage) {
