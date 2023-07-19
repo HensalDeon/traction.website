@@ -10,7 +10,8 @@ const {
 } = require('../models/userAuth.model');
 
 const { fetchAllProducts } = require('../models/product.model');
-const { fetchUserOrderDetails } = require('../models/order.model');
+const { fetchUserOrderDetails,getOrderInvoiceData, getOrderdetails } = require('../models/order.model');
+const { generateInvoice } = require('../config/pdfKit');
 
 const {getAllBanners} = require('../models/banner.model')
 
@@ -274,6 +275,16 @@ async function Particle(req, res){
     handleError(res, error)
   }
 }
+// .................................................
+async function GetInvoice(req, res) {
+  try {
+    let id = req.query.id
+    const invoiceData = await getOrderdetails(id);
+     generateInvoice(invoiceData, res);
+  } catch (error) {
+    handleError(res, error);
+  }
+}
 
 module.exports = {
   GetHome,
@@ -294,5 +305,6 @@ module.exports = {
   Get404,
   GetForgotPassword,
   PostResetPassword,
-  Particle
+  Particle,
+  GetInvoice
 };

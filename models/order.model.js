@@ -8,10 +8,11 @@ const productDatabase = require('../schema/product.schema');
 
 const { addressSchema } = require('../config/joi');
 const { handleError } = require('../middlewares/error.handler');
+const { log } = require('console');
 
 async function getAddresses(userId, res) {
   try {
-    const addresses = await addressDatabase.find({ user: userId });
+    const addresses = await addressDatabase.find({ user: userId, deleted:false });
     if (!addresses) {
       return { status: false };
     } else {
@@ -125,6 +126,7 @@ async function deleteAddress(addressId) {
   try {
     // const result = await addressDatabase.findByIdAndDelete(addressId);
     const result = await addressDatabase.findByIdAndUpdate(addressId, { deleted: true }, { new: true } );
+    console.log(result);
     
     if (result) {
       return true;
@@ -262,7 +264,7 @@ async function fetchUserOrderDetails(userId, res) {
       .select('total status transactionId date items paymentStatus')
       .sort({ date: -1 });
 
-    const addresses = await addressDatabase.find({ user: userId });
+    const addresses = await addressDatabase.find({ user: userId , deleted: false});
 
     const orderDetails = orders.map((order) => {
       // Calculate the return date
@@ -480,7 +482,7 @@ async function getUserData(userId) {
     throw new Error('Error finding user!');
   }
 }
-
+// ...................
 async function getOrderdetails(orderId) {
   try {
     const orderData = await orderDatabase
@@ -571,5 +573,5 @@ module.exports = {
   getUserData,
   getOrderdetails,
   updateWalletData,
-  orderStatus
+  orderStatus,
 };

@@ -102,8 +102,9 @@
 
           <div class="col-md-6">
             <div class="order_review" style="background-color: #f0ffffb5;">
-              <div class="mb-25">
+              <div class="mb-25 d-flex"  style="justify-content: space-between;">
                 <h4>SHIPPED TO</h4>
+                <a href="/download-invoice?id=<%= orderData.id %>" class="btn btn-sm">Invoice</a>
               </div>
               <div class="row card-row">
                 <div id="cardBodyId" class="col-md-6">
@@ -185,8 +186,6 @@
                       <%= orderData.orderNumber %></span>
                   </strong><br>
                 </div>
-
-
               </div>
             </div>
           </div>
