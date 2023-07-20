@@ -195,6 +195,7 @@ async function PostCheckout(req, res) {
           );
         }
         const razorPayOrder = await generateRazorpay(checkoutResult.order);
+        await cartDatabase.deleteOne({ user: req.session.user._id });
         return res.json({
           success: true,
           paymethod: 'ONLINE',
@@ -217,6 +218,7 @@ async function VerifyPayment(req, res) {
       let razorpay_payment_id = req.body['payment[razorpay_payment_id]'];
       let razorpay_order_id = req.body['payment[razorpay_order_id]'];
       let razorpay_signature = req.body['payment[razorpay_signature]'];
+
       let paymentDetails = { razorpay_payment_id, razorpay_order_id, razorpay_signature };
       const changePaymentResult = await changePaymentStatus(
         req.body['order[receipt]'],

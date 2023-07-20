@@ -56,7 +56,6 @@ async function GetAddProduct(req, res) {
 
 async function PostAddProduct(req, res) {
   try {
-    console.log("entered");
     if (req.fileValidationError) {
       return res.status(400).json({ error: req.fileValidationError.message });
     }
@@ -71,7 +70,6 @@ async function PostAddProduct(req, res) {
     }
     
     const productResult = await addNewProduct(req.body, req.files);
-    console.log(productResult.message);
     if (productResult.status) {
       res.status(200).json({ success: true, message: 'Product added succesfully' });
     }

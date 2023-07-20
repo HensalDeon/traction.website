@@ -35,27 +35,26 @@
                 </a></h5> <span id="qty-navbar-<%=item.product._id %>" class="product-qty">x <%=
                                         item.quantity %> </span>
             </td>
-            <td class="price" data-title="Price" id="subtotal"  data-price="<%= item.product.productPrice %>">₹<%= item.price %>
+            <td class="price" data-title="Price" id="subtotal" data-price="<%= item.product.productPrice %>">₹<%= item.price %>
             </td>
           </tr>
           <% }) %>
           <tr>
             <th>SubTotal</th>
-            <td class="product-subtotal"  colspan="2">₹<%= (cart?.total|| 0) %>
+            <td class="product-subtotal" colspan="2">₹<%= (cart?.total|| 0) %>
             </td>
           </tr>
           <!-- <%#if ( locals.walletAmount) { %>
-                                <tr style="background-color: rgba(170, 239, 255, 0.187);">
-                                    <th><a onclick="applyWalletAmount('<%#= cart?._id %>')"
-                                            style="color: rgb(0, 90, 60);" id="applyWallet"> Apply wallet amount</a>
-                                    </th>
-                                    <td colspan="2"><em id="walletAmount">₹<%#= locals.walletAmount %></em></td>
-                                </tr>
-                                <%# } %> -->
+          <tr style="background-color: rgba(170, 239, 255, 0.187);">
+            <th><a onclick="applyWalletAmount('<%#= cart?._id %>')" style="color: rgb(0, 90, 60);" id="applyWallet"> Apply wallet amount</a>
+            </th>
+            <td colspan="2"><em id="walletAmount">₹<%#= locals.walletAmount %></em></td>
+          </tr>
+          <%# } %> -->
 
           <tr>
             <th>Discount</th>
-            <td class="product-discount"  colspan="2">₹<span id="coupon-discount">
+            <td class="product-discount" colspan="2">₹<span id="coupon-discount">
                 <% if (locals.couponDiscount) { %>
                 <%= Math.floor(locals.couponDiscount) %>
                 <% } else { %>0
@@ -65,14 +64,14 @@
           </tr>
           <tr>
             <th>Applied Wallet Amount</th>
-            <td class="product-wallet"  colspan="2">₹<span id="wallet-discount">
+            <td class="product-wallet" colspan="2">₹<span id="wallet-discount">
                 <%= locals.appliedWallet?locals.appliedWallet:0 %>
               </span>
             </td>
           </tr>
           <tr>
             <th>Shipping</th>
-            <td colspan="2" ><em>Free Shipping</em></td>
+            <td colspan="2"><em>Free Shipping</em></td>
           </tr>
           <tr>
             <th>Total</th>
@@ -86,15 +85,11 @@
                 <% } else { %>
                 <%= Math.floor((cart?.total || 0)) %>
                 <% } %>
-
               </span></td>
           </tr>
-
         </tbody>
       </table>
     </div>
-
-
     <div class="bt-1 border-color-1 mt-30 mb-30"></div>
     <div class="row">
       <!-- apply coupon -->
@@ -105,13 +100,13 @@
               code</a></span>
         </div>
         <div class="panel-collapse collapse coupon_form " id="coupon">
-          <div class="panel-body">
+          <div class="panel-body" style="background-color: #0b2121c9;">
             <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
             <form method="post">
               <span id="error-msg"></span>
               <div class="form-group">
 
-                <input type="text" id="couponName" value="<%= couponcode %>" placeholder="Enter Coupon Code..." required>
+                <input style="background-color: aliceblue;" type="text" id="couponName" value="<%= couponcode %>" placeholder="Enter Coupon Code..." required>
               </div>
               <div class="form-group">
                 <button class="btn  btn-md" id="apply-coupon" name="Apply coupon">Apply Coupon</button>
@@ -121,8 +116,6 @@
         </div>
       </div>
 
-
-
       <div class="col-lg-6 mt-3 mb-2">
         <div class="toggle_info">
           <span><i class="fi-rs-home mr-10"></i> <a href="#wallet" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to open wallet details</a></span>
@@ -130,7 +123,7 @@
 
         <div class="panel-collapse collapse coupon_form " id="wallet">
 
-          <div class="panel-body">
+          <div class="panel-body" style="background-color: #0b2121c9;">
             <div class="row">
               <div class="col-md-8 ps-0">
                 <p class="ps-3 textmuted fw-bold h6 mb-0">Wallet balance</p>
@@ -146,25 +139,23 @@
                 </p>
                 <% if (walletAmount> cart.total) { %>
                 <div id="maxWallet" class="mt-1 mb-1">
-                  <p style="color: black;" id="message">you can apply total &#8377;<span class="fw-600">
+                  <p id="message">you can apply total &#8377;<span class="fw-600">
                       <%= cart.total %>
                     </span> from your wallet!</p>
                 </div>
                 <% } else { %>
                 <div id="maxWallet" class="mt-1 mb-1">
-                  <p style="color: black;" id="message">you can apply total &#8377;<span class="fw-600">
+                  <p id="message">you can apply total &#8377;<span class="fw-600">
                       <%= walletAmount %>
                     </span> from your wallet!</p>
                 </div>
                 <% } %>
-
-
               </div>
               <div class="col-md-4">
                 <form id="walletForm">
                   <span id="error-msg2"></span>
                   <div class="form-group">
-                    <input type="number" value="<%= appliedWallet %>" id="wallet-input" min="0" class="no-arrow" placeholder="<%= walletAmount>cart.total?cart.total: walletAmount %>">
+                    <input style="background-color: aliceblue;" type="number" value="<%= appliedWallet %>" id="wallet-input" min="0" class="no-arrow" placeholder="<%= walletAmount>cart.total?cart.total: walletAmount %>">
                   </div>
                   <div class="form-group">
                     <button class="btn btn-md" type="submit" id="apply-wallet" name="wallet">Apply
@@ -206,7 +197,6 @@
     <button type="submit" id="placeOrder" class="btn btn-fill-out btn-block mt-30">Place Order</button>
   </div>
 </div>
-
 
 <script src="/user/assets/js/custom/ajaxCart.js"></script>
 
@@ -371,7 +361,7 @@
 
   let selectedAddress = null
 
-    function selectAddress(addressId) {
+  function selectAddress(addressId) {
     const cards = document.querySelectorAll(".card");
     cards.forEach((card) => {
       if (card.getAttribute("addressId") === addressId) {
@@ -438,18 +428,16 @@
           razorpayPayment(response.order)
         }
       }
-
     }).catch((error) => {
       console.log(error);
     })
-
   })
 
 
   function razorpayPayment(order) {
     console.log(order);
     var options = {
-      "key": "rzp_test_YNltnS1mdzdtvV", // Enter the Key ID generated from the Dashboard
+      "key": "rzp_test_0QXGKrNDMxdX9h", // Enter the Key ID generated from the Dashboard
       "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
       "currency": "INR",
       "name": "traction", //your business name
@@ -492,8 +480,9 @@
         order
       },
       success: (response) => {
+        console.log(response,'😶‍🌫️😶‍🌫️😶‍🌫️😶‍🌫️😶‍🌫️');
         const id = order.receipt;
-        console.log(order.receipt);
+        console.log(order.receipt,'order reciept 💕💕');
         if (response.success) {
           window.location.href = `/order-successfull/${id}`;
         } else {

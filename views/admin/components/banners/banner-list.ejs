@@ -2,6 +2,11 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-9 ">
+        <div class="content-header">
+          <div>
+            <h2 class="content-title card-title">Banners</h2>
+          </div>
+        </div>
 
         <form id="myForm" action="/admin/add-banner" method="post" enctype="multipart/form-data">
           <div class="mb-4">
@@ -19,8 +24,8 @@
             <label for="bannerImage" class="form-label">Banner image</label>
             <input type="file" name="bannerImage" class="form-control" id="bannerImage" onchange="previewImage(event)" accept="image/*" required />
           </div>
-          <div class="mb-4">
-            <img id="preview" src="#" alt="Preview" style="max-width: 100%; height: auto; display: none;">
+          <div class="mb-4" style="display: flex; justify-content: center;">
+            <img id="preview" src="#" alt="Preview" style="max-width: 100%; max-height: 300px; height: auto; display: none;">
           </div>
           <div class="d-grid">
             <button type="submit" class="btn btn-primary">Add banner</button>

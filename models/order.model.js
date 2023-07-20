@@ -382,12 +382,15 @@ async function changeOrderStatus(changeStatus, orderId) {
       },
     });
 
-    if (changeStatus === 'returned') {
+    if (changeStatus === 'returned' || changeStatus === 'canceled') {
       const orderResult = await orderDatabase.findById(orderId).select('total user');
       const { total, user } = orderResult;
       const userResult = await userDatabase.findById(user).select('wallet');
+      console.log(userResult,'checking user result🌞🌞');
       const wallet = userResult.wallet;
+      console.log(wallet,'💥 is there any wallet amount?');
       const updatedWallet = wallet + total;
+      console.log(updatedWallet,'❤️❤️❤️');
       await userDatabase.findByIdAndUpdate(user, {
         $set: {
           wallet: updatedWallet,

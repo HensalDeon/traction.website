@@ -24,7 +24,7 @@ async function generateRazorpay(orders) {
       });
     });
     
-    console.log(order);
+    console.log(order,'🙌🙌');
     return order;
     
   } catch (error) {
