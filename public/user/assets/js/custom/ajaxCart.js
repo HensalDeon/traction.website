@@ -66,11 +66,9 @@ function updateCartDisplay(productId, total) {
   console.log('cart item: '+cartItems.length);
 
 if (runCode && cartItems.length === 0) {
-  // Cart is empty, reload the page
   window.location.reload();
   return;
 }
-
 
   // Check if any products are marked as out of stock
   const outOfStockElements = document.querySelectorAll('.outOfStock');
@@ -132,7 +130,6 @@ quantityDivs.forEach((quantityDiv) => {
     let arr = false;
     document.querySelectorAll('.outOfStock').forEach((stock)=>{
       if(stock.textContent === 'out of stock'){
-       
         arr = true;
      }
      })

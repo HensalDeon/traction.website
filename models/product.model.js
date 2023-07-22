@@ -81,6 +81,9 @@ async function fetchAllProducts(page, limit, sortBy, sortOption) {
 async function fetchProduct(slug) {
   try {
     const product = await productDatabase.findOne({ slug: slug }).populate('productCategory');
+    if(!product){
+      return ({status: false})
+    }
     if (!product.productStatus) {
       return { status: false };
     } else {

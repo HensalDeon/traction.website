@@ -1,5 +1,5 @@
 const { fetchCategories } = require('../models/category.model');
-const { fetchCartProducts } = require('../models/cart.model');
+const { fetchCartProducts, fetchWishlistProducts } = require('../models/cart.model');
 const { handleError } = require('./error.handler');
 
 async function categoryMiddleware(req, res, next) {
@@ -27,7 +27,9 @@ async function cartProducts(req, res, next) {
   try {
     if (req.session.user) {
       const cartResult = await fetchCartProducts(req.session.user._id);
+      const wishlistResult = await fetchWishlistProducts(req.session.user._id);
       res.locals.cart = cartResult.cart;
+      res.locals.wishlist = wishlistResult.wishlist;
     }
     next();
   } catch (error) {

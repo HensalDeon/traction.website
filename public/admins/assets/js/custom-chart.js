@@ -47,7 +47,6 @@
     success: function (data) {
       if (data.success) {
 
-        console.log(data);
         //graph one
         chart.data.labels = data.labels;
         chart.data.datasets[0].data = data.sales;

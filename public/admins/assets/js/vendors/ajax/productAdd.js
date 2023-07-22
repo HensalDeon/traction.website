@@ -69,7 +69,6 @@ submitButton.addEventListener('click', (event) => {
     })
     .then((response) => {
       if(response.data.success){
-        console.log('Product added successfully!');
         submitButton.disabled = false;
         callAlertify('success', response.data.message);
         

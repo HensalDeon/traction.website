@@ -89,7 +89,9 @@
                                                         <a aria-label="Compare" class="action-btn hover-up" href="/"><i
                                                                 class="fi-rs-shuffle"></i></a>
                                                     </div> -->
-
+                    <div class="product-action-1">
+                      <a aria-label="Add To Wishlist" class="addToWishlistButton action-btn hover-up" data-product-id="<%= product._id %>"><i class="fi-rs-heart"></i></a>
+                    </div>
                     <div class="product-badges product-badges-position product-badges-mrg">
                       <% var availableBadges=["New", "Hot" , "Sale" , "Limited" ]; %>
                       <% var randomBadgeIndex=Math.floor(Math.random() * availableBadges.length); %>

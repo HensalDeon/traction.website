@@ -126,7 +126,6 @@ async function deleteAddress(addressId) {
   try {
     // const result = await addressDatabase.findByIdAndDelete(addressId);
     const result = await addressDatabase.findByIdAndUpdate(addressId, { deleted: true }, { new: true } );
-    console.log(result);
     
     if (result) {
       return true;
@@ -386,11 +385,8 @@ async function changeOrderStatus(changeStatus, orderId) {
       const orderResult = await orderDatabase.findById(orderId).select('total user');
       const { total, user } = orderResult;
       const userResult = await userDatabase.findById(user).select('wallet');
-      console.log(userResult,'checking user result🌞🌞');
       const wallet = userResult.wallet;
-      console.log(wallet,'💥 is there any wallet amount?');
       const updatedWallet = wallet + total;
-      console.log(updatedWallet,'❤️❤️❤️');
       await userDatabase.findByIdAndUpdate(user, {
         $set: {
           wallet: updatedWallet,
@@ -460,8 +456,6 @@ async function getWallet(userId) {
       pendingAmount += order.total;
     }
 
-    console.log(pendingAmount);
-    console.log(pendingOrders);
 
     if (amount) {
       return { status: true, amount: amount.wallet, pendingWallet: pendingAmount };

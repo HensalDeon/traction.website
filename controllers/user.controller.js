@@ -10,7 +10,7 @@ const {
 } = require('../models/userAuth.model');
 
 const { fetchAllProducts } = require('../models/product.model');
-const { fetchUserOrderDetails,getOrderInvoiceData, getOrderdetails } = require('../models/order.model');
+const { fetchUserOrderDetails, getOrderdetails } = require('../models/order.model');
 const { generateInvoice } = require('../config/pdfKit');
 
 const {getAllBanners} = require('../models/banner.model')
@@ -116,7 +116,6 @@ async function PostVerifyOtp(req, res) {
     const phone = req.session.phone;
     const { otp } = req.body;
     const response = await verifyPhoneNumber(phone, otp);
-    console.log(response)
     if (response.status) {
       req.session.userloggedIn = true;
       req.session.user = response.user;

@@ -2,10 +2,13 @@ const { handleError } = require('../middlewares/error.handler');
 
 const {
   addItemToCart,
+  addItemToWishlist,
   removeItemFromCart,
   fetchCartProducts,
   clearCartItems,
   updateCartDetails,
+  fetchWishlistProducts,
+  removeItemFromWishlist,
 } = require('../models/cart.model');
 
 /**
@@ -19,6 +22,24 @@ const {
  * and total price if the cartResult status is true, and an empty cart with a total of 0 if the status
  * is false. If there is an error, it will be handled by the `handleError` function.
  */
+async function GetWishlist(req, res){
+  try {
+    const userId = req.session.user._id;
+    const wishlistResult = await fetchWishlistProducts(userId);
+    if (wishlistResult.status) {
+      const items = wishlistResult.wishlist.items.map((item) => ({
+        product: item.product,
+        quantity: item.quantity,
+        price: item.price,
+      }));
+      return res.render('user/wishlist', { items} );
+    } 
+    return res.render('user/wishlist',{ items: [] })
+  } catch (error) {
+    handleError(res, error)
+  }
+}
+
 
 async function GetCart(req, res) {
   try {
@@ -52,6 +73,31 @@ async function GetCart(req, res) {
  * `addItemToCart` function with the user ID, product ID, and quantity. If the `addItemToCart` function
  * returns a successful result, the function returns a JSON response with a
  */
+async function PostToWishlist(req, res){
+  try {
+    const {productId } = req.body;
+    const userId = req.session.user._id;
+
+    if (!productId || typeof productId !== 'string') {
+      return res
+        .status(400)
+        .json({ success: false, message: 'Invalid product id' });
+    }
+    const wishlistItem = await addItemToWishlist(userId, productId);
+    if (wishlistItem.status) {
+      res
+      .status(200)
+      .json({ success: wishlistItem.status, message: wishlistItem.message, product: wishlistItem.productData ,productAlreadyExist:wishlistItem.productAlreadyExist});
+    } else {
+      res
+        .status(404)
+        .json({ success: wishlistItem.status, message: wishlistItem.message, product: [] });
+    }
+  } catch (error) {
+    handleError(res,error)
+  }
+}
+
 async function PostToCart(req, res) {
   try {
     const { productId, quantity } = req.body;
@@ -91,7 +137,27 @@ async function PostToCart(req, res) {
  * of 200 and a JSON object containing the status, message, and total, or an error message with a
  * status code of 404 and a JSON object containing the status and message.
  */
-
+async function RemoveFromWishlist(req, res){
+  try {
+    const { productId } = req.body;
+    const userId = req.session.user._id;
+    if (!productId || typeof productId !== 'string') {
+      return res.status(400).json({ status: false, message: 'Invalid product id' });
+    }
+    const wishlistResult = await removeItemFromWishlist(userId, productId);
+    if (wishlistResult.status) {
+      res
+        .status(200)
+        .json({ status: wishlistResult.status, message: wishlistResult.message});
+    } else {
+      res
+        .status(404)
+        .json({ status: wishlistResult.status, message: wishlistResult.message });
+    }
+  } catch (error) {
+    handleError(res, error);
+  }
+}
 async function RemoveFromCart(req, res) {
   try {
     const { productId } = req.body;
@@ -179,4 +245,8 @@ module.exports = {
   RemoveFromCart,
   ClearCart,
   UpdateQuantity,
+  GetWishlist,
+  PostToWishlist,
+  RemoveFromWishlist,
+
 };

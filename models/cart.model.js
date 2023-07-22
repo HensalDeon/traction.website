@@ -1,13 +1,67 @@
 const cartDatabase = require('../schema/cart.schema');
 const productDatabase = require('../schema/product.schema');
 const userDatabase = require('../schema/user.schema');
+const wishlistDatabase = require('../schema/wishlist.schema')
+
+async function addItemToWishlist(userId, productId) {
+  try {
+    const product = await productDatabase
+      .findById(productId)
+      .select('productPrice productImageUrls productName _id stocks');
+    if (!product) {
+      return { status: false, message: 'product not found' };
+    }
+
+    let wishlist = await wishlistDatabase.findOne({ user: userId });
+    let productAlreadyExist = false;
+    if (wishlist) {
+      const itemIndex = wishlist.items.findIndex((item) => item.product.equals(productId));
+      if (itemIndex >= 0) {
+        productAlreadyExist = true;
+        return {
+          status: false,
+          message: 'product already exists!',
+          productData: product, productAlreadyExist
+        }
+      } else {
+        wishlist.items.push({
+          product: productId,
+          price: product.productPrice,
+        });
+        await wishlist.save();
+        return {
+          status: true,
+          message: 'product added to cart',
+          productData: product, productAlreadyExist
+        }
+      }
+    } else {
+      const newWishlist = await wishlistDatabase.create({
+        user: userId,
+        items: [
+          {
+            product: productId,
+            price: product.productPrice,
+          }
+        ]
+      })
+      await userDatabase.findByIdAndUpdate(userId, { wishlist: newWishlist._id });
+      return {
+        status: true,
+        message: 'product added to cart',
+        productData: product,
+      };
+    }
+  } catch (error) {
+    throw new Error('Something wrong while adding product');
+  }
+}
 
 async function addItemToCart(userId, productId, quantity) {
   try {
     const product = await productDatabase
       .findById(productId)
       .select('productPrice productImageUrls productName _id stocks');
-
 
     if (!product) {
       return { status: false, message: 'product not found' };
@@ -38,7 +92,7 @@ async function addItemToCart(userId, productId, quantity) {
       return {
         status: true,
         message: 'product added to cart',
-        productData: product,productAlreadyExist
+        productData: product, productAlreadyExist
 
       };
     }
@@ -66,6 +120,30 @@ async function addItemToCart(userId, productId, quantity) {
   }
 }
 
+async function removeItemFromWishlist (userId, productId){
+  try {
+    const product = await productDatabase.findById(productId).select('productPrice');
+
+    if (!product) {
+      return { status: false, message: 'product not found' };
+    }
+    let wishlist = await wishlistDatabase.findOne({ user: userId });
+    const itemIndex = wishlist.items.findIndex((item) => item.product.equals(productId));
+    if (itemIndex > -1) {
+      wishlist.items.splice(itemIndex, 1);
+      await wishlist.save();
+      return {
+        status: true,
+        message: 'product removed from Wishlist',
+      };
+    } else {
+      return { status: false, message: 'product not found in wishlist' };
+    }
+
+  } catch (error) {
+    throw new Error('Something went wrong while removing product from cart');
+  }
+}
 async function removeItemFromCart(userId, productId) {
   try {
     const product = await productDatabase.findById(productId).select('productPrice');
@@ -95,6 +173,18 @@ async function removeItemFromCart(userId, productId) {
     }
   } catch (error) {
     throw new Error('Something went wrong while removing product from cart');
+  }
+}
+async function fetchWishlistProducts(userId) {
+  try {
+    const wishlist = await wishlistDatabase.findOne({ user: userId }).populate('items.product');
+    if (!wishlist) {
+      return { status: false, wishlist, total: 0 }
+    } else {
+      return { status: true, wishlist }
+    }
+  } catch (error) {
+    throw new Error('Something went wrong while fetching products to wishlist');
   }
 }
 
@@ -159,9 +249,9 @@ async function cartProductTotal(userId) {
   try {
     const cart = await cartDatabase.findOne({ user: userId });
     if (cart && cart.total > 0) {
-      return {status:true,cart};
+      return { status: true, cart };
     } else {
-      return {status:false};
+      return { status: false };
     }
   } catch (error) {
     throw new Error('Error finding cart count!');
@@ -177,4 +267,7 @@ module.exports = {
   clearCartItems,
   updateCartDetails,
   cartProductTotal,
+  fetchWishlistProducts,
+  addItemToWishlist,
+  removeItemFromWishlist,
 };

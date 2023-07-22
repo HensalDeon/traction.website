@@ -104,7 +104,6 @@ async function EditAddress(req, res) {
 
 async function UpdateAddress(req, res) {
   try {
-    console.log(req.body);
     const addressId = req.body.id;
     const userId = req.session.user._id;
     const updatedAddressData = req.body.addressData;

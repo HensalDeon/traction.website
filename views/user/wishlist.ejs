@@ -1,0 +1,70 @@
+<html lang="en">
+
+<head>
+  <%- include("../partials/user-header") %>
+</head>
+
+<body>
+  <%- include("./components/preloading.ejs") %>
+  <%- include("./layouts/navbar.ejs") %>
+  <main>
+    <section class="pt-50 mb-50 cartBg">
+      <div class="container">
+        <% if(items.length === 0) { %>
+            <%- include('./emptyWishlist.ejs') %>
+
+        <% } else { %>
+        <div class="row">
+          <div class="col-12">
+            <div class="table-responsive">
+              <table class="table shopping-summery text-center" style="background-color: #f0ffffb5;">
+                <thead>
+                  <tr class="main-heading">
+                    <th scope="col" colspan="2">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Stock Status</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Remove</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% items.forEach(item=> { %>
+                  <tr data-item-id="<%= item.product._id %>">
+                    <td class="image product-thumbnail"><img src="<%= item.product.productImageUrls[0] %>" alt="#"></td>
+                    <td class="product-des product-name">
+                      <h5 class="product-name"><a href="/product/<%= item.product.slug %>"><%= item.product.productName %>
+                        </a></h5>
+                    </td>
+                    <td class="price" data-title="Price"><span>&#8377;<%= item.product.productPrice %></span></td>
+                    <td class="text-center" data-title="Stock">
+                      <% if (item.product.stocks<item.quantity) { %>
+                      <span class="color3 font-weight-bold" id="outOfStock-<%= item.product._id %>"><strong>Out of stock</strong></span>
+                      <% } else { %>
+                      <span class="color3 font-weight-bold" id="outOfStock-<%= item.product._id %>" class="text-muted"><strong>In stock</strong></span>
+                      <% } %>
+                    </td>
+                    <td class="text-right" data-title="Wishlist">
+                      <% if (item.product.stocks > 0) { %>
+                      <button class="btn btn-sm addTocartButton" data-product-id="<%= item.product._id %>"><i class="fi-rs-shopping-bag mr-5" ></i>Add to cart</button>
+                      <% } else { %>
+                        <button class="btn btn-sm notifyMe" data-product-id="<%= item.product._id %>"><i class="fi-rs-shopping-bag mr-5" ></i>Notify Me</button>
+                      <% } %>
+                      </td>
+                    <td class="action" onclick="removeProduct('<%= item.product._id %>')"><a class="text-muted"><i class="fi-rs-trash"></i></a></td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </section>
+  </main>
+  <%- include("./layouts/footer.ejs")%>
+  <%- include("./script/script.ejs") %>
+
+</body>
+
+</html>

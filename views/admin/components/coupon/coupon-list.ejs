@@ -311,8 +311,13 @@
       body: JSON.stringify(formDataObject)
     }).then(async (res) => {
       res = await res.json()
+      console.log(res);
+      if(!res.success){
+        callAlertify('error', res.message)
+      }else{
       callAlertify('success', res.message)
       location.reload();
+      }
     }).catch((err) => {
       console.log(err);
       callAlertify('error', err.message)

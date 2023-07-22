@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }),
       })
         .then((response) => {
-          console.log(response)
           const contentType = response.headers.get('content-type')
           if (contentType && contentType.includes('application/json')) {
             return response.json()
@@ -29,7 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .then((data) => {
 
           if (data.success) {
-
             swal.fire({title: 'Good job!',
             text: 'Product added to cart!',
             icon: 'success',
@@ -55,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             console.log(data);
             if (data.productAlreadyExist) {
-              console.log('hwiiii am exist');
               // update the quantity of the existing item
               const quantityEl = existingCartItem.querySelector(`#qty-navbar-${data.product._id}`)
               const currentQuantity = parseInt(quantityEl.textContent)

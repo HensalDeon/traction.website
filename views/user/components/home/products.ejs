@@ -62,15 +62,15 @@
                                                 </a>
                                             </div>
                                             <!-- quick view -->
-                                            <!-- <div class="product-action-1">
-                                                <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal"
-                                                    data-bs-toggle="modal" data-bs-target="#quickViewModal" onclick="loadFromBackEnd('<%= product._id %>')">
-                                                    <i class="fi-rs-search"></i></a>
-                                                <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                    href="/wishlist/<%#= product.slug %>"><i
-                                                        class="fi-rs-heart"></i></a>
+                                            <!-- <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal"
+                                            data-bs-toggle="modal" data-bs-target="#quickViewModal" onclick="loadFromBackEnd('<%= product._id %>')">
+                                            <i class="fi-rs-search"></i></a> -->
+                                            <div class="product-action-1">
+                                                <a aria-label="Add To Wishlist" class="addToWishlistButton action-btn hover-up"
+                                                data-product-id="<%= product._id %>"><i
+                                                class="fi-rs-heart"></i></a>
+                                            </div>
                                             
-                                            </div> -->
                                             <div class="product-badges product-badges-position product-badges-mrg">
                                                 <span class="hot">Hot</span>
                                             </div>

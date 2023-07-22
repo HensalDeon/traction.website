@@ -43,6 +43,9 @@ const {
   RemoveFromCart,
   UpdateQuantity,
   ClearCart,
+  GetWishlist,
+  PostToWishlist,
+  RemoveFromWishlist,
 } = require('../controllers/cart.controller');
 
 const {
@@ -90,6 +93,11 @@ userRouter.get('/product/:slug', GetProduct);
 userRouter.get('/shop', GetAllProducts);
 userRouter.get('/shop/:id', CategoryProduct);
 userRouter.get('/product/images/:id', GetProductImages);
+
+// wishList
+userRouter.get('/wishlist', isLoggedIn, GetWishlist);
+userRouter.post('/wishlist', isLoggedIn, PostToWishlist);
+userRouter.delete('/wishlist', isLoggedIn, RemoveFromWishlist);
 
 //cart
 userRouter.get('/cart', isLoggedIn, GetCart);
