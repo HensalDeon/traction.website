@@ -9,7 +9,8 @@ const {
 } = require('../models/admin.model');
 
 const { generateSalesReport } = require('../config/pdfKit');
-const { getOrderData } = require('../models/order.model');
+const { getOrderData, getOrders } = require('../models/order.model');
+const { end } = require('pdfkit');
 
 /**
  * This function renders the admin dashboard page in response to an  GET request.
@@ -23,12 +24,14 @@ const { getOrderData } = require('../models/order.model');
 async function GetDashBoard(req, res) {
   try {
     const result = await getDashBoardData();
+    const orders = await getOrderData()
     res.render('admin/dashboard', {
       totalRevenue: result.totalRevenue,
       totalOrdersCount: result.totalOrdersCount,
       totalProductsCount: result.totalProductsCount,
       totalCategoriesCount: result.totalCategoriesCount,
       currentMonthEarnings: result.currentMonthEarnings,
+      orders: orders,
       activePage:'dashboard'
     });
   } catch (error) {
@@ -220,11 +223,26 @@ async function GetChartData(req, res) {
     handleError(res, error);
   }
 }
+async function GetDisplayReport(req, res){
+  const startDate = req.query.startDate;
+    const endDate = req.query.endDate;
+    const reportData = await getOrders(startDate,endDate);
+    return res.status(200).json(reportData)
+}
 
 async function GetReport(req, res) {
   try {
-    const reportData = await getOrderData();
-     generateSalesReport(reportData, res);
+    const startDate = req.query.startDate;
+    const endDate = req.query.endDate;
+    let reportData;
+    if(startDate == 'null' && endDate === 'null'){
+       reportData = await getOrderData();
+       generateSalesReport(reportData, res);
+    }else{
+      reportData = await getOrders(startDate,endDate);
+      console.log(reportData,'💥💥💥');
+      generateSalesReport(reportData, res);
+    }
   } catch (error) {
     handleError(res, error);
   }
@@ -241,4 +259,5 @@ module.exports = {
   GetGraphData,
   GetChartData,
   GetReport,
+  GetDisplayReport,
 };

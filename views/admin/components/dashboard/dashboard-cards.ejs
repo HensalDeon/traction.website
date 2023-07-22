@@ -1,63 +1,226 @@
+<style>
+  .date {
+    background-color: #f4f5f9;
+    border: 2px solid #f4f5f9;
+    font-size: 13px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    padding-left: 20px;
+    color: #000;
+    display: block;
+    width: 100%;
+    border-radius: 4px;
+    height: 45px;
+    margin-right: 10px;
+  }
+
+  .text_control1 {
+    max-width: 300px;
+  }
+
+  .text_control {
+    max-width: 150px;
+  }
+</style>
+<div id="salesReportModal" style="display: none;align-items: baseline;">
+  <div class="card">
+    <div class="card-header" style="display: flex;justify-content: space-between;">
+      <h5 class="mb-0">Your Orders</h5>
+      <div style="display: flex;">
+        <label for="startDate" style="padding: 0 10px;">From</label>
+        <input type="date" id="startDate" class="date">
+        <label for="endDate" style="padding: 0 10px;">To</label>
+        <input type="date" id="endDate" class="date">
+        <a id="filterButton" class="btn btn-primary">Filter</a>
+      </div>
+    </div>
+    <div class="card-body ">
+      <div class="table-responsive" style="text-align: center;height: 400px; overflow-y: auto;">
+        <table class="table">
+          <thead style="background-color: #f7f8f9;">
+            <% if (orders?.length > 0) { %>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Product</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Price</th>
+              <th scope="col">Total</th>
+            </tr>
+            <% } %>
+          </thead>
+          <tbody>
+            <% if (orders?.length > 0) { %>
+            <% orders.forEach(order => { %>
+            <tr>
+              <td class="text_control"><%= order.date %></td>
+              <td class="text_control1"><%= order.product %></td>
+              <td><%= order.quantity %></td>
+              <td><%= order.price %></td>
+              <td><%= order.price * order.quantity %></td>
+              <% }) %>
+              <% } %>
+          </tbody>
+        </table>
+      </div>
+      <button id="downloadButton" class="btn btn-primary" style="display: none;">Download Report</button>
+
+    </div>
+  </div>
+</div>
+
 <div class="content-header">
-    <div>
-        <h2 class="content-title card-title">Dashboard </h2>
-    </div>
-    <div>
-        <a href="/admin/sales-report" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Download sales report</a>
-    </div>
+  <div>
+    <h2 class="content-title card-title">Dashboard </h2>
+  </div>
+  <div>
+    <a id="openModalButton" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Check sales report</a>
+
+  </div>
 </div>
 <div class="row">
-    <div class="col-lg-3">
-        <div class="card card-body mb-4">
-            <article class="icontext">
-                <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
-                <div class="text">
-                    <h6 class="mb-1 card-title">Revenue</h6>
-                    <span> &#8377; <%= totalRevenue %></span>
-                    <span class="text-sm">
-                        Shipping fees are not included
-                    </span>
-                </div>
-            </article>
+  <div class="col-lg-3">
+    <div class="card card-body mb-4">
+      <article class="icontext">
+        <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
+        <div class="text">
+          <h6 class="mb-1 card-title">Revenue</h6>
+          <span> &#8377; <%= totalRevenue %></span>
+          <span class="text-sm">
+            Shipping fees are not included
+          </span>
         </div>
+      </article>
     </div>
-    <div class="col-lg-3">
-        <div class="card card-body mb-4">
-            <article class="icontext">
-                <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success material-icons md-local_shipping"></i></span>
-                <div class="text">
-                    <h6 class="mb-1 card-title">Orders</h6> <span><%= totalOrdersCount %></span>
-                    <span class="text-sm">
-                        Excluding orders in transit
-                    </span>
-                </div>
-            </article>
+  </div>
+  <div class="col-lg-3">
+    <div class="card card-body mb-4">
+      <article class="icontext">
+        <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success material-icons md-local_shipping"></i></span>
+        <div class="text">
+          <h6 class="mb-1 card-title">Orders</h6> <span><%= totalOrdersCount %></span>
+          <span class="text-sm">
+            Excluding orders in transit
+          </span>
         </div>
+      </article>
     </div>
-    <div class="col-lg-3">
-        <div class="card card-body mb-4">
-            <article class="icontext">
-                <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning material-icons md-qr_code"></i></span>
-                <div class="text">
-                    <h6 class="mb-1 card-title">Products</h6> <span><%= totalProductsCount %></span>
-                    <span class="text-sm">
-                        In <%= totalCategoriesCount %> Categories
-                    </span>
-                </div>
-            </article>
+  </div>
+  <div class="col-lg-3">
+    <div class="card card-body mb-4">
+      <article class="icontext">
+        <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning material-icons md-qr_code"></i></span>
+        <div class="text">
+          <h6 class="mb-1 card-title">Products</h6> <span><%= totalProductsCount %></span>
+          <span class="text-sm">
+            In <%= totalCategoriesCount %> Categories
+          </span>
         </div>
+      </article>
     </div>
-    <div class="col-lg-3">
-        <div class="card card-body mb-4">
-            <article class="icontext">
-                <span class="icon icon-sm rounded-circle bg-info-light"><i class="text-info material-icons md-shopping_basket"></i></span>
-                <div class="text">
-                    <h6 class="mb-1 card-title">Monthly Earning</h6> <span>&#8377; <%= currentMonthEarnings %></span>
-                    <span class="text-sm">
-                        Based on this month
-                    </span>
-                </div>
-            </article>
+  </div>
+  <div class="col-lg-3">
+    <div class="card card-body mb-4">
+      <article class="icontext">
+        <span class="icon icon-sm rounded-circle bg-info-light"><i class="text-info material-icons md-shopping_basket"></i></span>
+        <div class="text">
+          <h6 class="mb-1 card-title">Monthly Earning</h6> <span>&#8377; <%= currentMonthEarnings %></span>
+          <span class="text-sm">
+            Based on this month
+          </span>
         </div>
+      </article>
     </div>
+  </div>
 </div>
+
+<script>
+  document.getElementById("openModalButton").addEventListener("click", function() {
+    var modal = document.getElementById("salesReportModal");
+    modal.style.display = "block";
+    salesReportBtn = document.getElementById("openModalButton");
+    salesReportBtn.style.display = 'none'
+  });
+
+  document.addEventListener("click", function(event) {
+    var modal = document.getElementById("salesReportModal");
+    var openModalBtn = document.getElementById("openModalButton");
+    var modalContent = document.querySelector(".card");
+
+    if (event.target === openModalBtn) {
+      return;
+    } else if (event.target === modal || modalContent.contains(event.target)) {
+      return;
+    } else {
+      modal.style.display = "none";
+      openModalBtn.style.display = "block";
+    }
+  });
+
+  document.getElementById("filterButton").addEventListener("click", function () {
+  let startDate = document.getElementById("startDate").value;
+  let endDate = document.getElementById("endDate").value;
+
+  if (startDate && endDate) {
+    startDate = new Date(startDate).toISOString();
+    endDate = new Date(endDate).toISOString();
+
+    fetch(`/admin/sales-report?startDate=${startDate}&endDate=${endDate}`)
+      .then(response => response.json())
+      .then(data => {
+        updateTableWithData(data);
+        document.getElementById("downloadButton").style.display = "block";
+        document.getElementById("downloadButton").addEventListener("click", function () {
+          downloadSalesReport(data);
+        });
+      })
+      .catch(error => console.error("Error fetching sales report:", error));
+  } else {
+    // If no date is selected, fetch all sales data
+    fetch('/admin/sales-report/')
+      .then(response => response.json())
+      .then(data => {
+        updateTableWithData(data);
+        document.getElementById("downloadButton").style.display = "block";
+        document.getElementById("downloadButton").addEventListener("click", function () {
+          downloadSalesReport(data);
+        });
+      })
+      .catch(error => console.error("Error fetching sales report:", error));
+  }
+});
+
+function updateTableWithData(data) {
+    var tableBody = document.querySelector("tbody");
+    var tableContent = "";
+
+    data.forEach(order => {
+      tableContent += `
+        <tr>
+          <td class="text_control">${order.date}</td>
+          <td class="text_control1">${order.product}</td>
+          <td>${order.quantity}</td>
+          <td>${order.price}</td>
+          <td>${order.price * order.quantity}</td>
+        </tr>
+      `;
+    });
+
+    tableBody.innerHTML = tableContent;
+  }
+
+  function downloadSalesReport(data) {
+  let startDate = document.getElementById("startDate").value;
+    let endDate = document.getElementById("endDate").value;
+    if (startDate && endDate) {
+    startDate = new Date(startDate).toISOString();
+    endDate = new Date(endDate).toISOString();
+  } else {
+    startDate = null;
+    endDate = null;
+  }
+    console.log(startDate,'😒😒💥💥',endDate);
+
+    var downloadURL = `/admin/sales-report/download?startDate=${startDate}&endDate=${endDate}`;
+    window.location.href=downloadURL;
+  }
+</script>

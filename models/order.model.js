@@ -12,7 +12,7 @@ const { log } = require('console');
 
 async function getAddresses(userId, res) {
   try {
-    const addresses = await addressDatabase.find({ user: userId, deleted:false });
+    const addresses = await addressDatabase.find({ user: userId, deleted: false });
     if (!addresses) {
       return { status: false };
     } else {
@@ -23,13 +23,14 @@ async function getAddresses(userId, res) {
   }
 }
 
-async function getAddress(addressId, userId){
+async function getAddress(addressId, userId) {
   try {
     const address = await addressDatabase.findOne({ _id: addressId, user: userId, deleted: false });
     if (address) {
-      return { success: true, message:'Address found', address };
+      return { success: true, message: 'Address found', address };
     } else {
-      return { success: false, message: 'Address not found' };    }
+      return { success: false, message: 'Address not found' };
+    }
   } catch (error) {
     handleError(res, error)
   }
@@ -80,35 +81,35 @@ async function addAdrress(addressData, userId, res) {
       throw new Error('Missing required input');
     }
     let address;
-    if(addressData.setAddressAs === 'isBillingAddress'){
+    if (addressData.setAddressAs === 'isBillingAddress') {
       address = new addressDatabase({
-      fname: addressData.fname,
-      lname: addressData.lname,
-      street_address: addressData.street_address,
-      city: addressData.city,
-      state: addressData.state,
-      zipcode: addressData.zipcode,
-      country: addressData.country,
-      phone: addressData.phone,
-      email: addressData.email,
-      user: userId,
-      isBillingAddress: true,
-    });
+        fname: addressData.fname,
+        lname: addressData.lname,
+        street_address: addressData.street_address,
+        city: addressData.city,
+        state: addressData.state,
+        zipcode: addressData.zipcode,
+        country: addressData.country,
+        phone: addressData.phone,
+        email: addressData.email,
+        user: userId,
+        isBillingAddress: true,
+      });
     }
-    if(addressData.setAddressAs === 'isShippingAddress'){
+    if (addressData.setAddressAs === 'isShippingAddress') {
       address = new addressDatabase({
-      fname: addressData.fname,
-      lname: addressData.lname,
-      street_address: addressData.street_address,
-      city: addressData.city,
-      state: addressData.state,
-      zipcode: addressData.zipcode,
-      country: addressData.country,
-      phone: addressData.phone,
-      email: addressData.email,
-      user: userId,
-      isShippingAddress: true,
-    });
+        fname: addressData.fname,
+        lname: addressData.lname,
+        street_address: addressData.street_address,
+        city: addressData.city,
+        state: addressData.state,
+        zipcode: addressData.zipcode,
+        country: addressData.country,
+        phone: addressData.phone,
+        email: addressData.email,
+        user: userId,
+        isShippingAddress: true,
+      });
     }
     const addressResult = await address.save();
 
@@ -125,8 +126,8 @@ async function addAdrress(addressData, userId, res) {
 async function deleteAddress(addressId) {
   try {
     // const result = await addressDatabase.findByIdAndDelete(addressId);
-    const result = await addressDatabase.findByIdAndUpdate(addressId, { deleted: true }, { new: true } );
-    
+    const result = await addressDatabase.findByIdAndUpdate(addressId, { deleted: true }, { new: true });
+
     if (result) {
       return true;
     } else {
@@ -187,7 +188,7 @@ async function addOrderDetails(addressId, paymentMethod, userId, req, res) {
       }
       // await cartDatabase.deleteOne({ user: userId });
       await order.save();
-      return { status: true, order: order ,cartResult };
+      return { status: true, order: order, cartResult };
     } else {
       return { status: false };
     }
@@ -263,7 +264,7 @@ async function fetchUserOrderDetails(userId, res) {
       .select('total status transactionId date items paymentStatus')
       .sort({ date: -1 });
 
-    const addresses = await addressDatabase.find({ user: userId , deleted: false});
+    const addresses = await addressDatabase.find({ user: userId, deleted: false });
 
     const orderDetails = orders.map((order) => {
       // Calculate the return date
@@ -335,14 +336,14 @@ async function returnOrder(orderId, returnreason) {
 async function getAllOrders(page, limit) {
   try {
     const orders = await orderDatabase
-      .find({paymentStatus:'success'})
+      .find({ paymentStatus: 'success' })
       .sort({ date: -1 }) // Sort by date in descending order
       .populate('user', 'username')
       .skip((page - 1) * limit)
       .limit(limit);
 
 
-    const totalOrders = await orderDatabase.countDocuments({paymentStatus:'success'});
+    const totalOrders = await orderDatabase.countDocuments({ paymentStatus: 'success' });
     const totalPages = Math.ceil(totalOrders / limit);
 
     if (!orders || orders.length === 0) {
@@ -404,6 +405,41 @@ async function changeOrderStatus(changeStatus, orderId) {
   }
 }
 
+async function getOrders(startDate, endDate) {
+  let query = { status: 'delivered' };
+  if (startDate && endDate) {
+    query.date = { $gte: startDate, $lte: endDate };
+  }
+
+  const orders = await orderDatabase
+    .find(query)
+    .populate({
+      path: 'items.product',
+      model: 'Product',
+    })
+    .populate('shippingAddress')
+    .populate('user');
+
+  const reportData = [];
+
+  for (const order of orders) {
+    for (const item of order.items) {
+      const { product, quantity, price } = item;
+
+      const entry = {
+        date: order.date,
+        product: product.productName,
+        quantity,
+        price,
+      };
+
+      reportData.push(entry);
+    }
+  }
+  return reportData;
+}
+
+
 async function getOrderData() {
   try {
     const orders = await orderDatabase
@@ -446,7 +482,7 @@ async function getWallet(userId) {
         status: 'returnPending',
       })
       .select('total');
-      
+
 
 
     let pendingAmount = 0;
@@ -534,19 +570,19 @@ async function updateWalletData(walletAmount, userId, orderId) {
 }
 
 
-async function  orderStatus(orderId){
+async function orderStatus(orderId) {
   try {
     const result = await orderDatabase.findByIdAndUpdate(
       orderId,
       {
-        $set: { paymentmethod: 'COD',status:'processing' },
+        $set: { paymentmethod: 'COD', status: 'processing' },
       },
       { new: true },
     );
     return true;
   } catch (error) {
     throw new Error('Error updating order  data!');
-    
+
   }
 }
 
@@ -571,4 +607,5 @@ module.exports = {
   getOrderdetails,
   updateWalletData,
   orderStatus,
+  getOrders,
 };

@@ -21,8 +21,6 @@ function generateReportTable(doc, report) {
   let i;
   const tableTop = 150;
 
-  console.log(report, '❤️❤️');
-
   doc.font('Helvetica-Bold');
   generateTableRow(doc, tableTop, 'Date', 'Product', 'Quantity', 'Price', 'Total');
   doc.font('Helvetica');
@@ -46,7 +44,7 @@ function generateTableRow(doc, y, date, product, quantity, price, total) {
   doc
     .fontSize(10)
     .text(date, 50, y)
-    .text(product, 150, y)
+    .text(product, 150, y, { width: 170, align: 'left' })
     .text(quantity.toString(), 280, y, { width: 90, align: 'right' })
     .text(price, 370, y, { width: 90, align: 'right' })
     .text(total, 460, y, { width: 90, align: 'right' });

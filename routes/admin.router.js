@@ -14,6 +14,7 @@ const {
   GetGraphData,
   GetChartData,
   GetReport,
+  GetDisplayReport,
 } = require('../controllers/admin.controller');
 
 const {
@@ -100,7 +101,8 @@ adminRouter.put('/coupon-status', isAdminLoggedIn, ChangeCouponStatus);
 //Dashboard
 adminRouter.get('/graph', isAdminLoggedIn, GetGraphData);
 adminRouter.get('/chart', isAdminLoggedIn, GetChartData);
-adminRouter.get('/sales-report', isAdminLoggedIn, GetReport);
+adminRouter.get('/sales-report', isAdminLoggedIn, GetDisplayReport);
+adminRouter.get('/sales-report/download', isAdminLoggedIn, GetReport);
 
 //Others(404)
 adminRouter.get('/*', Get404);
