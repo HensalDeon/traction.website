@@ -1,6 +1,8 @@
 const productDatabase = require('../schema/product.schema');
+const reviewDatabse = require('../schema/review.schema')
 const cloudinary = require('../config/cloudinary');
 const slugify = require('slugify');
+const { handleError } = require('../middlewares/error.handler');
 
 async function setProductImage(productId, remainingImageUrls) {
   try {
@@ -19,6 +21,28 @@ async function setProductImage(productId, remainingImageUrls) {
     throw new Error('Failed to update product image');
   }
 }
+//////////////////////////////////////////////////
+async function getProductStocks() {
+  try {
+    const productStock = await productDatabase.find({}).populate('productCategory').exec();
+    const stockData = [];
+
+    for (const product of productStock) {
+      const { productName, productCategory, productPrice, stocks } = product;
+      const productDetails = {
+        productName,
+        productCategory: productCategory ? productCategory.name : 'Unknown Category',
+        productPrice,
+        stocks,
+      };
+      stockData.push(productDetails);
+    }
+    return stockData;
+  } catch (error) {
+    throw new Error('Fetching product was failed!');
+  }
+}
+
 async function fetchAllProducts(page, limit, sortBy, sortOption) {
   try {
     let filterOptions = {};
@@ -77,12 +101,32 @@ async function fetchAllProducts(page, limit, sortBy, sortOption) {
   }
 }
 
+async function addReview(reviewerName,reviewText,rating,productResult) {
+  try {
+    const newReview = new reviewDatabse({
+      reviewerName: reviewerName,
+      reviewText: reviewText,
+      rating: rating,
+    });
+    let result = await newReview.save();
+    if (result) {
+      productResult.product.productReview.push(newReview._id);
+      await productResult.product.save();
+      return { status: true };
+    } else {
+      return { status: false };
+    }
+  } catch (error) {
+    console.error('Error adding review:', error);
+  }
+}
+
 
 async function fetchProduct(slug) {
   try {
     const product = await productDatabase.findOne({ slug: slug }).populate('productCategory');
-    if(!product){
-      return ({status: false})
+    if (!product) {
+      return ({ status: false })
     }
     if (!product.productStatus) {
       return { status: false };
@@ -107,9 +151,9 @@ async function addNewProduct(dataBody, dataFiles) {
 
   const existingProduct = await productDatabase.findOne({ productName: productName });
   if (existingProduct) {
-    return({status: false, message: "A product with the same name already exists."})
+    return ({ status: false, message: "A product with the same name already exists." })
   }
-  
+
   const product = new productDatabase({
     productName: productName,
     productDescription: productDescription,
@@ -186,23 +230,23 @@ async function getProductImages(productId) {
   }
 }
 
-async function updateProduct(productId, productData, productImages,deletedImages) {
+async function updateProduct(productId, productData, productImages, deletedImages) {
   try {
     const product = await productDatabase.findById(productId);
-    
+
     if (!product) {
       throw new Error('Product not found');
     }
-    
+
     if (deletedImages && deletedImages.length > 0) {
       product.productImageUrls = product.productImageUrls.filter(url => !deletedImages.includes(url));
-      if(product.productImageUrls.length === 0 && productImages?.length === 0){
-          return {status:false,message:'Minimum 1 image required'}
+      if (product.productImageUrls.length === 0 && productImages?.length === 0) {
+        return { status: false, message: 'Minimum 1 image required' }
       }
     }
     if (productImages) {
-      if(productImages.length + product.productImageUrls.length > 4){
-          return {status:false,message:'Cant add more than four images' }
+      if (productImages.length + product.productImageUrls.length > 4) {
+        return { status: false, message: 'Cant add more than four images' }
       }
 
       for (let i = 0; i < productImages.length; i++) {
@@ -222,10 +266,10 @@ async function updateProduct(productId, productData, productImages,deletedImages
     product.stocks = productData.stocks || product.stocks;
     product.productCategory = productData.productCategory || product.productCategory;
     product.featured = productData.featured || product.featured;
-    
+
     const updatedProduct = await product.save();
 
-    return {status:true,updatedProduct:updatedProduct,message:"Product updated successfully"};
+    return { status: true, updatedProduct: updatedProduct, message: "Product updated successfully" };
   } catch (error) {
     throw new Error(`Error updating product details: ${error.message}`);
   }
@@ -253,7 +297,7 @@ async function getProductsWithCategory(categoryId, page, limit, sortBy, sortOpti
           break;
       }
       var products = await productDatabase
-        .find({$and:[{ productCategory: categoryId },filterOptions]})
+        .find({ $and: [{ productCategory: categoryId }, filterOptions] })
         .sort(sortOptions) // Apply the sorting options
         .skip((page - 1) * limit)
         .limit(limit);
@@ -300,5 +344,6 @@ module.exports = {
   searchProductsWithRegex,
   enableProductStatus,
   setProductImage,
-  
+  getProductStocks,
+  addReview,
 };

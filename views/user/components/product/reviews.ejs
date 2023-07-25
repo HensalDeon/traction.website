@@ -1,16 +1,16 @@
-<!-- <h3 class="section-title style-1 mb-30 mt-30">Reviews (3)</h3>
+<h3 class="section-title style-1 mb-30 mt-30">Reviews (<%=reviews.length %>)</h3>
 <div class="comments-area style-2">
     <div class="row">
         <div class="col-lg-8">
-            <h4 class="mb-30">Customer questions & answers</h4>
+            <h4 class="mb-30" style="color: gold;">Customer questions & answers</h4>
             <div class="comment-list">
+                <% reviews.forEach(review => { %>
                 <div class="single-comment justify-content-between d-flex">
                     <div class="user justify-content-between d-flex">
                         <div class="thumb text-center">
                             <img src="/user/assets/imgs/page/avatar-6.jpg"
                                 alt="">
-                            <h6><a href="#">Jacky Chan</a></h6>
-                            <p class="font-xxs">Since 2012</p>
+                            <h6><a href="#"><%= review.reviewerName %></a></h6>
                         </div>
                         <div class="desc">
                             <div class="product-rate d-inline-block">
@@ -18,15 +18,12 @@
                                     style="width:90%">
                                 </div>
                             </div>
-                            <p>Thank you very fast shipping from Poland only
-                                3days.</p>
+                            <p><%= review.reviewText %></p>
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex align-items-center">
-                                    <p class="font-xs mr-30">December 4,
-                                        2020 at
-                                        3:12 pm </p>
+                                    <p class="font-xs mr-30"><%= review.reviewDate %></p>
                                     <a href="#"
-                                        class="text-brand btn-reply">Reply
+                                        class="text-brand btn-reply">Edit
                                         <i class="fi-rs-arrow-right"></i>
                                     </a>
                                 </div>
@@ -34,114 +31,56 @@
                         </div>
                     </div>
                 </div>
-                <div class="single-comment justify-content-between d-flex">
-                    <div class="user justify-content-between d-flex">
-                        <div class="thumb text-center">
-                            <img src="/user/assets/imgs/page/avatar-7.jpg"
-                                alt="">
-                            <h6><a href="#">Ana Rosie</a></h6>
-                            <p class="font-xxs">Since 2008</p>
-                        </div>
-                        <div class="desc">
-                            <div class="product-rate d-inline-block">
-                                <div class="product-rating"
-                                    style="width:90%">
-                                </div>
-                            </div>
-                            <p>Great low price and works well.</p>
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <p class="font-xs mr-30">December 4,
-                                        2020 at
-                                        3:12 pm </p>
-                                    <a href="#"
-                                        class="text-brand btn-reply">Reply
-                                        <i class="fi-rs-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="single-comment justify-content-between d-flex">
-                    <div class="user justify-content-between d-flex">
-                        <div class="thumb text-center">
-                            <img src="/user/assets/imgs/page/avatar-8.jpg"
-                                alt="">
-                            <h6><a href="#">Steven Keny</a></h6>
-                            <p class="font-xxs">Since 2010</p>
-                        </div>
-                        <div class="desc">
-                            <div class="product-rate d-inline-block">
-                                <div class="product-rating"
-                                    style="width:90%">
-                                </div>
-                            </div>
-                            <p>Authentic and Beautiful, Love these way more
-                                than
-                                ever expected They are Great earphones</p>
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <p class="font-xs mr-30">December 4,
-                                        2020 at
-                                        3:12 pm </p>
-                                    <a href="#"
-                                        class="text-brand btn-reply">Reply
-                                        <i class="fi-rs-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <% }) %>
             </div>
         </div>
-        <div class="col-lg-4">
-            <h4 class="mb-30">Customer reviews</h4>
-            <div class="d-flex mb-30">
-                <div class="product-rate d-inline-block mr-15">
-                    <div class="product-rating" style="width:90%">
-                    </div>
-                </div>
-                <h6>4.8 out of 5</h6>
+        
+    </div>
+</div>
+<!-- <div class="col-lg-4">
+    <h4 class="mb-30">Customer reviews</h4>
+    <div class="d-flex mb-30">
+        <div class="product-rate d-inline-block mr-15">
+            <div class="product-rating" style="width:90%">
             </div>
-            <div class="progress">
-                <span>5 star</span>
-                <div class="progress-bar" role="progressbar"
-                    style="width: 50%;" aria-valuenow="50" aria-valuemin="0"
-                    aria-valuemax="100">50%
-                </div>
-            </div>
-            <div class="progress">
-                <span>4 star</span>
-                <div class="progress-bar" role="progressbar"
-                    style="width: 25%;" aria-valuenow="25" aria-valuemin="0"
-                    aria-valuemax="100">25%
-                </div>
-            </div>
-            <div class="progress">
-                <span>3 star</span>
-                <div class="progress-bar" role="progressbar"
-                    style="width: 45%;" aria-valuenow="45" aria-valuemin="0"
-                    aria-valuemax="100">45%
-                </div>
-            </div>
-            <div class="progress">
-                <span>2 star</span>
-                <div class="progress-bar" role="progressbar"
-                    style="width: 65%;" aria-valuenow="65" aria-valuemin="0"
-                    aria-valuemax="100">65%
-                </div>
-            </div>
-            <div class="progress mb-30">
-                <span>1 star</span>
-                <div class="progress-bar" role="progressbar"
-                    style="width: 85%;" aria-valuenow="85" aria-valuemin="0"
-                    aria-valuemax="100">85%
-                </div>
-            </div>
-            <a href="#" class="font-xs text-muted">How are ratings
-                calculated?</a>
+        </div>
+        <h6>4.8 out of 5</h6>
+    </div>
+    <div class="progress">
+        <span>5 star</span>
+        <div class="progress-bar" role="progressbar"
+            style="width: 50%;" aria-valuenow="50" aria-valuemin="0"
+            aria-valuemax="100">50%
         </div>
     </div>
+    <div class="progress">
+        <span>4 star</span>
+        <div class="progress-bar" role="progressbar"
+            style="width: 25%;" aria-valuenow="25" aria-valuemin="0"
+            aria-valuemax="100">25%
+        </div>
+    </div>
+    <div class="progress">
+        <span>3 star</span>
+        <div class="progress-bar" role="progressbar"
+            style="width: 45%;" aria-valuenow="45" aria-valuemin="0"
+            aria-valuemax="100">45%
+        </div>
+    </div>
+    <div class="progress">
+        <span>2 star</span>
+        <div class="progress-bar" role="progressbar"
+            style="width: 65%;" aria-valuenow="65" aria-valuemin="0"
+            aria-valuemax="100">65%
+        </div>
+    </div>
+    <div class="progress mb-30">
+        <span>1 star</span>
+        <div class="progress-bar" role="progressbar"
+            style="width: 85%;" aria-valuenow="85" aria-valuemin="0"
+            aria-valuemax="100">85%
+        </div>
+    </div>
+    <a href="#" class="font-xs text-muted">How are ratings
+        calculated?</a>
 </div> -->

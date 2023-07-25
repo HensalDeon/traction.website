@@ -13,6 +13,10 @@ body{
     background-repeat: no-repeat;
    
 }
+.stars i.active{
+    color: orange;
+    
+}
 .btn-edit,
 .btn-delete {
   font-size: 0.875rem;

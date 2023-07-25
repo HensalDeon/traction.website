@@ -15,6 +15,7 @@ const {
   GetChartData,
   GetReport,
   GetDisplayReport,
+  GetStocksReport,
 } = require('../controllers/admin.controller');
 
 const {
@@ -83,6 +84,7 @@ adminRouter.put('/edit-product',upload.array('productImage', 4),isAdminLoggedIn,
 adminRouter.get('/getProductImages/:id', isAdminLoggedIn, GetProductImages);
 adminRouter.put('/product-status/:id', isAdminLoggedIn, PutProduct);
 adminRouter.put('/product-enable/:id', isAdminLoggedIn, PutEnableProduct);
+
 // Order management
 adminRouter.get('/orders', isAdminLoggedIn, GetOrderPage);
 adminRouter.post('/order-status', isAdminLoggedIn, ChangeOrderStatus);
@@ -103,8 +105,9 @@ adminRouter.get('/graph', isAdminLoggedIn, GetGraphData);
 adminRouter.get('/chart', isAdminLoggedIn, GetChartData);
 adminRouter.get('/sales-report', isAdminLoggedIn, GetDisplayReport);
 adminRouter.get('/sales-report/download', isAdminLoggedIn, GetReport);
+adminRouter.get('/stocks-report', isAdminLoggedIn, GetStocksReport);
 
-//Others(404)
+//Others(404) 
 adminRouter.get('/*', Get404);
 
 module.exports = adminRouter;

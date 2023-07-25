@@ -35,6 +35,7 @@ const {
   CategoryProduct,
   ProductsBySearch,
   GetProductImages,
+  PostReview,
 } = require('../controllers/product.controller');
 
 const {
@@ -136,6 +137,9 @@ userRouter.post('/update-userdata', upload.single('profileimage'), isLoggedIn, U
 userRouter.post('/get-address', isLoggedIn, EditAddress)
 userRouter.post('/update-address', isLoggedIn, UpdateAddress)
 userRouter.get('/logout', GetLogout);
+
+// review
+userRouter.post('/product-review',isLoggedIn, PostReview);
 
 //others
 userRouter.get('/learn-more', GetLearnMore)

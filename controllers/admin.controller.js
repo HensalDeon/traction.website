@@ -7,8 +7,8 @@ const {
   getChartData,
   getDashBoardData,
 } = require('../models/admin.model');
-
-const { generateSalesReport } = require('../config/pdfKit');
+const { getProductStocks } = require('../models/product.model');
+const { generateSalesReport, generateStocksReport } = require('../config/pdfKit');
 const { getOrderData, getOrders } = require('../models/order.model');
 const { end } = require('pdfkit');
 
@@ -32,7 +32,7 @@ async function GetDashBoard(req, res) {
       totalCategoriesCount: result.totalCategoriesCount,
       currentMonthEarnings: result.currentMonthEarnings,
       orders: orders,
-      activePage:'dashboard'
+      activePage: 'dashboard'
     });
   } catch (error) {
     handleError(res, error);
@@ -110,7 +110,7 @@ async function GetUsers(req, res) {
         totalPages: response.totalPages,
         currentPage: response.currentPage,
         limit: response.limit,
-        activePage:'users'
+        activePage: 'users'
       });
     } else {
       throw new Error('Failed to fetch users');
@@ -223,11 +223,27 @@ async function GetChartData(req, res) {
     handleError(res, error);
   }
 }
-async function GetDisplayReport(req, res){
-  const startDate = req.query.startDate;
+async function GetDisplayReport(req, res) {
+  try {
+    const startDate = req.query.startDate;
     const endDate = req.query.endDate;
-    const reportData = await getOrders(startDate,endDate);
+    const reportData = await getOrders(startDate, endDate);
     return res.status(200).json(reportData)
+  } catch (error) {
+    handleError(res, error)
+  }
+}
+
+async function GetStocksReport(req, res) {
+  try {
+    const stockReport = await getProductStocks();
+    if (!stockReport) {
+      return res.status(400).json({ message: 'Unable to fetch stock details!' })
+    }
+    generateStocksReport(stockReport, res);
+  } catch (error) {
+    handleError(res, error)
+  }
 }
 
 async function GetReport(req, res) {
@@ -235,12 +251,12 @@ async function GetReport(req, res) {
     const startDate = req.query.startDate;
     const endDate = req.query.endDate;
     let reportData;
-    if(startDate == 'null' && endDate === 'null'){
-       reportData = await getOrderData();
-       generateSalesReport(reportData, res);
-    }else{
-      reportData = await getOrders(startDate,endDate);
-      console.log(reportData,'💥💥💥');
+    if (startDate == 'null' && endDate === 'null') {
+      reportData = await getOrderData();
+      generateSalesReport(reportData, res);
+    } else {
+      reportData = await getOrders(startDate, endDate);
+      console.log(reportData, '💥💥💥');
       generateSalesReport(reportData, res);
     }
   } catch (error) {
@@ -260,4 +276,5 @@ module.exports = {
   GetChartData,
   GetReport,
   GetDisplayReport,
+  GetStocksReport,
 };

@@ -1,5 +1,54 @@
 const PDFDocument = require('pdfkit');
+// stocks report ......................
+async function generateStocksReport(stockReport,res){
+  const doc = new PDFDocument();
 
+  generateStockHeader(doc);
+  generateStockTable(doc, stockReport);
+
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', 'attachment; filename=stocks-report.pdf');
+
+  doc.pipe(res);
+  doc.end();
+}
+function generateStockHeader(doc) {
+  doc
+  .image('public/user/assets/imgs/theme/redLogo.png', 50, 57, { width: 115, height:30 })
+  .fontSize(20).text('Stocks Report', { align: 'center' }).moveDown(0.5);
+
+}
+function generateStockTable(doc, stockReport) {
+  let i;
+  const tableTop = 150;
+
+  doc.font('Helvetica-Bold')
+  generateStockTableRow(doc, tableTop, 'Name', 'Category', 'Price', 'Stock');
+  doc.font('Helvetica')
+
+  for (i = 0; i < stockReport.length; i++) {
+    const entry = stockReport[i];
+    const position = tableTop + (i + 1) * 35;
+    generateStockTableRow(
+      doc,
+      position,
+      entry.productName,
+      entry.productCategory,
+      parseFloat(entry.productPrice),
+      entry.stocks
+      );
+  }
+}
+function generateStockTableRow(doc, y, name, category, price, stocks) {
+  doc
+    .fontSize(10)
+    .text(name, 50, y, {width: 200, align: 'centre'})
+    .text(category, 270, y, { width: 90, align: 'centre' })
+    .text(price, 370, y, { width: 90, align: 'centre' })
+    .text(stocks, 470, y, { width: 90, align: 'centre' });
+}
+
+// sales report........................................
 async function generateSalesReport(reportData, res) {
   const doc = new PDFDocument();
 
@@ -55,6 +104,7 @@ function formatDate(date) {
   return date.toLocaleDateString('en-US', options);
 }
 
+// invoice order Report...........................
 function generateInvoice(orderDetails, res) {
   const doc = new PDFDocument({ margin: 50 });
   generateInvoiceHeader(doc);
@@ -145,4 +195,4 @@ function generateSubtotal(doc, orderDetail, tableTop) {
 }
 
 
-module.exports = { generateSalesReport, generateInvoice };
+module.exports = { generateSalesReport, generateInvoice, generateStocksReport };

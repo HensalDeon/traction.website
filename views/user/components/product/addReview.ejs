@@ -1,46 +1,100 @@
 <div class="comment-form">
-    <h4 class="mb-15">Add a review</h4>
-    <div class="product-rate d-inline-block mb-30">
-    </div>
-    <div class="row">
-        <div class="col-lg-8 col-md-12">
-            <form class="form-contact comment_form" action="#"
-                id="commentForm">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <textarea class="form-control w-100"
-                                name="comment" id="comment" cols="30"
-                                rows="9"
-                                placeholder="Write Comment"></textarea>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <input class="form-control" name="name"
-                                id="name" type="text" placeholder="Name">
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <input class="form-control" name="email"
-                                id="email" type="email" placeholder="Email">
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group">
-                            <input class="form-control" name="website"
+  <h4 class="mb-15">Add a review</h4>
+  <div class="product-rate d-inline-block mb-30">
+  </div>
+  <div class="row">
+    <div class="col-lg-8 col-md-12">
+      <form class="form-contact comment_form" id="commentForm">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <textarea class="form-control w-100" id="comment" name="comment" id="comment" cols="30" rows="9" placeholder="Write Comment"></textarea>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group">
+              <!-- <input class="form-control" name="website"
                                 id="website" type="text"
-                                placeholder="Website">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button type="submit"
-                        class="button button-contactForm">Submit
-                        Review</button>
-                </div>
-            </form>
+                                placeholder="Website"> -->
+              <select class="form-control" name="Give a rating" id="rating">
+                <option value="1">Rate 1 out of 5</option>
+                <option value="2">Rate 2 out of 5</option>
+                <option value="3">Rate 3 out of 5</option>
+                <option value="4">Rate 4 out of 5</option>
+                <option value="5">Rate 5 out of 5</option>
+              </select>
+            </div>
+          </div>
         </div>
+        <div class="form-group">
+          <button id="reviewBtn" class="button button-contactForm">Submit
+            Review</button>
+        </div>
+      </form>
+      <span id="productSlug"><%= product.slug %></span>
     </div>
+
+  </div>
 </div>
+<script>
+  const review = document.getElementById("reviewBtn");
+  review.addEventListener('click', (event) => {
+    event.preventDefault();
+    const commentInput = document.getElementById("comment").value;
+    const ratingInput = document.getElementById("rating").value;
+    const slug = document.getElementById("productSlug").textContent;
+    const url = '/product-review'
+    fetch(url, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          slug: slug,
+          reviewText: commentInput,
+          rating: parseInt(ratingInput),
+        })
+      })
+      .then(async (response) => {
+        if (response.redirected) {
+          window.location.href = response.url;
+        } else if (response.ok) {
+          return response.json();
+        } else {
+          const errorResponse = await response.json();
+          throw new Error(errorResponse.message);
+        }
+      })
+      .then((data) => {
+        console.log(data, '💥😊🥲');
+        if (data.success) {
+          swal.fire({
+            title: 'Done!',
+            text: 'Review Submitted!',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1300
+          });
+        } else {
+          swal.fire({
+            title: 'Oops!',
+            text: data.message,
+            icon: 'error',
+            showConfirmButton: false,
+            timer: 1300
+          });
+        }
+      })
+      .catch((error) => {
+        swal.fire({
+          title: 'Oops!',
+          text: error.message,
+          icon: 'error',
+          showConfirmButton: false,
+          timer: 1300
+        });
+        console.error('Error handling fetch:', error);
+      })
+
+  })
+</script>

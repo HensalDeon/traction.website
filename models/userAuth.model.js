@@ -5,6 +5,21 @@ const { sendOtp, verifyOtp } = require('../config/twilio');
 const { hashPassword, comparePassword } = require('../config/security');
 const cloudinary = require('../config/cloudinary');
 
+
+async function fetchUserData(userId){
+  try {
+    console.log('entered');
+    const userDetail = await userDatabase.findById(userId);
+    console.log(userDetail);
+     if(!userDetail){
+      return {status:false, message:'User could not be found try to login!'}
+     }else{
+      return { status: true, userDetail};
+     }
+  } catch (error) {
+    throw new Error("error checking user Existance!")
+  }
+}
 async function checkUserWithEmail(email, password) {
   try {
     const user = await userDatabase.findOne({ email: email });
@@ -22,29 +37,29 @@ async function checkUserWithEmail(email, password) {
   }
 }
 //forgot pass
-async function checkUserExist(email) {
-  try {
-    const user = await userDatabase.findOne({ email: email });
-    if (!user) {
-      throw new Error('User not found');
-    }
-    if (!user.status) {
-      throw new Error('User is blocked');
-    }
-      // Generate a unique token or reset password code
-    const resetToken = generateResetToken();
-    user.resetToken = resetToken;
-    await user.save();
-    return user
-  } catch (error) {
-    console.error('Error checking user existence:', error);
-    throw new Error('Error checking user existence');
-  }
-}
-function generateResetToken() {
-  const token = crypto.randomBytes(20).toString('hex');
-  return token;
-}
+// async function checkUserExist(email) {
+//   try {
+//     const user = await userDatabase.findOne({ email: email });
+//     if (!user) {
+//       throw new Error('User not found');
+//     }
+//     if (!user.status) {
+//       throw new Error('User is blocked');
+//     }
+//       // Generate a unique token or reset password code
+//     const resetToken = generateResetToken();
+//     user.resetToken = resetToken;
+//     await user.save();
+//     return user
+//   } catch (error) {
+//     console.error('Error checking user existence:', error);
+//     throw new Error('Error checking user existence');
+//   }
+// }
+// function generateResetToken() {
+//   const token = crypto.randomBytes(20).toString('hex');
+//   return token;
+// }
 
 
 async function checkUserExistOrNot(phoneNumber) {
@@ -81,7 +96,6 @@ async function verifyPhoneNumber(phoneNumber, otp) {
 async function sendVerificationSignup(phoneNumber) {
   try {
     const user = await userDatabase.findOne({ phone: phoneNumber });
-    return true
     if (!user) {
       sendOtp(phoneNumber);
       return true;
@@ -214,4 +228,5 @@ module.exports = {
   submitSignup,
   updateUserData,
   resetPassword,
+  fetchUserData,
 };

@@ -337,7 +337,7 @@ async function getAllOrders(page, limit) {
   try {
     const orders = await orderDatabase
       .find({ paymentStatus: 'success' })
-      .sort({ date: -1 }) // Sort by date in descending order
+      .sort({ date: -1 }) 
       .populate('user', 'username')
       .skip((page - 1) * limit)
       .limit(limit);
@@ -586,6 +586,19 @@ async function orderStatus(orderId) {
   }
 }
 
+async function hasPurchased(userId, productId){
+  try {
+    const purchaseResult = await orderDatabase.find({ user: userId, 'items.product': productId })
+    if(purchaseResult.length>0){
+    return {status: true, purchaseResult }
+    }else{
+      return {status:false}
+    }
+  } catch (error) {
+    throw new Error("Error finding the product!")
+  }
+}
+
 module.exports = {
   addOrderDetails,
   getAddresses,
@@ -608,4 +621,5 @@ module.exports = {
   updateWalletData,
   orderStatus,
   getOrders,
+  hasPurchased,
 };

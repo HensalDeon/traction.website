@@ -1,7 +1,8 @@
 const { handleError } = require('../middlewares/error.handler');
-
+const { fetchUserData } = require('../models/userAuth.model')
 const { fetchCategories } = require('../models/category.model');
-
+const { fetchReviews } = require('../models/review.model')
+const { hasPurchased } = require('../models/order.model')
 const { addProductSchema, updateProductSchema } = require('../config/joi');
 
 const {
@@ -14,6 +15,7 @@ const {
   getProductsWithCategory,
   searchProductsWithRegex,
   enableProductStatus,
+  addReview,
 } = require('../models/product.model');
 const { json } = require('body-parser');
 
@@ -167,10 +169,13 @@ async function GetProduct(req, res) {
     const slug = req.params.slug;
     const productResult = await fetchProduct(slug);
     const allProductsResult = await fetchAllProducts();
+    const reviewReferences = productResult.product.productReview;
+    const allReviewResult = await fetchReviews(reviewReferences);
     if (productResult.status) {
       res.render('user/product', {
         product: productResult.product,
         products: allProductsResult.products,
+        reviews: allReviewResult
       });
     } else {
       res.status(404).render('user/404', { message: 'Product not found' });
@@ -253,6 +258,37 @@ async function ProductsBySearch(req, res) {
   }
 }
 
+async function PostReview(req, res){
+  try {
+    const { slug, reviewText, rating } = req.body;
+    const productResult = await fetchProduct(slug);
+    if(!productResult.status){
+      return res.status(404).render('user/404', { message: 'Product not found' });
+    }
+    const userId = req.session.user._id;
+    let reviewerName = await fetchUserData(userId)
+    if(!reviewerName.status){
+      return res.status(401).json({ success:false, message: reviewerName.message})
+    }
+    reviewerName = reviewerName.userDetail.username;
+
+    // Check if the user has purchased the product based on their orders
+    const hasPurchasedProduct = await hasPurchased(userId, productResult.product._id);
+    if (!hasPurchasedProduct.status) {
+      console.log("ooh dark poyi mediikk");
+      return res.status(403).json({ success: false, message: 'You haven\'t purchased the product yet!' });
+    }
+
+    const addReviewResult = await addReview(reviewerName,reviewText,rating,productResult)
+    if (!addReviewResult.status) {
+      return res.status(500).json({ success: false, message: 'Unable to add review' });
+    }
+    res.status(201).json({ success: true, message: 'Review added successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Unable to add review' });
+  }
+}
+
 module.exports = {
   GetProducts,
   GetAddProduct,
@@ -266,4 +302,5 @@ module.exports = {
   GetProductImages,
   CategoryProduct,
   ProductsBySearch,
+  PostReview,
 };

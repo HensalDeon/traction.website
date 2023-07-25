@@ -47,6 +47,17 @@ const productSchema = new mongoose.Schema(
     },
     productNumber: { type: Number},
     slug: { type: String },
+    productReview:[
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Review',
+        required: true,
+      },
+    ],
+    // productRating: {
+    //   type: String,
+    //   default: 0,
+    // }
   },
   { timestamps: true },
 );
