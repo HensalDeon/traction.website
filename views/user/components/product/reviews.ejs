@@ -1,41 +1,47 @@
 <h3 class="section-title style-1 mb-30 mt-30">Reviews (<%=reviews.length %>)</h3>
 <div class="comments-area style-2">
-    <div class="row">
-        <div class="col-lg-8">
-            <h4 class="mb-30" style="color: gold;">Customer questions & answers</h4>
-            <div class="comment-list">
-                <% reviews.forEach(review => { %>
-                <div class="single-comment justify-content-between d-flex">
-                    <div class="user justify-content-between d-flex">
-                        <div class="thumb text-center">
-                            <img src="/user/assets/imgs/page/avatar-6.jpg"
-                                alt="">
-                            <h6><a href="#"><%= review.reviewerName %></a></h6>
-                        </div>
-                        <div class="desc">
-                            <div class="product-rate d-inline-block">
-                                <div class="product-rating"
-                                    style="width:90%">
-                                </div>
-                            </div>
-                            <p><%= review.reviewText %></p>
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <p class="font-xs mr-30"><%= review.reviewDate %></p>
-                                    <a href="#"
-                                        class="text-brand btn-reply">Edit
-                                        <i class="fi-rs-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <% }) %>
+  <div class="row">
+    <div class="col-lg-8">
+      <% if(reviews.length>0) { %>
+      <h4 class="mb-30" style="color: gold;">Customer Reviews</h4>
+      <div class="comment-list">
+        <% reviews.forEach(review => { %>
+        <div class="single-comment justify-content-between d-flex">
+          <div class="user justify-content-between d-flex">
+            <div class="thumb text-center">
+              <!-- <img src="/user/assets/imgs/page/avatar-6.jpg" alt=""> -->
+              <img src="<%= review.reviewerImage %>" alt="">
+              <h6><a href="#" style="color: aliceblue;"><%= review.reviewerName %></a></h6>
             </div>
+            <div class="desc">
+                <% const rating=review.rating, maxRating = 5 %>            
+              <div class="product-rate d-inline-block">
+                  <div class="stars">
+                    <% for (let i = 1; i <= maxRating; i++) { %>
+                        <% if (i <= rating) { %>
+                    <i style="color: orange;" class="fa-solid fa-star"></i>
+                        <% } %>
+                    <% } %>
+                </div>
+              </div>
+              <p><%= review.reviewText %></p>
+              <div class="d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <% const options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
+                  <p class="font-xs mr-30"><%= new Date(review.reviewDate).toLocaleDateString('en-US', options) %></p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        
+        <% }) %>
+      </div>
+      <% } else{%>
+        <h4 class="mb-30" style="color: gold;">No reviews yet!</h4>
+      <% } %>
     </div>
+
+  </div>
 </div>
 <!-- <div class="col-lg-4">
     <h4 class="mb-30">Customer reviews</h4>

@@ -8,9 +8,7 @@ const cloudinary = require('../config/cloudinary');
 
 async function fetchUserData(userId){
   try {
-    console.log('entered');
     const userDetail = await userDatabase.findById(userId);
-    console.log(userDetail);
      if(!userDetail){
       return {status:false, message:'User could not be found try to login!'}
      }else{

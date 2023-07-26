@@ -175,7 +175,7 @@ async function GetProduct(req, res) {
       res.render('user/product', {
         product: productResult.product,
         products: allProductsResult.products,
-        reviews: allReviewResult
+        reviews: allReviewResult,
       });
     } else {
       res.status(404).render('user/404', { message: 'Product not found' });
@@ -266,20 +266,20 @@ async function PostReview(req, res){
       return res.status(404).render('user/404', { message: 'Product not found' });
     }
     const userId = req.session.user._id;
-    let reviewerName = await fetchUserData(userId)
-    if(!reviewerName.status){
-      return res.status(401).json({ success:false, message: reviewerName.message})
+    let reviewerResult = await fetchUserData(userId)
+    if(!reviewerResult.status){
+      return res.status(401).json({ success:false, message: reviewerResult.message})
     }
-    reviewerName = reviewerName.userDetail.username;
+    let reviewerName = reviewerResult.userDetail.username;
+    let reviewerImage = reviewerResult.userDetail.profileimage;
 
-    // Check if the user has purchased the product based on their orders
     const hasPurchasedProduct = await hasPurchased(userId, productResult.product._id);
     if (!hasPurchasedProduct.status) {
       console.log("ooh dark poyi mediikk");
       return res.status(403).json({ success: false, message: 'You haven\'t purchased the product yet!' });
     }
 
-    const addReviewResult = await addReview(reviewerName,reviewText,rating,productResult)
+    const addReviewResult = await addReview(reviewerName,reviewerImage,reviewText,rating,productResult)
     if (!addReviewResult.status) {
       return res.status(500).json({ success: false, message: 'Unable to add review' });
     }

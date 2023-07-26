@@ -5,6 +5,9 @@ const reviewSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
+      reviewerImage: {
+        type: String,
+      },
       reviewText: {
         type: String,
         required: true,
@@ -18,6 +21,11 @@ const reviewSchema = new mongoose.Schema(
         required: true,
         min: 1,
         max: 5,
+      },
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true,
       },
     },
     { timestamps: true },

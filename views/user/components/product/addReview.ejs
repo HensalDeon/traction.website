@@ -31,7 +31,7 @@
             Review</button>
         </div>
       </form>
-      <span id="productSlug"><%= product.slug %></span>
+      <span id="productSlug" hidden><%= product.slug %></span>
     </div>
 
   </div>
@@ -75,6 +75,7 @@
             showConfirmButton: false,
             timer: 1300
           });
+          window.location.reload();
         } else {
           swal.fire({
             title: 'Oops!',

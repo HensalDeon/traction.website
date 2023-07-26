@@ -101,10 +101,11 @@ async function fetchAllProducts(page, limit, sortBy, sortOption) {
   }
 }
 
-async function addReview(reviewerName,reviewText,rating,productResult) {
+async function addReview(reviewerName,reviewerImage,reviewText,rating,productResult) {
   try {
     const newReview = new reviewDatabse({
       reviewerName: reviewerName,
+      reviewerImage: reviewerImage,
       reviewText: reviewText,
       rating: rating,
     });

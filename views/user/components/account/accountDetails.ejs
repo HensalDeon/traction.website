@@ -31,7 +31,9 @@
     max-height: 100%;
   }
 </style>
-<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 100000; right: 60px;"></div>
+<div>
+  <div class="toast-container position-sticky" style="z-index: 999; right: 60px;"></div>
+</div>
 <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
   <div class="card">
     <div class="card-header">
@@ -248,6 +250,9 @@
     }
 
 
+    // Check if the "new password" field is filled
+  const newPasswordValue = newPasswordInput.value.trim();
+  if (newPasswordValue !== '') {
     // Validate current password field
     if (passwordInput.value.trim() === '') {
       displayErrorMessage(passwordInput, 'Current Password is required.');
@@ -257,12 +262,9 @@
     }
 
     // Validate new password field
-    if (newPasswordInput.value.trim() === '') {
-      displayErrorMessage(newPasswordInput, 'New Password is required.');
+    if (newPasswordValue === passwordInput.value.trim()) {
+      displayErrorMessage(newPasswordInput, 'Current password and new should not be the same!');
       isValid = false;
-    } else if(newPasswordInput.value.trim() === passwordInput.value.trim()){
-        displayErrorMessage(newPasswordInput, 'Current password and new should not be same!')
-        isValid = false;
     } else {
       clearErrorMessage(newPasswordInput);
     }
@@ -271,12 +273,18 @@
     if (confirmPasswordInput.value.trim() === '') {
       displayErrorMessage(confirmPasswordInput, 'Confirm Password is required.');
       isValid = false;
-    } else if (confirmPasswordInput.value.trim() !== newPasswordInput.value.trim()) {
+    } else if (confirmPasswordInput.value.trim() !== newPasswordValue) {
       displayErrorMessage(confirmPasswordInput, 'Confirm Password does not match.');
       isValid = false;
     } else {
       clearErrorMessage(confirmPasswordInput);
     }
+  } else {
+    // Clear error messages and reset the validity state of password fields
+    clearErrorMessage(passwordInput);
+    clearErrorMessage(newPasswordInput);
+    clearErrorMessage(confirmPasswordInput);
+  }   
     return isValid;
   }
 
