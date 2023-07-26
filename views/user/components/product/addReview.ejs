@@ -4,6 +4,7 @@
   </div>
   <div class="row">
     <div class="col-lg-8 col-md-12">
+      <% if (!reviews.some(review => review.reviewer._id.toString() === userId)) { %>
       <form class="form-contact comment_form" id="commentForm">
         <div class="row">
           <div class="col-12">
@@ -31,12 +32,16 @@
             Review</button>
         </div>
       </form>
+      <% } else { %>
+        <h4 style="color: aliceblue;">You have already submitted a review for this product.</h4>
+      <% } %>
       <span id="productSlug" hidden><%= product.slug %></span>
     </div>
 
   </div>
 </div>
 <script>
+
   const review = document.getElementById("reviewBtn");
   review.addEventListener('click', (event) => {
     event.preventDefault();

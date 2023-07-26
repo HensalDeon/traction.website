@@ -10,8 +10,8 @@
           <div class="user justify-content-between d-flex">
             <div class="thumb text-center">
               <!-- <img src="/user/assets/imgs/page/avatar-6.jpg" alt=""> -->
-              <img src="<%= review.reviewerImage %>" alt="">
-              <h6><a href="#" style="color: aliceblue;"><%= review.reviewerName %></a></h6>
+              <img src="<%= review.reviewer.profileimage %>" alt="">
+              <h6><a href="#" style="color: aliceblue;"><%= review.reviewer.username %></a></h6>
             </div>
             <div class="desc">
                 <% const rating=review.rating, maxRating = 5 %>            

@@ -171,11 +171,15 @@ async function GetProduct(req, res) {
     const allProductsResult = await fetchAllProducts();
     const reviewReferences = productResult.product.productReview;
     const allReviewResult = await fetchReviews(reviewReferences);
+
+    const userId = req.session.user ? req.session.user._id.toString() : null;
+
     if (productResult.status) {
       res.render('user/product', {
         product: productResult.product,
         products: allProductsResult.products,
         reviews: allReviewResult,
+        userId: userId, 
       });
     } else {
       res.status(404).render('user/404', { message: 'Product not found' });
@@ -270,16 +274,13 @@ async function PostReview(req, res){
     if(!reviewerResult.status){
       return res.status(401).json({ success:false, message: reviewerResult.message})
     }
-    let reviewerName = reviewerResult.userDetail.username;
-    let reviewerImage = reviewerResult.userDetail.profileimage;
 
     const hasPurchasedProduct = await hasPurchased(userId, productResult.product._id);
     if (!hasPurchasedProduct.status) {
-      console.log("ooh dark poyi mediikk");
       return res.status(403).json({ success: false, message: 'You haven\'t purchased the product yet!' });
     }
 
-    const addReviewResult = await addReview(reviewerName,reviewerImage,reviewText,rating,productResult)
+    const addReviewResult = await addReview(userId,reviewText,rating,productResult)
     if (!addReviewResult.status) {
       return res.status(500).json({ success: false, message: 'Unable to add review' });
     }

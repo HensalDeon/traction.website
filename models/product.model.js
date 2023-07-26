@@ -101,17 +101,17 @@ async function fetchAllProducts(page, limit, sortBy, sortOption) {
   }
 }
 
-async function addReview(reviewerName,reviewerImage,reviewText,rating,productResult) {
+async function addReview(userId, reviewText, rating, productResult) {
   try {
     const newReview = new reviewDatabse({
-      reviewerName: reviewerName,
-      reviewerImage: reviewerImage,
+      reviewer: userId,
       reviewText: reviewText,
       rating: rating,
+      product: productResult.product._id,
     });
-    let result = await newReview.save();
-    if (result) {
-      productResult.product.productReview.push(newReview._id);
+    let savedReview = await newReview.save();
+    if (savedReview) {
+      productResult.product.productReview.push(savedReview._id);
       await productResult.product.save();
       return { status: true };
     } else {
