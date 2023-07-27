@@ -1,7 +1,7 @@
 const { handleError } = require('../middlewares/error.handler');
 const { fetchUserData } = require('../models/userAuth.model')
 const { fetchCategories } = require('../models/category.model');
-const { fetchReviews } = require('../models/review.model')
+const { fetchReviews, deleteReview } = require('../models/review.model')
 const { hasPurchased } = require('../models/order.model')
 const { addProductSchema, updateProductSchema } = require('../config/joi');
 
@@ -290,6 +290,24 @@ async function PostReview(req, res){
   }
 }
 
+async function DeleteReview(req, res){
+  try {
+    const reviewId = req.params.reviewId;
+    const userId = req.session.user ? req.session.user._id.toString() : null;
+    if (!userId) {
+      return res.status(401).json({ success: false, message: 'Not authorized' });
+    }
+    const deleteReviewResult = await deleteReview(reviewId,userId);
+    if (!deleteReviewResult.status) {
+      return res.status(403).json({ success: false, message: 'Not authorized to delete this review' });
+    }
+    res.status(200).json({ success: true, message: 'Review deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting review:', error);
+    res.status(500).json({ success: false, message: 'Unable to delete review' });
+  }
+}
+
 module.exports = {
   GetProducts,
   GetAddProduct,
@@ -304,4 +322,5 @@ module.exports = {
   CategoryProduct,
   ProductsBySearch,
   PostReview,
+  DeleteReview,
 };

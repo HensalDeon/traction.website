@@ -14,14 +14,14 @@
               <h6><a href="#" style="color: aliceblue;"><%= review.reviewer.username %></a></h6>
             </div>
             <div class="desc">
-                <% const rating=review.rating, maxRating = 5 %>            
+              <% const rating=review.rating, maxRating = 5 %>
               <div class="product-rate d-inline-block">
-                  <div class="stars">
-                    <% for (let i = 1; i <= maxRating; i++) { %>
-                        <% if (i <= rating) { %>
-                    <i style="color: orange;" class="fa-solid fa-star"></i>
-                        <% } %>
-                    <% } %>
+                <div class="stars">
+                  <% for (let i = 1; i <= maxRating; i++) { %>
+                  <% if (i <= rating) { %>
+                  <i style="color: orange;" class="fa-solid fa-star"></i>
+                  <% } %>
+                  <% } %>
                 </div>
               </div>
               <p><%= review.reviewText %></p>
@@ -29,6 +29,9 @@
                 <div class="d-flex align-items-center">
                   <% const options = { year: 'numeric', month: 'long', day: 'numeric' }; %>
                   <p class="font-xs mr-30"><%= new Date(review.reviewDate).toLocaleDateString('en-US', options) %></p>
+                  <% if (userId && review.reviewer._id.toString() === userId) { %>
+                  <a class="text-brand btn-reply" onclick="deleteReview('<%= review._id %>')">Delete<i class="fi-rs-arrow-right"></i></a>
+                  <% } %>
                 </div>
               </div>
             </div>
@@ -37,12 +40,58 @@
         <% }) %>
       </div>
       <% } else{%>
-        <h4 class="mb-30" style="color: gold;">No reviews yet!</h4>
+      <h4 class="mb-30" style="color: gold;">No reviews yet!</h4>
       <% } %>
     </div>
-
   </div>
 </div>
+<script>
+  async function deleteReview(reviewId) {
+    try {
+      const confirmed = await Swal.fire({
+        icon: 'warning',
+        title: 'Are you sure?',
+        text: 'You are about to delete this review. This action cannot be undone!',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+      });
+
+      if (confirmed.isConfirmed) {
+        const response = await fetch(`/delete-review/${reviewId}`, {
+          method: 'DELETE',
+        });
+
+        if (response.ok) {
+          await Swal.fire({
+            icon: 'success',
+            title: 'Review Deleted!',
+            text: 'The review has been deleted successfully.',
+            timer: 1300,
+            showConfirmButton: false,
+          });
+          window.location.reload();
+        } else {
+          const errorResponse = await response.json();
+          await Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: errorResponse.message,
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error deleting review:', error);
+      await Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'An error occurred while deleting the review. Please try again later.',
+      });
+    }
+  }
+</script>
 <!-- <div class="col-lg-4">
     <h4 class="mb-30">Customer reviews</h4>
     <div class="d-flex mb-30">

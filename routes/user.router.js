@@ -36,6 +36,7 @@ const {
   ProductsBySearch,
   GetProductImages,
   PostReview,
+  DeleteReview,
 } = require('../controllers/product.controller');
 
 const {
@@ -140,6 +141,7 @@ userRouter.get('/logout', GetLogout);
 
 // review
 userRouter.post('/product-review',isLoggedIn, PostReview);
+userRouter.delete('/delete-review/:reviewId',isLoggedIn, DeleteReview);
 
 //others
 userRouter.get('/learn-more', GetLearnMore)
