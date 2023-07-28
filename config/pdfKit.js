@@ -55,6 +55,18 @@ async function generateSalesReport(reportData, res) {
   generateHeader(doc);
   generateReportTable(doc, reportData);
 
+  const subtotal = reportData.reduce((acc, entry) => acc + entry.quantity * parseFloat(entry.price), 0);
+
+  // Add Subtotal row
+  const position = 150 + (reportData.length + 1) * 40;
+  doc
+    .fontSize(10)
+    .text('', 50, position + 15)
+    .text('', 150, position, { width: 170, align: 'left' })
+    .text('', 280, position, { width: 90, align: 'right' })
+    .text('Subtotal', 370, position, { width: 90, align: 'right' })
+    .text(subtotal.toFixed(2), 460, position, { width: 90, align: 'right' });
+
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', 'attachment; filename=sales-report.pdf');
 
@@ -76,7 +88,7 @@ function generateReportTable(doc, report) {
 
   for (i = 0; i < report.length; i++) {
     const entry = report[i];
-    const position = tableTop + (i + 1) * 30;
+    const position = tableTop + (i + 1) * 40;
     generateTableRow(
       doc,
       position,

@@ -62,8 +62,10 @@
           </tbody>
         </table>
       </div>
-      <button id="downloadButton" class="btn btn-primary" style="display: none;">Download Report</button>
-
+      <div style="display: flex;">
+        <button id="downloadButtonPDF" class="btn btn-primary" style="display: none;">Download Report as PDF</button>
+      <button id="downloadButtonExcel" class="btn btn-primary" style="display: none;">Download Report as Excel</button>
+      </div>
     </div>
   </div>
 </div>
@@ -156,40 +158,49 @@
     }
   });
 
-  document.getElementById("filterButton").addEventListener("click", function () {
-  let startDate = document.getElementById("startDate").value;
-  let endDate = document.getElementById("endDate").value;
+  document.getElementById("filterButton").addEventListener("click", function() {
+    let startDate = document.getElementById("startDate").value;
+    let endDate = document.getElementById("endDate").value;
 
-  if (startDate && endDate) {
-    startDate = new Date(startDate).toISOString();
-    endDate = new Date(endDate).toISOString();
+    if (startDate && endDate) {
+      startDate = new Date(startDate).toISOString();
+      endDate = new Date(endDate).toISOString();
 
-    fetch(`/admin/sales-report?startDate=${startDate}&endDate=${endDate}`)
-      .then(response => response.json())
-      .then(data => {
-        updateTableWithData(data);
-        document.getElementById("downloadButton").style.display = "block";
-        document.getElementById("downloadButton").addEventListener("click", function () {
-          downloadSalesReport(data);
-        });
-      })
-      .catch(error => console.error("Error fetching sales report:", error));
-  } else {
-    // If no date is selected, fetch all sales data
-    fetch('/admin/sales-report/')
-      .then(response => response.json())
-      .then(data => {
-        updateTableWithData(data);
-        document.getElementById("downloadButton").style.display = "block";
-        document.getElementById("downloadButton").addEventListener("click", function () {
-          downloadSalesReport(data);
-        });
-      })
-      .catch(error => console.error("Error fetching sales report:", error));
-  }
-});
+      fetch(`/admin/sales-report?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`)
+        .then(response => response.json())
+        .then(data => {
+          updateTableWithData(data);
+          document.getElementById("downloadButtonPDF").style.display = "block";
+          document.getElementById("downloadButtonExcel").style.display = "block";
 
-function updateTableWithData(data) {
+          document.getElementById("downloadButtonPDF").addEventListener("click", function() {
+            downloadSalesReport(data, 'pdf');
+          });
+          document.getElementById("downloadButtonExcel").addEventListener("click", function() {
+            downloadSalesReport(data, 'excel');
+          });
+        })
+        .catch(error => console.error("Error fetching sales report:", error));
+    } else {
+      fetch('/admin/sales-report/')
+        .then(response => response.json())
+        .then(data => {
+          updateTableWithData(data);
+          document.getElementById("downloadButtonPDF").style.display = "block";
+          document.getElementById("downloadButtonExcel").style.display = "block";
+          document.getElementById("downloadButtonExcel").addEventListener("click", function() {
+            downloadSalesReport(data, 'excel');
+          });
+          document.getElementById("downloadButtonPDF").addEventListener("click", function() {
+            downloadSalesReport(data, 'pdf');
+          });
+
+        })
+        .catch(error => console.error("Error fetching sales report:", error));
+    }
+  });
+
+  function updateTableWithData(data) {
     var tableBody = document.querySelector("tbody");
     var tableContent = "";
 
@@ -208,19 +219,22 @@ function updateTableWithData(data) {
     tableBody.innerHTML = tableContent;
   }
 
-  function downloadSalesReport(data) {
-  let startDate = document.getElementById("startDate").value;
+  function downloadSalesReport(data,format) {
+    console.log(format,'😁😁😁');
+    let startDate = document.getElementById("startDate").value;
     let endDate = document.getElementById("endDate").value;
     if (startDate && endDate) {
-    startDate = new Date(startDate).toISOString();
-    endDate = new Date(endDate).toISOString();
-  } else {
-    startDate = null;
-    endDate = null;
-  }
-    console.log(startDate,'😒😒💥💥',endDate);
-
-    var downloadURL = `/admin/sales-report/download?startDate=${startDate}&endDate=${endDate}`;
-    window.location.href=downloadURL;
+      startDate = new Date(startDate).toISOString();
+      endDate = new Date(endDate).toISOString();
+    } else {
+      startDate = null;
+      endDate = null;
+    }
+    if (format === 'pdf') {
+      var downloadURL = `/admin/sales-report/download?startDate=${startDate}&endDate=${endDate}`;
+    } else if (format === 'excel') {
+      var downloadURL = `/admin/sales-report/download-excel?startDate=${startDate}&endDate=${endDate}`;
+    }
+    window.location.href = downloadURL;
   }
 </script>

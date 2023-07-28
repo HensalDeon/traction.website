@@ -10,13 +10,11 @@
           <div class="col-12">
             <div class="form-group">
               <textarea class="form-control w-100" id="comment" name="comment" id="comment" cols="30" rows="9" placeholder="Write Comment"></textarea>
+              <div id="error-message" class="error-message" style="color: red;"></div>
             </div>
           </div>
           <div class="col-12">
             <div class="form-group">
-              <!-- <input class="form-control" name="website"
-                                id="website" type="text"
-                                placeholder="Website"> -->
               <select class="form-control" name="Give a rating" id="rating">
                 <option value="1">Rate 1 out of 5</option>
                 <option value="2">Rate 2 out of 5</option>
@@ -71,7 +69,6 @@
         }
       })
       .then((data) => {
-        console.log(data, '💥😊🥲');
         if (data.success) {
           swal.fire({
             title: 'Done!',
@@ -82,6 +79,7 @@
           });
           window.location.reload();
         } else {
+          console.log('jsdvbjdhb');
           swal.fire({
             title: 'Oops!',
             text: data.message,
@@ -92,6 +90,7 @@
         }
       })
       .catch((error) => {
+        console.log('heyyy');
         swal.fire({
           title: 'Oops!',
           text: error.message,

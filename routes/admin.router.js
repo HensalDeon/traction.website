@@ -16,6 +16,7 @@ const {
   GetReport,
   GetDisplayReport,
   GetStocksReport,
+  GetReportExcel
 } = require('../controllers/admin.controller');
 
 const {
@@ -105,6 +106,7 @@ adminRouter.get('/graph', isAdminLoggedIn, GetGraphData);
 adminRouter.get('/chart', isAdminLoggedIn, GetChartData);
 adminRouter.get('/sales-report', isAdminLoggedIn, GetDisplayReport);
 adminRouter.get('/sales-report/download', isAdminLoggedIn, GetReport);
+adminRouter.get('/sales-report/download-excel', isAdminLoggedIn, GetReportExcel);
 adminRouter.get('/stocks-report', isAdminLoggedIn, GetStocksReport);
 
 //Others(404) 

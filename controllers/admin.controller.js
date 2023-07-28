@@ -9,6 +9,8 @@ const {
 } = require('../models/admin.model');
 const { getProductStocks } = require('../models/product.model');
 const { generateSalesReport, generateStocksReport } = require('../config/pdfKit');
+const { generateSalesReportExcel } = require('../config/excel');
+
 const { getOrderData, getOrders } = require('../models/order.model');
 const { end } = require('pdfkit');
 
@@ -256,13 +258,32 @@ async function GetReport(req, res) {
       generateSalesReport(reportData, res);
     } else {
       reportData = await getOrders(startDate, endDate);
-      console.log(reportData, '💥💥💥');
       generateSalesReport(reportData, res);
     }
   } catch (error) {
     handleError(res, error);
   }
 }
+async function GetReportExcel(req, res) {
+  try {
+    const startDate = req.query.startDate;
+    const endDate = req.query.endDate;
+    let reportData;
+    if (startDate === 'null' && endDate === 'null') {
+      reportData = await getOrderData();
+    } else {
+      reportData = await getOrders(startDate, endDate);
+    }
+    const workbook = await generateSalesReportExcel(reportData);
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=sales-report.xlsx');
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (error) {
+    handleError(res, error);
+  }
+}
+
 
 module.exports = {
   GetDashBoard,
@@ -277,4 +298,5 @@ module.exports = {
   GetReport,
   GetDisplayReport,
   GetStocksReport,
+  GetReportExcel,
 };

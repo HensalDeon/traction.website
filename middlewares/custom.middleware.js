@@ -1,4 +1,5 @@
 const { fetchCategories } = require('../models/category.model');
+const { fetchUserData } = require('../models/userAuth.model');
 const { fetchCartProducts, fetchWishlistProducts } = require('../models/cart.model');
 const { handleError } = require('./error.handler');
 
@@ -14,7 +15,20 @@ async function categoryMiddleware(req, res, next) {
 
 async function loggedInMiddleware(req, res, next) {
   try {
+    // if (req.session.user) {
+    //   res.locals.user = req.session.user;
+    // }
+    
+    
     if (req.session.user) {
+      const userStatus = await fetchUserData(req.session.user._id); 
+      console.log(userStatus.status,'❤️❤️❤️❤️ ',req.session.user._id);
+      if (userStatus.status === false) {
+        req.session.userloggedIn = false;
+        req.session.user = null;
+        return res.redirect('/login');
+      }
+
       res.locals.user = req.session.user;
     }
     next();
