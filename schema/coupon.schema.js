@@ -45,4 +45,14 @@ couponSchema.pre('save', function(next) {
   next();
 });
 
+// couponSchema.pre('findOneAndUpdate', function (next) {
+//   const currentDate = new Date();
+//   if (this.getUpdate().validUntil < currentDate) {
+//     this.set({ isActive: false });
+//   } else {
+//     this.set({ isActive: true });
+//   }
+//   next();
+// });
+
 module.exports = mongoose.model('Coupon', couponSchema);

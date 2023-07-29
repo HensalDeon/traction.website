@@ -1,137 +1,133 @@
 <section class="content-main">
-    <div class="content-header">
-        <h2 class="content-title">Users list</h2>
-    </div>
-    <div class="card mb-4">
+  <div class="content-header">
+    <h2 class="content-title">Users list</h2>
+  </div>
+  <div class="card mb-4">
 
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Phone</th>
-                            <th>Block/Unblock</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% users.forEach(function(user) { %>
-                            <tr>
-                                <td width="40%">
-                                    <a href="#" class="itemside">
-                                        <div class="left">
-                                            <img src="<%= user.profileimage %>" class="img-sm img-avatar" alt="Userpic">
-                                        </div>
-                                        <div class="info pl-3">
-                                            <h6 id="username" class="mb-0 title">
-                                                <%= user.username %>
-                                            </h6>
-                                            <small class="text-muted">User ID: <%= user._id %></small>
-                                        </div>
-                                    </a>
-                                </td>
-                                <td>
-                                    <%= user.email %>
-                                </td>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>User</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Phone</th>
+              <th>Block/Unblock</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% users.forEach(function(user,index) { %>
+            <tr style="border-bottom: 1px solid #eee6e6;">
+                <td><%= index + 1 %>.</td>
+              <td width="40%" style="display: contents;">
+                <a href="#" class="itemside">
+                  <div class="left">
+                    <img src="<%= user.profileimage %>" class="img-sm img-avatar" alt="Userpic">
+                  </div>
+                  <div class="info pl-3">
+                    <h6 id="username" class="mb-0 title">
+                      <%= user.username %>
+                    </h6>
+                    <small class="text-muted">User ID: <%= user._id %></small>
+                  </div>
+                </a>
+              </td>
+                <td>
+                    <%= user.email %>
+                  </td>
+    
+                  <td><span class="badge rounded-pill alert-success">Active</span></td>
+                  <td>
+                    <%= user.phone %>
+                  </td>
+                  <% if (user.status) { %>
+                  <td><button class="btn btn-danger block-user" data-user-id="<%= user._id %>" data-action="block">Block</button></td>
+                  <% } else { %>
+                  <td><button class="btn btn-primary block-user" data-user-id="<%= user._id %>" data-action="unblock">Unblock</button></td>
+                  <% } %>
+                </tr>
+            <% }); %>
 
-                                <td><span class="badge rounded-pill alert-success">Active</span></td>
-                                <td>
-                                    <%= user.phone %>
-                                </td>
-                                <% if (user.status) { %>
-                                    <td><button class="btn btn-danger block-user" data-user-id="<%= user._id %>"
-                                            data-action="block">Block</button></td>
-                                    <% } else { %>
-                                        <td><button class="btn btn-primary block-user" data-user-id="<%= user._id %>"
-                                                data-action="unblock">Unblock</button></td>
-                                        <% } %>
-                            </tr>
-                            <% }); %>
-
-                    </tbody>
-                </table> <!-- table-responsive.// -->
-            </div>
-        </div> <!-- card-body end// -->
-    </div> <!-- card end// -->
-    <div class="pagination-area mt-15 mb-50">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-start">
-                <% if(currentPage> 1) { %>
-                    <li class="page-item"><a class="page-link"
-                            href="/admin/users?page=<%=currentPage-1%>&limit=<%=limit%>"><i
-                                class="material-icons md-chevron_left"></i></a></li>
-                    <% } %>
-                        <% for (let i=1; i<=totalPages; i++) { %>
-                            <% if (i===currentPage) { %>
-                                <li class="page-item active"><a class="page-link" href="#">
-                                        <%= i %>
-                                    </a></li>
-                                <% } else { %>
-                                    <li class="page-item"><a class="page-link"
-                                            href="/admin/users?page=<%=i%>&limit=<%=limit%>">
-                                            <%= i %>
-                                        </a></li>
-                                    <% } %>
-                                        <% } %>
-                                            <% if (currentPage < totalPages) { %>
-                                                <li class="page-item"><a class="page-link"
-                                                        href="/admin/users?page=<%=currentPage+1%>&limit=<%=limit%>"><i
-                                                            class="material-icons md-chevron_right"></i></a></li>
-                                                <% } %>
-            </ul>
-        </nav>
-    </div>
+          </tbody>
+        </table> <!-- table-responsive.// -->
+      </div>
+    </div> <!-- card-body end// -->
+  </div> <!-- card end// -->
+  <div class="pagination-area mt-15 mb-50">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-start">
+        <% if(currentPage> 1) { %>
+        <li class="page-item"><a class="page-link" href="/admin/users?page=<%=currentPage-1%>&limit=<%=limit%>"><i class="material-icons md-chevron_left"></i></a></li>
+        <% } %>
+        <% for (let i=1; i<=totalPages; i++) { %>
+        <% if (i===currentPage) { %>
+        <li class="page-item active"><a class="page-link" href="#">
+            <%= i %>
+          </a></li>
+        <% } else { %>
+        <li class="page-item"><a class="page-link" href="/admin/users?page=<%=i%>&limit=<%=limit%>">
+            <%= i %>
+          </a></li>
+        <% } %>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+        <li class="page-item"><a class="page-link" href="/admin/users?page=<%=currentPage+1%>&limit=<%=limit%>"><i class="material-icons md-chevron_right"></i></a></li>
+        <% } %>
+      </ul>
+    </nav>
+  </div>
 </section> <!-- content-main end// -->
 
 
 <script>
-    $(document).on('click', '.block-user', function () {
-        const userId = $(this).data('user-id');
-        const action = $(this).data('action');
+  $(document).on('click', '.block-user', function() {
+    const userId = $(this).data('user-id');
+    const action = $(this).data('action');
 
 
-        swal({
-            title: "Are you sure?",
-            text: action == 'block' ? "This action will prevent the user from accessing the system and performing any actions." : "This action will allow the user to access the system and perform actions again.",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
-                $.ajax({
-                    url: '/admin/user-status',
-                    type: 'PUT',
-                    data: {
-                        action: action, id: userId
-                    },
-                    success: function (data) {
-                        var userRow = $(`tr[data-user-id="${userId}"]`);
-                        console.log(userRow);
-                        if (data.status === 200) {
-                            var button = $('[data-user-id="' + userId + '"]');
-                            if (action === 'block') {
-                                button.text('Unblock').removeClass('btn-danger').addClass('btn-primary').data('action', 'unblock');
-                            } else {
-                                button.text('Block').removeClass('btn-primary').addClass('btn-danger').data('action', 'block');
-                            }
-                            callAlertify('warning', `User ${action}ed successfully👍`);
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        var message;
-                        if (xhr.status === 404) {
-                            message = 'User not found';
-                        } else {
-                            message = 'Failed to update user status due to server error';
-                        }
-                        callAlertify('error: ' + message)
-                    }
-                });
-
+    swal({
+      title: "Are you sure?",
+      text: action == 'block' ? "This action will prevent the user from accessing the system and performing any actions." : "This action will allow the user to access the system and perform actions again.",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        $.ajax({
+          url: '/admin/user-status',
+          type: 'PUT',
+          data: {
+            action: action,
+            id: userId
+          },
+          success: function(data) {
+            var userRow = $(`tr[data-user-id="${userId}"]`);
+            console.log(userRow);
+            if (data.status === 200) {
+              var button = $('[data-user-id="' + userId + '"]');
+              if (action === 'block') {
+                button.text('Unblock').removeClass('btn-danger').addClass('btn-primary').data('action', 'unblock');
+              } else {
+                button.text('Block').removeClass('btn-primary').addClass('btn-danger').data('action', 'block');
+              }
+              callAlertify('warning', `User ${action}ed successfully👍`);
             }
+          },
+          error: function(xhr, status, error) {
+            var message;
+            if (xhr.status === 404) {
+              message = 'User not found';
+            } else {
+              message = 'Failed to update user status due to server error';
+            }
+            callAlertify('error: ' + message)
+          }
         });
 
+      }
     });
+
+  });
 </script>

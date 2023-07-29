@@ -45,12 +45,14 @@ async function changeCouponStatus(couponId, updateStatus) {
 
 async function getAllCoupons() {
   try {
-    const result = await couponDatabase.find({}).sort({ validFrom: 1 });
+    // const result = await couponDatabase.find({}).sort({ validFrom: 1 });
+    const currentDate = new Date();
+    const result = await couponDatabase.find({ validUntil: { $gte: currentDate } }).sort({ validFrom: 1 });
     return result;
   } catch (error) {
     throw new Error('oops!something wrong while fetching coupons');
   }
-}
+}      
 
 async function findCoupen(couponName) {
   try {

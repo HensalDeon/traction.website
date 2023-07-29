@@ -3,6 +3,7 @@
     <table class="table table-hover">
       <thead>
         <tr>
+          <th>#</th>
           <th>Transaction-ID</th>
           <th scope="col">Name</th>
           <!-- <th scope="col">Email</th> -->
@@ -15,9 +16,10 @@
         </tr>
       </thead>
       <tbody>
-        <% orders.forEach(order => { %>
+        <% orders.forEach((order,index) => { %>
         <% if (order.paymentStatus !== 'failed') { %> <!-- Exclude orders with paymentStatus 'failed' -->
         <tr>
+          <td><%= index+1 %>.</td>
           <td><%= order.transactionId %></td>
           <td><b><%= order.user?.username %></b></td>
           <!-- <td><template class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3">[email&#160;protected]</template></td> -->
@@ -52,11 +54,11 @@
           <td><%= order.orderNumber %></td>
           <td class="text-end">
             <div class="dropdown">
+              <a href="/admin/order-details?id=<%= order._id %>&admin=true" class="btn rounded btn-sm" style="display: inline-flex;"><span class="material-symbols-outlined">info</span></a>
               <a href="#" data-bs-toggle="dropdown" class="btn rounded btn-sm font-sm">
                 <span class="material-symbols-outlined">edit_square</span>
               </a>
               <div class="dropdown-menu">
-                <a href="/admin/order-details?id=<%= order._id %>&admin=true" class="dropdown-item" style="background-color: rgb(255, 180, 41);">View detail</a>
                 <% if (order.status === 'cancelPending') { %>
                 <a onclick="changeStatus('<%= order._id %>','canceled')" data-orderid="<%= order._id %>" class="btn btn-sm btn-danger dropdown-item rounded font-sm">Approve cancel</a>
                 <% } else if (order.status === 'processing') { %>

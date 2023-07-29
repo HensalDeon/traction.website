@@ -530,8 +530,8 @@ table .form-check {
 }
 
 .img-sm {
-    width: 60px;
-    height: 60px
+    width: 52px;
+    height: 52px
 }
 
 .img-md {
@@ -3805,7 +3805,7 @@ body.offcanvas-active {
 }
 
 .content-main {
-    padding: 84px 3%;
+    padding: 27px 3%;
     margin-left: auto;
     margin-right: auto;
 }

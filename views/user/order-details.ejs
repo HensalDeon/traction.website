@@ -9,21 +9,41 @@
 <body>
   <%- include("./layouts/navbar") %>
 
-
-
   <main class="main">
 
     <div class="page-header breadcrumb-wrap">
       <div class="container">
         <div class="breadcrumb">
           <a href="/" rel="nofollow">Home</a>
-          <span></span> Pages
+          <span></span> Account
           <span></span> order-details
         </div>
       </div>
     </div>
-    <section class="pt-50 mb-50 cartBg">
+    <section class="pt-5 mb-50 cartBg">
       <div class="container">
+        <div class="container-fluid my-5 d-sm-flex justify-content-center">
+          <div class="card px-2">
+            <div class="row px-3">
+              <div class="col">
+                <ul id="progressbar" style="display: none;">
+                  <li class="step0" id="step1">PLACED</li>
+                  <li class="step0 text-center" id="step2">SHIPPED</li>
+                  <li class="step0" id="step3">DELIVERED</li>
+                </ul>
+                <ul id="progressbar-return" style="display: none;">
+                  <li class="step0 active" id="step4">RETURN PENDING</li>
+                  <li class="step0 text-center" id="step5">RETURNED</li>
+                </ul>
+                <ul id="progressbar-cancel" style="display: none;">
+                  <li class="step0 active" id="step6">CANCEL PENDING</li>
+                  <li class="step0 text-center" id="step7">CANCELED</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
         <div class="row">
           <div class="col-md-6">
             <div class="order_review" style="background-color: #f0ffffb5;">
@@ -49,17 +69,13 @@
                       <td>
                         <h5 class="product-name"><a href="/product/<%= item.product.slug %>">
                             <%= item.product.productName %>
-                          </a></h5> <span qty-navbar-<%=item.product._id %>" class="product-qty">x <%= item.quantity %> </span>
+                          </a></h5> <span qty-navbar-<%=item.product._id %> class="product-qty">x <%= item.quantity %> </span>
                       </td>
 
                       <td class="price" data-title="Price" id="subtotal" data-price="<%= item.product.productPrice %>">₹<%= item.price %>
                       </td>
-
-
-
                     </tr>
                     <% }) %>
-
                     <tr>
                       <th>SubTotal</th>
                       <td class="product-subtotal" colspan="2">₹<%=
@@ -78,8 +94,6 @@
                                                               Math.floor((orderData?.wallet|| 0))  %>
                       </td>
                     </tr>
-
-
                     <tr>
                       <th>Shipping</th>
                       <td colspan="2"><em>Free Shipping</em></td>
@@ -102,7 +116,7 @@
 
           <div class="col-md-6">
             <div class="order_review" style="background-color: #f0ffffb5;">
-              <div class="mb-25 d-flex"  style="justify-content: space-between;">
+              <div class="mb-25 d-flex" style="justify-content: space-between;">
                 <h4>SHIPPED TO</h4>
                 <a href="/download-invoice?id=<%= orderData.id %>" class="btn btn-sm">Invoice</a>
               </div>
@@ -131,8 +145,6 @@
                     </div>
                   </div>
                 </div>
-
-
                 <div>
 
                   <h4 class="mb-1">PAYMENT METHOD</h4>
@@ -174,9 +186,6 @@
                     <span class="badge bg-dark">Unknown</span> - The status of your order is unknown.
                     <% } %>
                   </strong><br><br>
-
-
-
                   <strong> TransactionId:
                     <span class="text-dark">
                       <%= orderData.transactionId %></span>
@@ -192,10 +201,60 @@
         </div>
     </section>
   </main>
-
-
   <%- include("./layouts/footer.ejs")%>
   <%- include("./script/script.ejs") %>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const orderStatus = "<%= orderData.status %>"
+
+      const progressBar = document.getElementById("progressbar");
+      const progressBarReturn = document.getElementById("progressbar-return");
+      const progressBarCancel = document.getElementById("progressbar-cancel");
+      const step1 = document.getElementById("step1");
+      const step2 = document.getElementById("step2");
+      const step3 = document.getElementById("step3");
+      const step4 = document.getElementById("step4");
+      const step5 = document.getElementById("step5");
+      const step6 = document.getElementById("step6");
+      const step7 = document.getElementById("step7");
+
+      step1.classList.remove("active");
+      step2.classList.remove("active");
+      step3.classList.remove("active");
+      step4.classList.remove("active");
+      step5.classList.remove("active");
+      step6.classList.remove("active");
+      step7.classList.remove("active");
+
+      if (orderStatus === "pending" || orderStatus === "processing") {
+        progressBar.style.display = 'block'
+        step1.classList.add("active");
+      } else if (orderStatus === "shipped") {
+        progressBar.style.display = 'block'
+        step1.classList.add("active");
+        step2.classList.add("active");
+      } else if (orderStatus === "delivered") {
+        progressBar.style.display = 'block'
+        step1.classList.add("active");
+        step2.classList.add("active");
+        step3.classList.add("active");
+      } else if (orderStatus === "returnPending") {
+        progressBarReturn.style.display = 'block'
+        step4.classList.add("active");
+      } else if (orderStatus === "returned") {
+        progressBarReturn.style.display = 'block'
+        step4.classList.add("active");
+        step5.classList.add("active");
+      } else if (orderStatus === "cancelPending") {
+        progressBarCancel.style.display = 'block'
+        step6.classList.add("active");
+      } else if (orderStatus === "canceled") {
+        progressBarCancel.style.display = 'block'
+        step6.classList.add("active");
+        step7.classList.add("active");
+      }
+    })
+  </script>
 </body>
 
 

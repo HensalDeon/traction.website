@@ -39,6 +39,8 @@
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "rollup": "^3.27.0",
+    "webpack": "^5.88.2"
   }
 }

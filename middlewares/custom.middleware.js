@@ -22,7 +22,6 @@ async function loggedInMiddleware(req, res, next) {
     
     if (req.session.user) {
       const userStatus = await fetchUserData(req.session.user._id); 
-      console.log(userStatus.status,'❤️❤️❤️❤️ ',req.session.user._id);
       if (userStatus.status === false) {
         req.session.userloggedIn = false;
         req.session.user = null;

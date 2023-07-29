@@ -203,9 +203,7 @@ async function verifyPayment(razorData, res) {
     expectedSignature.update(
       razorData['payment[razorpay_order_id]'] + '|' + razorData['payment[razorpay_payment_id]'],
     );
-
     expectedSignature = expectedSignature.digest('hex');
-
     if (expectedSignature === razorData['payment[razorpay_signature]']) {
       return true;
     } else {
