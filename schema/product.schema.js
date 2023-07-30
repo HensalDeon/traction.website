@@ -54,10 +54,10 @@ const productSchema = new mongoose.Schema(
         required: true,
       },
     ],
-    // productRating: {
-    //   type: String,
-    //   default: 0,
-    // }
+    productRating: {
+      type: String,
+      default: 0,
+    }
   },
   { timestamps: true },
 );

@@ -194,7 +194,7 @@ async function PostCheckout(req, res) {
           );
         }
         const razorPayOrder = await generateRazorpay(checkoutResult.order);
-        await cartDatabase.deleteOne({ user: req.session.user._id });
+        // await cartDatabase.deleteOne({ user: req.session.user._id });
         return res.json({
           success: true,
           paymethod: 'ONLINE',
@@ -224,6 +224,7 @@ async function VerifyPayment(req, res) {
         paymentDetails,
       );
       if (changePaymentResult) {
+        await cartDatabase.deleteOne({ user: req.session.user._id });
         return res.json({ success: true, message: 'payment result updated' });
       } else {
         return res.json({

@@ -1,221 +1,208 @@
 <!-- Quick view -->
 <div class="modal fade custom-modal" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">              
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>       
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6 col-sm-12 col-xs-12">
-                        <div class="detail-gallery">
-                            <span class="zoom-icon"><i class="fi-rs-search"></i></span>
-                            <!-- MAIN SLIDES -->
-                            <div class="product-image-slider">
-                                    <figure class="border-radius-10">
-                                        <img alt="product image" class="quick-view-image">
-                                    </figure>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="detail-gallery">
+              <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+              <!-- MAIN SLIDES -->
+              <div class="product-image-slider">
+                <figure class="border-radius-10">
+                  <img alt="product image" class="quick-view-image">
+                </figure>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 <section class="product-tabs section-padding wow fadeIn animated">
-    <div class="container">
-        <div class="tab-header">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="nav-tab-one" data-bs-toggle="tab" data-bs-target="#tab-one"
-                        type="button" role="tab" aria-controls="tab-one" aria-selected="true">Featured</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="nav-tab-two" data-bs-toggle="tab" data-bs-target="#tab-two"
-                        type="button" role="tab" aria-controls="tab-two" aria-selected="false">Popular</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="nav-tab-three" data-bs-toggle="tab" data-bs-target="#tab-three"
-                        type="button" role="tab" aria-controls="tab-three" aria-selected="false">New added</button>
-                </li>
-            </ul>
-            <a href="/shop" class="view-more d-none d-md-flex">View More<i class="fi-rs-angle-double-small-right"></i></a>
-        </div>
-        <!--End nav-tabs-->
-        <div class="tab-content wow fadeIn animated" id="myTabContent">
-            <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
-                <div class="row product-grid-4">
+  <div class="container">
+    <div class="tab-header">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="nav-tab-one" data-bs-toggle="tab" data-bs-target="#tab-one" type="button" role="tab" aria-controls="tab-one" aria-selected="true">Featured</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="nav-tab-two" data-bs-toggle="tab" data-bs-target="#tab-two" type="button" role="tab" aria-controls="tab-two" aria-selected="false">Popular</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="nav-tab-three" data-bs-toggle="tab" data-bs-target="#tab-three" type="button" role="tab" aria-controls="tab-three" aria-selected="false">New added</button>
+        </li>
+      </ul>
+      <a href="/shop" class="view-more d-none d-md-flex">View More<i class="fi-rs-angle-double-small-right"></i></a>
+    </div>
+    <!--End nav-tabs-->
+    <div class="tab-content wow fadeIn animated" id="myTabContent">
+      <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
+        <div class="row product-grid-4">
 
-                    <% const numProductsToShow1=8; %>
-                        <% const randomProducts1=products.filter(product=> product.featured && product.productStatus && product.productCategory.active)
+          <% const numProductsToShow1=8; %>
+          <% const randomProducts1=products.filter(product=> product.featured && product.productStatus && product.productCategory.active)
                             .sort(() => Math.random() - 0.5)
                             .slice(0, numProductsToShow1); %>
-                            <% randomProducts1.forEach(product=> { %>
-                                <div class="col-lg-3 col-md-4 col-12 col-sm-6">
-                                    <div class="product-cart-wrap mb-30">
-                                        <div class="product-img-action-wrap">
-                                            <div class="product-img product-img-zoom">
-                                                <a href="/product/<%= product.slug %>">
-                                                    <img class="default-img" src="<%= product.productImageUrls[0] %>"
-                                                        alt="">
-                                                    <img class="hover-img" src="<%= product.productImageUrls[1] %>"
-                                                        alt="">
-                                                </a>
-                                            </div>
-                                            <!-- quick view -->
-                                            <!-- <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal"
+          <% randomProducts1.forEach(product=> { %>
+          <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+            <div class="product-cart-wrap mb-30">
+              <div class="product-img-action-wrap">
+                <div class="product-img product-img-zoom">
+                  <a href="/product/<%= product.slug %>">
+                    <img class="default-img" src="<%= product.productImageUrls[0] %>" alt="">
+                    <img class="hover-img" src="<%= product.productImageUrls[1] %>" alt="">
+                  </a>
+                </div>
+                <!-- quick view -->
+                <!-- <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal"
                                             data-bs-toggle="modal" data-bs-target="#quickViewModal" onclick="loadFromBackEnd('<%= product._id %>')">
                                             <i class="fi-rs-search"></i></a> -->
-                                            <div class="product-action-1">
-                                                <a aria-label="Add To Wishlist" class="addToWishlistButton action-btn hover-up"
-                                                data-product-id="<%= product._id %>"><i
-                                                class="fi-rs-heart"></i></a>
-                                            </div>
-                                            
-                                            <div class="product-badges product-badges-position product-badges-mrg">
-                                                <span class="hot">Hot</span>
-                                            </div>
-                                        </div>
-                                        <div class="product-content-wrap">
-                                            <div class="product-category">
-                                                <a href="/product/<%= product.slug %>">
-                                                    <div class="product-category">
-                                                        <a href="/all-products">
-                                                            <%= product.productCategory.name %>
-                                                        </a>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <h2><a href="/product/<%= product.slug %>"><%- product.productName %></a></h2>
-                                            <div class="stars" style="cursor: pointer;">
-                                                <span>
-                                                    <!-- <span><%#= product.productRating%></span> -->
-                                                    <i class="fa-solid fa-star"></i>
-                                                    <i class="fa-solid fa-star"></i>
-                                                    <i class="fa-solid fa-star"></i>
-                                                    <i class="fa-solid fa-star"></i>
-                                                    <i class="fa-solid fa-star"></i>
-                                                </span>
-                                            </div>
-                                            <div class="view-dtl">
-                                                <a href="/product/<%= product.slug %>"><button><p>View Details</p></button></a>
-                                            </div>
-                                            <div class="product-price">
-                                                <span>&#8377;<%= product.productPrice %></span>
-                                                <span class="old-price"> &#8377; <%= product.productOldPrice %></span>
-                                            </div>
-                                            <div class="product-action-1 show">
-                                                <a aria-label="Add To Cart" class="addTocartButton action-btn hover-up" data-product-id="<%= product._id %>"
-                                                    ><i class="fi-rs-shopping-bag-add"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <% }) %>
+                <div class="product-action-1">
+                  <a aria-label="Add To Wishlist" class="addToWishlistButton action-btn hover-up" data-product-id="<%= product._id %>"><i class="fi-rs-heart"></i></a>
                 </div>
-            </div>
-            <div class="tab-pane fade" id="tab-two" role="tabpanel" aria-labelledby="tab-two">
-                <div class="row product-grid-4">
 
-                    <% const numProductsToShow2=8; %>
-                        <% const popularProducts=products.filter(product=> product.productStatus && product.productCategory.active && product.orderCount > 0)
+                <div class="product-badges product-badges-position product-badges-mrg">
+                  <span class="hot">Hot</span>
+                </div>
+              </div>
+              <div class="product-content-wrap">
+                <div class="product-category">
+                  <a href="/product/<%= product.slug %>">
+                    <div class="product-category">
+                      <a href="/all-products">
+                        <%= product.productCategory.name %>
+                      </a>
+                    </div>
+                  </a>
+                </div>
+                <h2><a href="/product/<%= product.slug %>"><%- product.productName %></a></h2>
+                <% const rating=product.productRating %>
+                <div class="stars">
+                  <% for (let i = 1; i <= rating; i++) { %>
+                  <i style="color: orange;" class="fa-solid fa-star"></i>
+                  <% } %>
+                </div>
+                <div class="view-dtl">
+                  <a href="/product/<%= product.slug %>"><button>
+                      <p>View Details</p>
+                    </button></a>
+                </div>
+                <div class="product-price">
+                  <span>&#8377;<%= product.productPrice %></span>
+                  <span class="old-price"> &#8377; <%= product.productOldPrice %></span>
+                </div>
+                <div class="product-action-1 show">
+                  <a aria-label="Add To Cart" class="addTocartButton action-btn hover-up" data-product-id="<%= product._id %>"><i class="fi-rs-shopping-bag-add"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="tab-two" role="tabpanel" aria-labelledby="tab-two">
+        <div class="row product-grid-4">
+
+          <% const numProductsToShow2=8; %>
+          <% const popularProducts=products.filter(product=> product.productStatus && product.productCategory.active && product.orderCount > 0)
                             .sort((a, b) => b.orderCount - a.orderCount).slice(0, numProductsToShow2); %>
-                            <% popularProducts.forEach(product=> { %>
-                                <div class="col-lg-3 col-md-4 col-12 col-sm-6">
-                                    <div class="product-cart-wrap mb-30">
-                                        <div class="product-img-action-wrap">
-                                            <div class="product-img product-img-zoom">
-                                                <a href="/product/<%= product.slug %>">
-                                                    <img class="default-img" src="<%= product.productImageUrls[0] %>"
-                                                        alt="">
-                                                    <img class="hover-img" src="<%= product.productImageUrls[1] %>"
-                                                        alt="">
-                                                </a>
-                                            </div>
-                                            <div class="product-badges product-badges-position product-badges-mrg">
-                                                <span class="hot">Hot</span>
-                                            </div>
-                                        </div>
-                                        <div class="product-content-wrap">
-                                            <div class="product-category">
-                                                <a href="/product/<%= product.slug %>">
-                                                    <div class="product-category">
-                                                        <a href="/all-products">
-                                                            <%= product.productCategory.name %>
-                                                        </a>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <h2><a href="/product/<%= product.slug %>"><%- product.productName %></a></h2>
-                                            <div class="rating-result" title="90%">
-                                                <span>
-                                                    <span>90%</span>
-                                                </span>
-                                            </div>
-                                            <div class="product-price">
-                                                <span>&#8377;<%= product.productPrice %></span>
-                                                <span class="old-price"> &#8377; <%= product.productOldPrice %></span>
-                                            </div>
-                                            <div class="product-action-1 show">
-                                                <a aria-label="Add To Cart" class="addTocartButton action-btn hover-up" data-product-id="<%= product._id %>"
-                                                   ><i class="fi-rs-shopping-bag-add"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <% }) %>
+          <% popularProducts.forEach(product=> { %>
+          <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+            <div class="product-cart-wrap mb-30">
+              <div class="product-img-action-wrap">
+                <div class="product-img product-img-zoom">
+                  <a href="/product/<%= product.slug %>">
+                    <img class="default-img" src="<%= product.productImageUrls[0] %>" alt="">
+                    <img class="hover-img" src="<%= product.productImageUrls[1] %>" alt="">
+                  </a>
                 </div>
-                <!--End product-grid-4-->
+                <div class="product-badges product-badges-position product-badges-mrg">
+                  <span class="hot">Hot</span>
+                </div>
+              </div>
+              <div class="product-content-wrap">
+                <div class="product-category">
+                  <a href="/product/<%= product.slug %>">
+                    <div class="product-category">
+                      <a href="/all-products">
+                        <%= product.productCategory.name %>
+                      </a>
+                    </div>
+                  </a>
+                </div>
+                <h2><a href="/product/<%= product.slug %>"><%- product.productName %></a></h2>
+                <div class="rating-result" title="90%">
+                  <span>
+                    <span>90%</span>
+                  </span>
+                </div>
+                <div class="product-price">
+                  <span>&#8377;<%= product.productPrice %></span>
+                  <span class="old-price"> &#8377; <%= product.productOldPrice %></span>
+                </div>
+                <div class="product-action-1 show">
+                  <a aria-label="Add To Cart" class="addTocartButton action-btn hover-up" data-product-id="<%= product._id %>"><i class="fi-rs-shopping-bag-add"></i></a>
+                </div>
+              </div>
             </div>
-            <!--En tab two (Popular)-->
-            <div class="tab-pane fade" id="tab-three" role="tabpanel" aria-labelledby="tab-three">
-                <div class="row product-grid-4">
-                    <% const numProductsToShow3 = 8; %>
-                    <% const recentProducts = products.filter(product =>
+          </div>
+
+          <% }) %>
+        </div>
+        <!--End product-grid-4-->
+      </div>
+      <!--En tab two (Popular)-->
+      <div class="tab-pane fade" id="tab-three" role="tabpanel" aria-labelledby="tab-three">
+        <div class="row product-grid-4">
+          <% const numProductsToShow3 = 8; %>
+          <% const recentProducts = products.filter(product =>
                         product.productStatus && product.productCategory.active &&
                         (new Date() - new Date(product.createdAt)) < (7 * 4 * 24 * 60 * 60 * 1000)
                     ).slice(-numProductsToShow3).reverse(); %>
-                    <% recentProducts.forEach(product => { %>
-                        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
-                            <div class="product-cart-wrap mb-30">
-                                <div class="product-img-action-wrap">
-                                    <div class="product-img product-img-zoom">
-                                        <a href="/product/<%= product.slug %>">
-                                            <img class="default-img" src="<%= product.productImageUrls[0] %>" alt="">
-                                            <img class="hover-img" src="<%= product.productImageUrls[1] %>" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="product-badges product-badges-position product-badges-mrg">
-                                        <span class="hot">Hot</span>
-                                    </div>
-                                </div>
-                                <div class="product-content-wrap">
-                                    <div class="product-category">
-                                        <a href="/product/<%= product.slug %>">
-                                            <div class="product-category">
-                                                <a href="/all-products"><%= product.productCategory.name %></a>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <h2><a href="/product/<%= product.slug %>"><%- product.productName %></a></h2>
-                                    <div class="product-price">
-                                        <span>&#8377;<%= product.productPrice %></span>
-                                        <span class="old-price"> &#8377;<%= product.productOldPrice %></span>
-                                    </div>
-                                    <div class="product-action-1 show">
-                                        <a aria-label="Add To Cart" class="addTocartButton action-btn hover-up" data-product-id="<%= product._id %>">
-                                            <i class="fi-rs-shopping-bag-add"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <% }) %>
+          <% recentProducts.forEach(product => { %>
+          <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+            <div class="product-cart-wrap mb-30">
+              <div class="product-img-action-wrap">
+                <div class="product-img product-img-zoom">
+                  <a href="/product/<%= product.slug %>">
+                    <img class="default-img" src="<%= product.productImageUrls[0] %>" alt="">
+                    <img class="hover-img" src="<%= product.productImageUrls[1] %>" alt="">
+                  </a>
                 </div>
-            </div>
-            
+                <div class="product-badges product-badges-position product-badges-mrg">
+                  <span class="hot">Hot</span>
                 </div>
+              </div>
+              <div class="product-content-wrap">
+                <div class="product-category">
+                  <a href="/product/<%= product.slug %>">
+                    <div class="product-category">
+                      <a href="/all-products"><%= product.productCategory.name %></a>
+                    </div>
+                  </a>
+                </div>
+                <h2><a href="/product/<%= product.slug %>"><%- product.productName %></a></h2>
+                <div class="product-price">
+                  <span>&#8377;<%= product.productPrice %></span>
+                  <span class="old-price"> &#8377;<%= product.productOldPrice %></span>
+                </div>
+                <div class="product-action-1 show">
+                  <a aria-label="Add To Cart" class="addTocartButton action-btn hover-up" data-product-id="<%= product._id %>">
+                    <i class="fi-rs-shopping-bag-add"></i>
+                  </a>
+                </div>
+              </div>
             </div>
+          </div>
+          <% }) %>
         </div>
+      </div>
+
     </div>
+  </div>
+  </div>
+  </div>
 </section>

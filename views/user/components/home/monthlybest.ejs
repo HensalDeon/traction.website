@@ -72,11 +72,12 @@
                                                 <h2><a href="/product/<%= product.slug %>">
                                                         <%= product.productName %>
                                                     </a></h2>
-                                                <div class="rating-result" title="90%">
-                                                    <span>
-                                                        <span>70%</span>
-                                                    </span>
-                                                </div>
+                                                    <% const rating=product.productRating %>
+                                                    <div class="stars">
+                                                      <% for (let i = 1; i <= rating; i++) { %>
+                                                        <i style="color: orange;" class="fa-solid fa-star"></i>
+                                                        <% } %>
+                                                    </div>
                                                 <div class="product-price">
                                                     <span>&#8377;<%= product.productPrice %></span>
                                                     <span class="old-price">

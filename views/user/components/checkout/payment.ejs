@@ -480,9 +480,7 @@
         order
       },
       success: (response) => {
-        console.log(response,'😶‍🌫️😶‍🌫️😶‍🌫️😶‍🌫️😶‍🌫️');
         const id = order.receipt;
-        console.log(order.receipt,'order reciept 💕💕');
         if (response.success) {
           window.location.href = `/order-successfull/${id}`;
         } else {

@@ -4,7 +4,7 @@
     <div class="col-lg-8">
       <% if(reviews.length>0) { %>
       <h4 class="mb-30" style="color: gold;">Customer Reviews</h4>
-      <div class="comment-list">
+      <div class="comment-list" style="max-height: 500px; overflow-y: auto;">
         <% reviews.forEach(review => { %>
         <div class="single-comment justify-content-between d-flex">
           <div class="user justify-content-between d-flex">

@@ -117,10 +117,11 @@
                     <h2><a href="/product/<%= product.slug %>">
                         <%= product.productName %>
                       </a></h2>
-                    <div class="rating-result" title="90%">
-                      <span>
-                        <span>90%</span>
-                      </span>
+                      <% const rating=product.productRating %>
+                    <div class="stars">
+                      <% for (let i = 1; i <= rating; i++) { %>
+                        <i style="color: orange;" class="fa-solid fa-star"></i>
+                        <% } %>
                     </div>
                     <div class="product-price">
                       <span>&#8377; <%= product.productPrice %> </span>
@@ -168,7 +169,6 @@
   <script>
     function handleSortByChange() {
       const sortBy = document.getElementById('sortByDropdown').value;
-      console.log(sortBy + "/////1");
       const page = '<%= currentPage %>';
       const limit = '<%= limit %>';
       const url = `/shop?page=${page}&limit=${limit}&sortBy=${sortBy}&sortOption=${sortBy}`;

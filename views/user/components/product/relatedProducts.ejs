@@ -37,10 +37,12 @@
                     </div>
                     <div class="product-content-wrap">
                         <h2><a href="/product/<%= product.slug %>" tabindex="0"><%= product.productName %></a></h2>
-                        <div class="rating-result" title="90%">
-                            <span>
-                            </span>
-                        </div>
+                        <% const rating=product.productRating %>
+                      <div class="stars">
+                        <% for (let i = 1; i <= rating; i++) { %>
+                          <i style="color: orange;" class="fa-solid fa-star"></i>
+                          <% } %>
+                      </div>
                         <div class="product-price">
                             <span><%= product.productPrice %></span>
                             <span class="old-price"><%= product.productOldPrice %></span>

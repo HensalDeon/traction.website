@@ -16,6 +16,7 @@ const {
   searchProductsWithRegex,
   enableProductStatus,
   addReview,
+  calculateProductAverageRating,
 } = require('../models/product.model');
 const { json } = require('body-parser');
 
@@ -284,6 +285,10 @@ async function PostReview(req, res){
     if (!addReviewResult.status) {
       return res.status(500).json({ success: false, message: 'Unable to add review' });
     }
+
+    const newAverageRating = await calculateProductAverageRating(productResult.product._id);
+    productResult.product.productRating = newAverageRating;
+    await productResult.product.save();
     res.status(201).json({ success: true, message: 'Review added successfully' });
   } catch (error) {
     res.status(500).json({ success: false, error: 'Unable to add review' });

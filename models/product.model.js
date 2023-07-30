@@ -21,7 +21,7 @@ async function setProductImage(productId, remainingImageUrls) {
     throw new Error('Failed to update product image');
   }
 }
-//////////////////////////////////////////////////
+
 async function getProductStocks() {
   try {
     const productStock = await productDatabase.find({}).populate('productCategory').exec();
@@ -334,6 +334,22 @@ async function searchProductsWithRegex(searchRegex) {
   }
 }
 
+async function calculateProductAverageRating(productId) {
+  try {
+    const product = await productDatabase.findById(productId).populate('productReview');
+    if (!product || !product.productReview || product.productReview.length === 0) {
+      return 0; 
+    }
+    const totalRating = product.productReview.reduce((sum, review) => sum + review.rating, 0);
+    const averageRating = totalRating / product.productReview.length;
+    const productRating = Math.min(Math.max(averageRating, 1), 5);
+    return productRating;
+  } catch (error) {
+    throw new Error(`Error calculating average rating: ${error.message}`);
+  }
+}
+
+
 module.exports = {
   fetchAllProducts,
   fetchProduct,
@@ -347,4 +363,5 @@ module.exports = {
   setProductImage,
   getProductStocks,
   addReview,
+  calculateProductAverageRating,
 };
