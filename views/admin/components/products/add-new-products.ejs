@@ -45,11 +45,13 @@
               <label for="productName" class="form-label">Product title</label>
               <input type="text" placeholder="Type here" class="form-control" id="productName" name="productName"
                 required>
+                <div id="productNameValidationMessage" class="text-danger"></div>
             </div>
             <div class="mb-4">
               <label class="form-label">Full description</label>
               <textarea placeholder="Type here" class="form-control" rows="4" id="productDescription"
                 name="productDescription" required></textarea>
+                <div id="productDescriptionValidationMessage" class="text-danger"></div>
             </div>
             <div class="row">
               <div class="col-lg-4">
@@ -58,6 +60,7 @@
                   <div class="row gx-2">
                     <input placeholder="₹" type="number" class="remove-arrow form-control" id="productPrice"
                       name="productPrice" required>
+                      <div id="productPriceValidationMessage" class="text-danger"></div>
                   </div>
                 </div>
               </div>
@@ -66,6 +69,7 @@
                   <label class="form-label">Old price</label>
                   <input placeholder="₹" type="number" class="remove-arrow form-control" id="productOldPrice"
                     name="productOldPrice" required>
+                    <div id="productOldPriceValidationMessage" class="text-danger"></div>
                 </div>
               </div>
               <div class="col-lg-4">
@@ -73,6 +77,7 @@
                   <label class="form-label">Stocks</label>
                   <input placeholder="999" type="number" class="remove-arrow form-control" id="stocks" name="stocks"
                     required>
+                    <div id="stocksValidationMessage" class="text-danger"></div>
                 </div>
               </div>
             </div>
@@ -90,11 +95,12 @@
                         <% } %>
                           <% }); %>
                   </select>
+                  <div id="productCategoryValidationMessage" class="text-danger"></div>
                   <label class="form-label">Featured</label>
                   <select class="form-select" name="featured" id="featured" required>
                         <option value="false">Not featured</option>
                         <option value="true">featured</option>
-                  </select> 
+                  </select>
                 </div>
               </div>
             </div>
@@ -114,6 +120,7 @@
           </div>
           <div class="card-body d-flex flex-wrap justify-content-start" id="image-preview">
           </div>
+          <div id="productImageValidationMessage" class="text-danger"></div>
         </div>
       </div>
 

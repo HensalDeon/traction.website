@@ -159,6 +159,17 @@
   const imageInput = document.getElementById('productImage');
   const selectedImages = imageInput.files;
   
+  const regularPriceInput = document.getElementById('productPrice');
+  const oldPriceInput = document.getElementById('productOldPrice');
+
+  const regularPrice = parseFloat(regularPriceInput.value);
+  const oldPrice = parseFloat(oldPriceInput.value);
+
+  if (oldPrice < regularPrice) {
+    callAlertify('error', 'Old price cannot be less than regular price');
+    return;
+  }
+  
   submitButton.disabled = true;
   const form = document.getElementById('myForm');
   const formData = new FormData(form);

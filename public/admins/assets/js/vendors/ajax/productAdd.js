@@ -21,7 +21,57 @@ submitButton.addEventListener('click', (event) => {
   const productOldPrice = document.getElementById('productOldPrice').value;
   const stocks = document.getElementById('stocks').value;
   const productCategory = document.getElementById('productCategory').value;
-  const featured = document.getElementById('featured').value;
+
+  const productNameInput = document.getElementById('productName');
+  const productNameMessage = document.getElementById('productNameValidationMessage');
+  productNameMessage.innerHTML = '';
+  productNameInput.addEventListener('input', () => {
+    productNameMessage.innerHTML = '';
+  });
+  
+  const productDescriptionInput = document.getElementById('productDescription');
+  const productDescriptionMessage = document.getElementById('productDescriptionValidationMessage')
+  productDescriptionMessage.innerHTML ='';
+  productDescriptionInput.addEventListener('input',()=>{
+    productDescriptionMessage.innerHTML=''
+  })
+
+  const productPriceInput = document.getElementById('productPrice');
+  const productPriceMessage = document.getElementById('productPriceValidationMessage')
+  productPriceMessage.innerHTML ='';
+  productPriceInput.addEventListener('input',()=>{
+    productPriceMessage.innerHTML=''
+  })
+
+  const productOldPriceInput = document.getElementById('productOldPrice');
+  const productOldPriceMessage = document.getElementById('productOldPriceValidationMessage')
+  productOldPriceMessage.innerHTML ='';
+  productOldPriceInput.addEventListener('input',()=>{
+    productOldPriceMessage.innerHTML=''
+  })
+
+  const stocksInput = document.getElementById('stocks');
+  const stocksMessage = document.getElementById('stocksValidationMessage')
+  stocksMessage.innerHTML ='';
+  stocksInput.addEventListener('input',()=>{
+    stocksMessage.innerHTML=''
+  })
+  
+  const productCategoryInput = document.getElementById('productCategory');
+  const productCategoryMessage = document.getElementById('productCategoryValidationMessage')
+  productCategoryMessage.innerHTML ='';
+  productCategoryInput.addEventListener('select',()=>{
+    productCategoryMessage.innerHTML=''
+  })
+ 
+  const productImageInput = document.getElementById('productImage');
+  const productImageMessage = document.getElementById('productImageValidationMessage')
+  productImageMessage.innerHTML ='';
+  productImageInput.addEventListener('input',()=>{
+    productImageMessage.innerHTML=''
+  })
+
+
   if (
     !productName ||
     !productDescription ||
@@ -30,7 +80,36 @@ submitButton.addEventListener('click', (event) => {
     !stocks ||
     productCategory === 'Add to Category' || images.length ===0
   ) {
+    if(!productName){
+      productNameMessage.innerHTML = 'Please enter the product title.';
+    }
+    if(!productDescription){
+      productDescriptionMessage.innerHTML = 'Please enter the product description.'
+    }
+    if(!productPrice){
+      productPriceMessage.innerHTML = 'Please enter the regular price.'
+    }
+    if(!productOldPrice){
+      productOldPriceMessage.innerHTML = 'Please enter the produc old price.'
+    }
+    if(!stocks){
+      stocksMessage.innerHTML = 'Please enter the stocks number.'
+    }
+    if(productCategory === 'Add to Category'){
+      productCategoryMessage.innerHTML = 'Please select the category for the product.'
+    }
+    if(images.length ===0){
+      productImageMessage.innerHTML = 'Please add an image.'
+    }
     callAlertify('warning', 'Please fill in all required fields');
+    setTimeout(() => {
+      submitButton.disabled = false;
+    }, 3000);
+    return;
+  }
+
+  if (productOldPrice < productPrice){
+    callAlertify('warning', 'Product old price cannot be less than the regular price');
     setTimeout(() => {
       submitButton.disabled = false;
     }, 3000);

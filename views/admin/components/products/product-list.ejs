@@ -7,7 +7,7 @@
     <div>
       <a href="/admin/stocks-report" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Stocks report</a>
     </div>
-  </div>    
+  </div>
   <div class="card mb-4">
     <header class="card-header">
       <div class="row align-items-center">
@@ -32,62 +32,94 @@
         </div>
       </div>
     </header> <!-- card-header end// -->
-    <div class="card-body">
-      <% product.forEach((product,index)=> { %>
-      <article class="itemlist" data-product-status="<%= product.productStatus %>" data-product-category="<%= product.productCategory.name %>">
-        <div class="row align-items-center">
-          <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
-            <a class="itemside" href="#">
-              <div class="left">
-                <img src="<%= product.productImageUrls[0] %>" class="img-sm img-thumbnail" alt="Item">
-              </div>
-              <div class="info">
-                <h6 class="mb-0">
-                  <%= product.productName %>-<%=product.productNumber%>
-                </h6>
-              </div>
-            </a>
-          </div>
-          <div class="col-lg-2 col-sm-2 col-4 col-price"> <span> &#8377;<%= product.productPrice %>
-            </span>
-          </div>
+    <div class="item-list">
+      <div class="row align-items-center m-0 my-1 py-2" style="background-color: aliceblue;">
+        <div class="col-lg-1 col-sm-2 col-4 col-img ps-3">
+          <h6>Img</h6>
+        </div>
+        <div class="col-lg-3 col-sm-2 col-4">
+          <h6 class="mb-0">
+            Product Name
+          </h6>
+        </div>
 
-          <div class="col-lg-2 col-sm-2 col-4 col-category">
-            <span>
-              <%= product.productCategory.name %>
-            </span>
-          </div>
+        <div class="col-lg-2 col-sm-2 col-4 col-price">
+          <h6>Price</h6>
+        </div>
+        <div class="col-lg-2 col-sm-2 col-4 col-category">
+          <h6>
+            Category
+          </h6>
+        </div>
 
-          <div class="col-lg-2 col-sm-2 col-4 col-stocks">
-            <span class="badge rounded-pill <%= product.stocks > 0 ? 'alert-success' : 'alert-danger' %>">
-              <%= product.stocks> 0 ? 'IN STOCK' : 'OUT OF STOCK' %>
-            </span>
-          </div>
+        <div class="col-lg-2 col-sm-2 col-4 col-stocks">
+          <h6>
+            Stock Availability
+          </h6>
+        </div>
 
 
-          <div class="col-lg-2 col-sm-2 col-4 col-action text-end d-flex align-items-center justify-content-end">
-            <% if (product.productStatus) { %>
-            <a href="/admin/edit-product/<%- product.slug %>" class="btn btn-edit me-2">
-              <i class="material-icons md-edit"></i> Edit
-            </a>
-
-            <a id="deletbtn" onclick="deleteProduct('<%= product._id %>')" data-product-id="<%= product._id %>" class="btn btn-delete deleteProductclass">
-              <i class="material-icons md-delete_forever"></i> Delete
-            </a>
-            <% } else { %>
-            <a id="deletbtn" onclick="enableProduct('<%= product._id %>')" data-product-id="<%= product._id %>" class="btn rounded btn-sms enableProductclass">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
-                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
-                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
-              </svg> Enable
-            </a>
-            <% } %>
-
-          </div>
-        </div> <!-- row .// -->
-      </article> <!-- itemlist  .// -->
-      <% }); %>
+        <div class="col-lg-2 col-sm-2 col-4 col-action ps-5">
+          <h6>Action</h6>
+        </div>
+      </div>
     </div>
+    <% product.forEach((product,index)=> { %>
+    <article class="itemlist" data-product-status="<%= product.productStatus %>" data-product-category="<%= product.productCategory.name %>">
+      <div class="row align-items-center">
+        <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
+          <a class="itemside" href="#">
+            <div class="left d-flex">
+              <p><%= index+1 %>.</p>
+              <img src="<%= product.productImageUrls[0] %>" class="img-sm img-thumbnail" alt="Item">
+            </div>
+            <div class="info">
+              <h6 class="mb-0">
+                <%= product.productName %>-<%=product.productNumber%>
+              </h6>
+            </div>
+          </a>
+        </div>
+        <div class="col-lg-2 col-sm-2 col-4 col-price"> <span> &#8377;<%= product.productPrice %>
+          </span>
+        </div>
+
+        <div class="col-lg-2 col-sm-2 col-4 col-category">
+          <span>
+            <%= product.productCategory.name %>
+          </span>
+        </div>
+
+        <div class="col-lg-2 col-sm-2 col-4 col-stocks">
+          <span class="badge rounded-pill <%= product.stocks > 0 ? 'alert-success' : 'alert-danger' %>">
+            <%= product.stocks> 0 ? 'IN STOCK' : 'OUT OF STOCK' %>
+          </span>
+        </div>
+
+
+        <div class="col-lg-2 col-sm-2 col-4 col-action text-end d-flex align-items-center justify-content-end">
+          <% if (product.productStatus) { %>
+          <a href="/admin/edit-product/<%- product.slug %>" class="btn btn-edit me-2">
+            <i class="material-icons md-edit"></i> Edit
+          </a>
+
+          <a id="deletbtn" onclick="deleteProduct('<%= product._id %>')" data-product-id="<%= product._id %>" class="btn btn-delete deleteProductclass">
+            <i class="material-icons md-delete_forever"></i> Delete
+          </a>
+          <% } else { %>
+          <a id="deletbtn" onclick="enableProduct('<%= product._id %>')" data-product-id="<%= product._id %>" class="btn rounded btn-sms enableProductclass">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+              <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+              <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
+            </svg> Enable
+          </a>
+          <% } %>
+
+        </div>
+      </div> <!-- row .// -->
+    </article> <!-- itemlist  .// -->
+    <% }); %>
+  </div>
   </div> <!-- card end// -->
   <div class="pagination-area mt-15 mb-50">
     <nav aria-label="Page navigation example">
