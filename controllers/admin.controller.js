@@ -104,8 +104,10 @@ async function GetUsers(req, res) {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
+    const searchQuery = req.query.searchTerm || "";
 
-    const response = await fetchAllUsers(page, limit);
+    const response = await fetchAllUsers(page, limit, searchQuery);
+    console.log(response.users,'❤️❤️❤️');
     if (response.status) {
       res.render('admin/users', {
         users: response.users,

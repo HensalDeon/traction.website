@@ -3,10 +3,10 @@
     <h2 class="content-title">Users list</h2>
     <form class="searchform">
       <div class="input-group">
-          <input list="search_terms" type="text" class="form-control" placeholder="Search term">
-          <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
+        <input list="search_terms" type="text" class="form-control" id="searchTerm" placeholder="Search term">
+        <button class="btn btn-light bg" type="button" onclick="searchUsers()"> <i class="material-icons md-search"></i></button>
       </div>
-  </form>
+    </form>
   </div>
   <div class="card mb-4">
     <div class="card-body">
@@ -25,7 +25,7 @@
           <tbody>
             <% users.forEach(function(user,index) { %>
             <tr style="border-bottom: 1px solid #eee6e6;">
-                <td><%= index + 1 %>.</td>
+              <td><%= index + 1 %>.</td>
               <td width="40%" style="display: contents;">
                 <a href="#" class="itemside">
                   <div class="left">
@@ -39,20 +39,20 @@
                   </div>
                 </a>
               </td>
-                <td>
-                    <%= user.email %>
-                  </td>
-    
-                  <td><span class="badge rounded-pill alert-success">Active</span></td>
-                  <td>
-                    <%= user.phone %>
-                  </td>
-                  <% if (user.status) { %>
-                  <td><button class="btn btn-danger block-user" data-user-id="<%= user._id %>" data-action="block">Block</button></td>
-                  <% } else { %>
-                  <td><button class="btn btn-primary block-user" data-user-id="<%= user._id %>" data-action="unblock">Unblock</button></td>
-                  <% } %>
-                </tr>
+              <td>
+                <%= user.email %>
+              </td>
+
+              <td><span class="badge rounded-pill alert-success">Active</span></td>
+              <td>
+                <%= user.phone %>
+              </td>
+              <% if (user.status) { %>
+              <td><button class="btn btn-danger block-user" data-user-id="<%= user._id %>" data-action="block">Block</button></td>
+              <% } else { %>
+              <td><button class="btn btn-primary block-user" data-user-id="<%= user._id %>" data-action="unblock">Unblock</button></td>
+              <% } %>
+            </tr>
             <% }); %>
 
           </tbody>
@@ -135,4 +135,9 @@
     });
 
   });
+
+  function searchUsers() {
+    const searchTerm = document.getElementById('searchTerm').value.trim();
+    window.location.href = `/admin/users?searchTerm=${searchTerm}`
+  }
 </script>

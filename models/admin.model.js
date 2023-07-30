@@ -3,13 +3,22 @@ const orderDatabase = require('../schema/order.schema');
 const productDatabase = require('../schema/product.schema');
 const categoryDatabase = require('../schema/category.schema');
 
-async function fetchAllUsers(page, limit) {
+async function fetchAllUsers(page, limit, searchQuery) {
   try {
+    let query={};
+    if (searchQuery) {
+      query.$or = [
+        { username: { $regex: searchQuery, $options: 'i' } },
+        { email: { $regex: searchQuery, $options: 'i' } }
+      ];
+    }
+    console.log('Query:', query);
+
     const users = await userDatabase
-      .find({})
+      .find(query)
       .skip((page - 1) * limit)
       .limit(limit);
-
+      console.log('Users:', users);
     const totalOrders = await userDatabase.countDocuments();
     const totalPages = Math.ceil(totalOrders / limit);
 
