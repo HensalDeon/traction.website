@@ -202,10 +202,11 @@
       },
       success: function(response) {
         // Handle successful response
-        console.log(response);
-        if (!response) {
+        console.log(response,'❤️❤️❤️❤️');
+        if (!response.status) {
+          console.log('huihiu');
           document.getElementById('phone-error-verify').style.display = 'block';
-          document.getElementById('phone-error-verify').innerHTML = "Phone number already registered";
+          document.getElementById('phone-error-verify').innerHTML = "Phone number already registered please login or use a different number!";
           setTimeout(() => {
             document.getElementById('phone-error-verify').style.display = 'none';
           }, 5000)

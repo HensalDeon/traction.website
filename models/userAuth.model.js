@@ -98,7 +98,7 @@ async function sendVerificationSignup(phoneNumber) {
       sendOtp(phoneNumber);
       return true;
     } else {
-      return false; //phone number already registered
+      return false;
     }
   } catch (error) {
     console.error(error);
