@@ -9,7 +9,4 @@ function callAlertify(notificationtype, message) {
     alertify.set('notifier', 'position', 'top-right');
     alertify.warning(`${message}`);
   }
-  // else if(notificationtype === 'custom') {
-  //   alertify.notify(`${message}`, 'custom', 2, function () { console.log('dismissed'); });
-  // }
 }
