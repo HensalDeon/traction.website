@@ -9,4 +9,5 @@ function callAlertify(notificationtype, message) {
     alertify.set('notifier', 'position', 'top-right');
     alertify.warning(`${message}`);
   }
+ 
 }
