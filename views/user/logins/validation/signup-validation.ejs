@@ -96,11 +96,11 @@
 
     isValid = (usernameError === "" && otpError === "" && emailError === "" && passwordError === "" && confirmPasswordError === "" && phoneError === "");
 
-    // if (!checkbox) {
-    //     console.log("heyyy");
-    //     event.preventDefault();
-    //     showAlert();
-    // }
+    if (!checkbox.checked) {
+        event.preventDefault();
+        showAlert();
+        return;
+    }
 
     if (!isValid) {
       event.preventDefault();
@@ -189,10 +189,6 @@
 
   function sendOTP() {
     otpButton.disabled = true;
-    console.log('/////1');
-    // setTimeout(() => {
-    //     otpButton.disabled = false;
-    // }, 30000)
     var phone = $('#phone').val();
     $.ajax({
       type: 'POST',
@@ -202,7 +198,6 @@
       },
       success: function(response) {
         // Handle successful response
-        console.log(response,'❤️❤️❤️❤️');
         if (!response.status) {
           console.log('huihiu');
           document.getElementById('phone-error-verify').style.display = 'block';
