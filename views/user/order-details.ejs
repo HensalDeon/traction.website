@@ -22,8 +22,8 @@
     </div>
     <section class="pt-5 mb-50 cartBg">
       <div class="container">
-        <div class="container-fluid my-5 d-sm-flex justify-content-center">
-          <div class="card px-2">
+        <div class="container-fluid align-centre my-5 d-sm-flex justify-content-center">
+          <div class="card px-2 adjWidth">
             <div class="row px-3">
               <div class="col">
                 <ul id="progressbar" style="display: none;">
@@ -65,7 +65,6 @@
 
                       <td class="image product-thumbnail"><img alt="<%= item.product.productName %>" src="<%= item.product.productImageUrls[0] %>">
                       </td>
-<% console.log(item.product,'❤️❤️❤️'); %>
                       <td>
                         <h5 class="product-name"><a href="/product/<%= item.product.slug %>">
                             <%= item.product.productName %>

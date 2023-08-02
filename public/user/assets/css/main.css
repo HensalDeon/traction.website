@@ -13,7 +13,15 @@
 @import url(plugins/perfect-scrollbar.css);
 
 /* CUSTOM */
-
+@media (max-width:767px) {
+  .align-centre {
+    display: flex;
+    justify-content: center;
+  }
+  .adjWidth{
+    width: 76%;
+  }
+}
 #progressbar {
   margin-bottom: 30px;
   overflow: hidden;
