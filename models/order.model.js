@@ -513,14 +513,14 @@ async function getUserData(userId) {
     throw new Error('Error finding user!');
   }
 }
-// ...................
+
 async function getOrderdetails(orderId) {
   try {
     const orderData = await orderDatabase
       .findById(orderId)
       .populate({
         path: 'items.product',
-        select: 'productName productPrice productImageUrls',
+        select: 'productName productPrice productImageUrls slug',
         model: 'Product',
       })
       .populate({
