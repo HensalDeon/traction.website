@@ -390,8 +390,11 @@ async function changeOrderStatus(changeStatus, orderId) {
           wallet: updatedWallet,
         },
       });
+    }
+    if(changeStatus === 'returned' || changeStatus  === 'canceled'){
       await updateProductStocks(orderId, changeStatus);
     }
+
 
     if (orderResult) {
       return { status: true, message: 'order updated' };
@@ -406,7 +409,6 @@ async function changeOrderStatus(changeStatus, orderId) {
 async function updateProductStocks(orderId, changeStatus) {
   try {
     const order = await orderDatabase.findById(orderId).populate('items.product');
-
     if (!order) {
       throw new Error('Order not found');
     }
@@ -420,7 +422,6 @@ async function updateProductStocks(orderId, changeStatus) {
         if (!product) {
           throw new Error('Product not found');
         }
-
         product.stocks += returnedQuantity;
         await product.save();
 
