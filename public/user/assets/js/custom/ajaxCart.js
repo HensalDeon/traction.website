@@ -28,8 +28,6 @@ async function removeProduct(productId) {
       }
 
       const data = await response.json();
-      console.log('Product deleted:', data);
-      // Update cart display without page refresh
       updateCartDisplay(productId, data.total);
     }
   } catch (error) {
@@ -62,10 +60,12 @@ function updateCartDisplay(productId, total) {
 
   // Check if the cart is empty
   const cartItems = document.querySelectorAll('tr[data-item-id]');
-  console.log(cartItems);
-  console.log('cart item: '+cartItems.length);
 
 if (runCode && cartItems.length === 0) {
+  window.location.reload();
+  return;
+}
+if( count1 == 0 && count2 == 0){
   window.location.reload();
   return;
 }
@@ -205,7 +205,6 @@ function updateProductQuantity(productId, quantity) {
       throw new Error('Network response was not ok.');
     })
     .then(function (data) {
-      console.log(data);
       updateSubtotalAndTotal(data.total);
     })
     .catch(function (error) {

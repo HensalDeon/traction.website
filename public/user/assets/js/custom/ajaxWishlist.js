@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }),
       })
         .then((response) => {
-          console.log(response)
           const contentType = response.headers.get('content-type');
           if (contentType && contentType.includes('application/json')) {
             return response.json()
@@ -78,18 +77,16 @@ async function removeProductWishlist(productId) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
-      console.log('Product removed:', data);
-      
+      const data = await response.json();      
       // Update cart display without page refresh
-      updateCartDisplay(productId, data.total);
+      updateCartDisplayWishlist(productId, data.total);
     }
   } catch (error) {
     console.error('Error removing product:', error);
   }
 }
 
-function updateCartDisplay(productId, total) {
+function updateCartDisplayWishlist(productId, total) {
   // Remove the deleted product from the DOM
   const dropdownItem = document.querySelector(`li[data-product-id="${productId}"]`);
   if (dropdownItem) {
@@ -111,8 +108,6 @@ function updateCartDisplay(productId, total) {
 
   // Check if the Wishlist is empty
   const wishlistItems = document.querySelectorAll('tr[data-item-id]');
-  console.log(wishlistItems);
-  console.log('wishlist item: ' + wishlistItems.length);
 
   if (runCode && wishlistItems.length === 0) {
     window.location.reload();

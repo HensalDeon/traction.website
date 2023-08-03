@@ -50,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const newNavSubtotal = currentNavSubtotal + data.product.productPrice
             navSubtotalElement.textContent = `₹${newNavSubtotal.toFixed(2)}`
 
-            console.log(data);
             if (data.productAlreadyExist) {
               // update the quantity of the existing item
               const quantityEl = existingCartItem.querySelector(`#qty-navbar-${data.product._id}`)
@@ -83,8 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
                   }')"><i class="fi-rs-cross-small"></i></a>
                 </div>
               `
-              console.log('cartList');
-              console.log(cartList);
               cartList.appendChild(newCartItem)
             }
           } else {
