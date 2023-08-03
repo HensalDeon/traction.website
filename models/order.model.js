@@ -379,8 +379,8 @@ async function changeOrderStatus(changeStatus, orderId) {
         status: changeStatus,
       },
     });
-
-    if (changeStatus === 'returned' || changeStatus === 'canceled') {
+    console.log('payment method',orderResult.paymentmethod);
+    if (changeStatus === 'returned' || changeStatus === 'canceled' && orderResult.paymentmethod !== 'cashOnDelivery') {
       const orderResult = await orderDatabase.findById(orderId).select('total user');
       const { total, user } = orderResult;
       const userResult = await userDatabase.findById(user).select('wallet');
