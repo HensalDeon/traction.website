@@ -8,7 +8,7 @@ const productDatabase = require('../schema/product.schema');
 
 const { addressSchema } = require('../config/joi');
 const { handleError } = require('../middlewares/error.handler');
-const { log } = require('console');
+const { log, Console } = require('console');
 
 async function getAddresses(userId, res) {
   try {
@@ -379,7 +379,6 @@ async function changeOrderStatus(changeStatus, orderId) {
         status: changeStatus,
       },
     });
-    console.log('payment method',orderResult.paymentmethod);
     if (changeStatus === 'returned' || changeStatus === 'canceled' && orderResult.paymentmethod !== 'cashOnDelivery') {
       const orderResult = await orderDatabase.findById(orderId).select('total user');
       const { total, user } = orderResult;
@@ -391,6 +390,7 @@ async function changeOrderStatus(changeStatus, orderId) {
           wallet: updatedWallet,
         },
       });
+      await updateProductStocks(orderId, changeStatus);
     }
 
     if (orderResult) {
@@ -400,6 +400,34 @@ async function changeOrderStatus(changeStatus, orderId) {
     }
   } catch (error) {
     throw new Error('failed to change status!something wrong');
+  }
+}
+
+async function updateProductStocks(orderId, changeStatus) {
+  try {
+    const order = await orderDatabase.findById(orderId).populate('items.product');
+
+    if (!order) {
+      throw new Error('Order not found');
+    }
+
+    if (changeStatus === 'returned' || changeStatus === 'canceled') {
+      for (const item of order.items) {
+        const productId = item.product._id;
+        const returnedQuantity = item.quantity;
+        const product = await productDatabase.findById(productId);
+
+        if (!product) {
+          throw new Error('Product not found');
+        }
+
+        product.stocks += returnedQuantity;
+        await product.save();
+
+      }
+    }
+  } catch (error) {
+    throw new Error(`Failed to update product stocks: ${error.message}`);
   }
 }
 
