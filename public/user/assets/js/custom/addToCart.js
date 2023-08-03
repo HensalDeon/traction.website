@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         })
         .then((data) => {
-
           if (data.success) {
             swal.fire({title: 'Good job!',
             text: 'Product added to cart!',
@@ -89,7 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
               cartList.appendChild(newCartItem)
             }
           } else {
-            alert('something goes wrong')
+            swal.fire({
+              text: 'Product is Out of Stock!',
+              icon: 'error',
+              showConfirmButton: false,
+              timer: 1300,
+            })
           }
         })
     })

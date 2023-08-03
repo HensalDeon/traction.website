@@ -66,6 +66,9 @@ async function addItemToCart(userId, productId, quantity) {
     if (!product) {
       return { status: false, message: 'product not found' };
     }
+    if (product.stocks === 0){
+      return {status: false, message: 'Product is Out of Stock!' }
+    }
 
     let cart = await cartDatabase.findOne({ user: userId });
 

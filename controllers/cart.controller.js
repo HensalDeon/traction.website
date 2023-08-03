@@ -120,7 +120,7 @@ async function PostToCart(req, res) {
         .json({ success: cartResult.status, message: cartResult.message, product: cartResult.productData ,productAlreadyExist:cartResult.productAlreadyExist});
     } else {
       res
-        .status(404)
+        .status(400)
         .json({ success: cartResult.status, message: cartResult.message, product: [] });
     }
   } catch (error) {
