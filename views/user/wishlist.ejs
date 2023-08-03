@@ -37,10 +37,10 @@
                     </td>
                     <td class="price" data-title="Price"><span>&#8377;<%= item.product.productPrice %></span></td>
                     <td class="text-center" data-title="Stock">
-                      <% if (item.product.stocks<item.quantity) { %>
-                      <span class="color3 font-weight-bold" id="outOfStock-<%= item.product._id %>"><strong>Out of stock</strong></span>
-                      <% } else { %>
-                      <span class="color3 font-weight-bold" id="outOfStock-<%= item.product._id %>" class="text-muted"><strong>In stock</strong></span>
+                      <% if (item.product.stocks > 0) { %>
+                        <span class="color3 font-weight-bold" id="outOfStock-<%= item.product._id %>" class="text-muted"><strong>In stock</strong></span>
+                        <% } else { %>
+                          <span class="color3 font-weight-bold" id="outOfStock-<%= item.product._id %>"><strong>Out of stock</strong></span>
                       <% } %>
                     </td>
                     <td class="text-right" data-title="Wishlist">
@@ -50,7 +50,7 @@
                         <button class="btn btn-sm notifyMe" data-product-id="<%= item.product._id %>"><i class="fi-rs-shopping-bag mr-5" ></i>Notify Me</button>
                       <% } %>
                       </td>
-                    <td class="action" onclick="removeProduct('<%= item.product._id %>')"><a class="text-muted"><i class="fi-rs-trash"></i></a></td>
+                    <td class="action" onclick="removeProductWishlist('<%= item.product._id %>')"><a class="text-muted"><i class="fi-rs-trash"></i></a></td>
                   </tr>
                   <% }) %>
                 </tbody>

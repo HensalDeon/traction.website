@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 })
 
-async function removeProduct(productId) {
+async function removeProductWishlist(productId) {
   try {
     const result = await Swal.fire({
       title: 'Are you sure?',
