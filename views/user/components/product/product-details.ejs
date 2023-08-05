@@ -4,6 +4,12 @@
     <div class="product-detail-rating">
       <div class="pro-details-brand">
         <span style="color: black;"> Brand: <a href="/shop"><span style="color: #0b3823;">Traction</span></a></span>
+        <% const rating=product.productRating %>
+        <div class="stars">
+          <% for (let i = 1; i <= rating; i++) { %>
+          <i style="color: orange;" class="fa-solid fa-star"></i>
+          <% } %>
+        </div>
       </div>
       <div class="product-rate-cover text-end">
         <div class="product-rate d-inline-block">
@@ -51,7 +57,7 @@
         <% } else { %>
         <button class="button notify-me-btn">Notify Me</button>
         <% } %>
-        <a aria-label="Add To Wishlist" class="addToWishlistButton action-btn hover-up" id ="addToWishlistButton" data-product-id="<%= product._id %>"><i class="fi-rs-heart" ></i></a>
+        <a aria-label="Add To Wishlist" class="addToWishlistButton action-btn hover-up" id="addToWishlistButton" data-product-id="<%= product._id %>"><i class="fi-rs-heart"></i></a>
       </div>
     </div>
     <ul class="product-meta font-xs color-grey mt-50">
