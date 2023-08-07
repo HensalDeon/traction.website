@@ -58,5 +58,5 @@ ADMIN SIDE :
 HOSTING 
 * Hosted the e-commerce website on an AWS instance using Nginx with PM2 to ensure optimal performance and reliability.
 
-A live video of the TRACTION web Application working  <small>-visit my LinkedIn </small> : https://www.linkedin.com/feed/update/urn:li:ugcPost:7094211093111205888/
+A live video of the TRACTION web Application working  <small>-visit my LinkedIn </small> : https://www.linkedin.com/feed/update/urn:li:activity:7094212566977019905/
 <h1> The live version of the project can be accessed at https://traction.website . </h1>
